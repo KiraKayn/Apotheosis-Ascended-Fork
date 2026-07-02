@@ -75,15 +75,12 @@ public class GenesisAugment implements IAugment {
     @Override
     public IAugmentInnerData fallbackInnerData() {
         GenesisData data = new GenesisData();
-        data.originalAffixLevels = new CompoundTag();
         data.defaultPower    = -0.5f;
         data.affixPowerBoost = 0.1f;
         data.gemPowerBoost   = 0.1f;
-        data.affixPower      = 0.5f;
+        data.affixPower      = -0.5f;
         data.gemPower        = -0.5f;
         data.bossKillCount   = 0;
-//        data.killedBossIds     = new HashSet<>();
-//        data.originalAffixLevels     = new CompoundTag();
         return data;
     }
 
@@ -201,7 +198,6 @@ public class GenesisAugment implements IAugment {
         float gemPower        = -0.5f;
         int   bossKillCount   = 0;
         final Set<String> killedBossIds     = new HashSet<>();
-        CompoundTag originalAffixLevels     = new CompoundTag();
 
         public static final String MODIFIER_NAME = "fallen_gems_affixes:genesis_affix_power";
         @Override
