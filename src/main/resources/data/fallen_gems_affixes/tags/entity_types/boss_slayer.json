@@ -1,11 +1,29 @@
 {
   "replace": false,
   "values": [
-    "minecraft:ender_dragon",
-    "minecraft:wither",
-    "minecraft:elder_guardian",
-    "minecraft:warden",
-    "dummmmmmy:target_dummy",
-    "#forge:bosses"
+    {
+      "id": "minecraft:ender_dragon",
+      "required": true
+    },
+    {
+      "id": "minecraft:wither",
+      "required": true
+    },
+    {
+      "id": "minecraft:elder_guardian",
+      "required": true
+    },
+    {
+      "id": "minecraft:warden",
+      "required": true
+    },
+    {
+      "id": "dummmmmmy:target_dummy",
+      "required": false
+    },
+    {
+      "id": "#forge:bosses",
+      "required": true
+    }
   ]
 }
