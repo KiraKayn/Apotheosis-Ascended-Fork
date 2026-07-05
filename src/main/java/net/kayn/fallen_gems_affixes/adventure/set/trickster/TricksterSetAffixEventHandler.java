@@ -2,6 +2,7 @@ package net.kayn.fallen_gems_affixes.adventure.set.trickster;
 
 import net.kayn.fallen_gems_affixes.adventure.set.SetAffix;
 import net.kayn.fallen_gems_affixes.adventure.set.SetAffixHelper;
+import net.kayn.fallen_gems_affixes.adventure.set.trickster.bonus.TricksterSetBonusHandler;
 import net.kayn.fallen_gems_affixes.entity.ShadowCloneEntity;
 import net.kayn.fallen_gems_affixes.event.PlayerCriticalHitEvent;
 import net.kayn.fallen_gems_affixes.event.ShadowCloneDeathEvent;
@@ -39,6 +40,7 @@ public class TricksterSetAffixEventHandler {
         } else {
             if (player.getRandom().nextFloat() < helmetAffix.getSpawnChance()) {
                 ShadowCloneManager.spawnClonesAtCircle(player, 1);
+                TricksterSetBonusHandler.sendCloneActionBar(player);
             }
         }
     }
@@ -66,6 +68,7 @@ public class TricksterSetAffixEventHandler {
             if (toSpawn > 0) {
                 ShadowCloneManager.spawnClonesAtCircle(player, toSpawn);
                 TricksterCooldownHelper.setCooldown(player, TricksterCooldownHelper.CHESTPLATE_CD, chestplateAffix.getCooldownTicks());
+                TricksterSetBonusHandler.sendCloneActionBar(player);
             }
         }
     }
@@ -76,19 +79,21 @@ public class TricksterSetAffixEventHandler {
         if (owner == null || owner.level().isClientSide) return;
 
         SetAffix affix = SetAffixHelper.getSetAffix(owner.getItemBySlot(EquipmentSlot.LEGS));
-        if (!(affix instanceof TricksterLeggingsAffix leggingsAffix)) return;
+        if (affix instanceof TricksterLeggingsAffix leggingsAffix) {
+            ShadowCloneEntity clone = event.getClone();
+            float damage = (float) (owner.getAttributeValue(Attributes.ATTACK_DAMAGE) * leggingsAffix.getExplosionMultiplier());
+            double radius = leggingsAffix.getRadius();
+            AABB area = clone.getBoundingBox().inflate(radius);
 
-        ShadowCloneEntity clone = event.getClone();
-        float damage = (float) (owner.getAttributeValue(Attributes.ATTACK_DAMAGE) * leggingsAffix.getExplosionMultiplier());
-        double radius = leggingsAffix.getRadius();
-        AABB area = clone.getBoundingBox().inflate(radius);
+            List<LivingEntity> targets = owner.level().getEntitiesOfClass(LivingEntity.class, area,
+                    e -> e != owner && !(e instanceof ShadowCloneEntity) && !e.isDeadOrDying());
 
-        List<LivingEntity> targets = owner.level().getEntitiesOfClass(LivingEntity.class, area,
-                e -> e != owner && !(e instanceof ShadowCloneEntity) && !e.isDeadOrDying());
-
-        for (LivingEntity target : targets) {
-            target.hurt(owner.level().damageSources().magic(), damage);
+            for (LivingEntity target : targets) {
+                target.hurt(owner.level().damageSources().magic(), damage);
+            }
         }
+
+        TricksterSetBonusHandler.sendCloneActionBar(owner);
     }
 
     @SubscribeEvent
@@ -135,6 +140,7 @@ public class TricksterSetAffixEventHandler {
         target.discard();
         player.teleportTo(clonePos.x, clonePos.y, clonePos.z);
         TricksterCooldownHelper.setCooldown(player, TricksterCooldownHelper.BOOTS_CD, bootsAffix.getCooldownTicks());
+        TricksterSetBonusHandler.sendCloneActionBar(player);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)

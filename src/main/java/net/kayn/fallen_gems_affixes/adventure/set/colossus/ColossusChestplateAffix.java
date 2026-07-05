@@ -70,12 +70,20 @@ public class ColossusChestplateAffix extends SetAffix {
 
     @Override
     public MutableComponent getDescription(ItemStack stack, LootRarity rarity, float level) {
-        Component orbs    = Component.literal(String.valueOf(orbsPerHit)).withStyle(ChatFormatting.DARK_RED);
-        Component thresh  = Component.literal(SetAffix.fmt(heavyHitThreshold * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
-        Component bonus   = Component.literal("+" + heavyHitBonusOrbs).withStyle(ChatFormatting.DARK_RED);
-        Component perOrb  = Component.literal(SetAffix.fmt(maxHealthPerOrbFraction * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
-        return Component.translatable("set_affix.fallen_gems_affixes.colossus_chestplate.desc",
-                orbs, thresh, bonus, perOrb).withStyle(ChatFormatting.YELLOW);
+        Component orbs = Component.literal(String.valueOf(orbsPerHit)).withStyle(ChatFormatting.DARK_RED);
+        Component perOrb = Component.literal(SetAffix.fmt(maxHealthPerOrbFraction * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
+
+        MutableComponent desc = Component.translatable("set_affix.fallen_gems_affixes.colossus_chestplate.desc",
+                orbs, perOrb).withStyle(ChatFormatting.YELLOW);
+
+        if (isShiftDown()) {
+            Component thresh = Component.literal(SetAffix.fmt(heavyHitThreshold * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
+            Component bonus = Component.literal("+" + heavyHitBonusOrbs).withStyle(ChatFormatting.DARK_RED);
+            desc.append(Component.translatable("set_affix.fallen_gems_affixes.colossus_chestplate.desc.shift", thresh, bonus)
+                    .withStyle(ChatFormatting.GRAY));
+        }
+
+        return desc;
     }
 
     @Override

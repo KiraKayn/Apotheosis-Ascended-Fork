@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootCategory;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
+import net.kayn.fallen_gems_affixes.FallenGemsAffixes;
 import net.kayn.fallen_gems_affixes.adventure.set.SetAffix;
 import net.kayn.fallen_gems_affixes.adventure.set.trickster.bonus.TricksterSetBonusHandler;
 import net.minecraft.ChatFormatting;
@@ -29,22 +30,25 @@ public class TricksterBootsAffix extends SetAffix {
     public int getCooldownTicks() { return cooldownTicks; }
 
     @Override
-    public ResourceLocation getTypeId() {
-        return null;
-    }
+    public ResourceLocation getTypeId() { return FallenGemsAffixes.id("trickster_boots"); }
 
     @Override
     public MutableComponent getDescription(ItemStack stack, LootRarity rarity, float level) {
-        Component value = Component.literal(SetAffix.fmt(cooldownTicks / 20f) + "s")
-                .withStyle(ChatFormatting.DARK_RED);
-
-        return Component.translatable("set_affix.fallen_gems_affixes.trickster_boots.desc", value)
+        MutableComponent desc = Component.translatable("set_affix.fallen_gems_affixes.trickster_boots.desc")
                 .withStyle(ChatFormatting.YELLOW);
+
+        if (isShiftDown()) {
+            Component value = Component.literal(SetAffix.fmt(cooldownTicks / 20f) + "s").withStyle(ChatFormatting.DARK_RED);
+            desc.append(Component.translatable("set_affix.fallen_gems_affixes.trickster_boots.desc.shift", value)
+                    .withStyle(ChatFormatting.GRAY));
+        }
+
+        return desc;
     }
 
     @Override
     public boolean canApplyTo(ItemStack stack, LootCategory cat, LootRarity rarity) {
-        return !cat.isNone() && cat == dev.shadowsoffire.apotheosis.adventure.loot.LootCategory.BOOTS;
+        return !cat.isNone() && cat == LootCategory.BOOTS;
     }
 
     @Override
@@ -61,9 +65,7 @@ public class TricksterBootsAffix extends SetAffix {
     public int[] getBonusThresholds() { return TricksterSetConstants.BONUS_THRESHOLDS; }
 
     @Override
-    public Component getBonusDescription(int threshold) {
-        return null;
-    }
+    public Component getBonusDescription(int threshold) { return null; }
 
     @Override
     public Codec<? extends SetAffix> getCodec() { return CODEC; }

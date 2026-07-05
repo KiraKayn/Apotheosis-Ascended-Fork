@@ -43,11 +43,18 @@ public class ColossusHelmetAffix extends SetAffix {
 
     @Override
     public MutableComponent getDescription(ItemStack stack, LootRarity rarity, float level) {
-        Component base = Component.literal(SetAffix.fmt(shockwaveBaseDamage)).withStyle(ChatFormatting.DARK_RED);
-        Component perOrb = Component.literal(SetAffix.fmt(shockwaveDamagePerOrb)).withStyle(ChatFormatting.DARK_RED);
-        Component radius = Component.literal(SetAffix.fmt(shockwaveRadius)).withStyle(ChatFormatting.DARK_RED);
-        return Component.translatable("set_affix.fallen_gems_affixes.colossus_helmet.desc", base, perOrb, radius)
+        MutableComponent desc = Component.translatable("set_affix.fallen_gems_affixes.colossus_helmet.desc")
                 .withStyle(ChatFormatting.YELLOW);
+
+        if (isShiftDown()) {
+            Component base = Component.literal(SetAffix.fmt(shockwaveBaseDamage)).withStyle(ChatFormatting.DARK_RED);
+            Component perOrb = Component.literal(SetAffix.fmt(shockwaveDamagePerOrb)).withStyle(ChatFormatting.DARK_RED);
+            Component radius = Component.literal(SetAffix.fmt(shockwaveRadius)).withStyle(ChatFormatting.DARK_RED);
+            desc.append(Component.translatable("set_affix.fallen_gems_affixes.colossus_helmet.desc.shift", base, perOrb, radius)
+                    .withStyle(ChatFormatting.GRAY));
+        }
+
+        return desc;
     }
 
     @Override

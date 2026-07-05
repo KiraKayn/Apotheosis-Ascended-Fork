@@ -124,6 +124,10 @@ public abstract class SetAffix implements CodecProvider<SetAffix> {
                 Component.translatable("misc.apotheosis.affix_bounds", min, max).withStyle(ChatFormatting.DARK_GRAY));
     }
 
+    protected static boolean isShiftDown() {
+        return net.minecraft.client.gui.screens.Screen.hasShiftDown();
+    }
+
     public final ResourceLocation getId() {
         return SetAffixRegistry.INSTANCE.getKey(this);
     }

@@ -13,6 +13,9 @@ import net.kayn.fallen_gems_affixes.adventure.set.SetAffixRegistry;
 import net.kayn.fallen_gems_affixes.adventure.set.SetBonusHandler;
 import net.kayn.fallen_gems_affixes.adventure.set.colossus.ColossusSetAffixEventHandler;
 import net.kayn.fallen_gems_affixes.adventure.set.colossus.bonus.ColossusSetBonusHandler;
+import net.kayn.fallen_gems_affixes.adventure.set.deadeye.DeadeyeEntities;
+import net.kayn.fallen_gems_affixes.adventure.set.deadeye.DeadeyeSetAffixEventHandler;
+import net.kayn.fallen_gems_affixes.adventure.set.deadeye.bonus.DeadeyeSetBonusHandler;
 import net.kayn.fallen_gems_affixes.adventure.set.trickster.TricksterEntities;
 import net.kayn.fallen_gems_affixes.adventure.set.trickster.TricksterSetAffixEventHandler;
 import net.kayn.fallen_gems_affixes.adventure.set.trickster.bonus.TricksterSetBonusHandler;
@@ -80,6 +83,7 @@ public class FallenGemsAffixes {
         Fallen.bootstrap(modEventBus);
         GemBonusModifier.bootstrap(MinecraftForge.EVENT_BUS);
         TricksterEntities.bootstrap(modEventBus);
+        DeadeyeEntities.bootstrap(modEventBus);
         FabledReforging.bootstrap(modEventBus);
         SetAffixRegistry.INSTANCE.registerToBus();
         MinecraftForge.EVENT_BUS.register(SetBonusHandler.class);
@@ -111,6 +115,8 @@ public class FallenGemsAffixes {
         MinecraftForge.EVENT_BUS.register(TricksterSetBonusHandler.class);
         MinecraftForge.EVENT_BUS.register(ColossusSetAffixEventHandler.class);
         MinecraftForge.EVENT_BUS.register(ColossusSetBonusHandler.class);
+        MinecraftForge.EVENT_BUS.register(DeadeyeSetAffixEventHandler.class);
+        MinecraftForge.EVENT_BUS.register(DeadeyeSetBonusHandler.class);
 
         // Mod integrations
         curiosLoaded = ModList.get().isLoaded("curios");

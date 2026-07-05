@@ -675,37 +675,55 @@
 
   "set.fallen_gems_affixes.trickster": "Trickster",
 
-  "set_affix.fallen_gems_affixes.trickster_helmet.desc": "Critical Hits cause all active Shadow Clones to strike the target. With no clones active, Critical Hits have a %s chance to spawn one",
+  "set_affix.fallen_gems_affixes.trickster_helmet.desc": "Critical Hits make Shadow Clones strike your target",
+  "set_affix.fallen_gems_affixes.trickster_helmet.desc.shift": " [No clones active: %s chance to spawn one]",
 
-  "set_affix.fallen_gems_affixes.trickster_chestplate.desc": "On taking damage, spawn up to %s Shadow Clones around you [%s]. While any clone is alive, take %s less damage",
+  "set_affix.fallen_gems_affixes.trickster_chestplate.desc": "Taking damage spawns up to %s Shadow Clones. Take %s less damage while one is alive",
+  "set_affix.fallen_gems_affixes.trickster_chestplate.desc.shift": " [Cooldown: %s]",
 
-  "set_affix.fallen_gems_affixes.trickster_leggings.desc": "When a Shadow Clone disappears, it deals %s of your melee damage to all enemies within %s blocks",
+  "set_affix.fallen_gems_affixes.trickster_leggings.desc": "A Shadow Clone's death deals %s of your melee damage to nearby enemies",
+  "set_affix.fallen_gems_affixes.trickster_leggings.desc.shift": " [Radius: %s blocks]",
 
-  "set_affix.fallen_gems_affixes.trickster_boots.desc": "Sneak while looking at a Shadow Clone to swap places with it. The clone dies instantly [%s]",
+  "set_affix.fallen_gems_affixes.trickster_boots.desc": "Sneak looking at a Shadow Clone to swap places with it, killing the clone",
+  "set_affix.fallen_gems_affixes.trickster_boots.desc.shift": " [Cooldown: %s]",
 
-  "set_affix.fallen_gems_affixes.trickster_weapon.desc": "Hitting an enemy causes all active Shadow Clones to deal an additional %s of your melee damage to the same target [%s]",
+  "set_affix.fallen_gems_affixes.trickster_weapon.desc": "Hitting an enemy makes all Shadow Clones deal %s bonus damage to it",
+  "set_affix.fallen_gems_affixes.trickster_weapon.desc.shift": " [Cooldown: %s]",
 
-  "set_bonus.fallen_gems_affixes.trickster.2": "Shadow Clones inherit %s of your maximum health",
-  "set_bonus.fallen_gems_affixes.trickster.3": "Gain +%s Movement Speed and +%s Dodge Chance per active Shadow Clone",
-  "set_bonus.fallen_gems_affixes.trickster.4": "When a Shadow Clone disappears, reduce affix cooldowns by %s",
-  "set_bonus.fallen_gems_affixes.trickster.5": "Killing an enemy has a %s chance to refresh clone cooldown. Gain +%s additional Shadow Clones",
+  "set_bonus.fallen_gems_affixes.trickster.2": "Shadow Clones inherit %s of your Max Health",
+  "set_bonus.fallen_gems_affixes.trickster.3": "Gain %s Movement Speed and %s Dodge Chance per active Shadow Clone",
+  "set_bonus.fallen_gems_affixes.trickster.4": "A Shadow Clone's death reduces affix cooldowns by %s",
+  "set_bonus.fallen_gems_affixes.trickster.5": "Killing an enemy has a %s chance to refresh your clone cooldown",
+  "set_bonus.fallen_gems_affixes.trickster.5.shift": " [Also grants +%s Shadow Clones]",
+
+  "fga.trickster.clone_display": "Shadow Clones: %s/%s",
 
   "set.fallen_gems_affixes.colossus": "Colossus",
 
-  "set_affix.fallen_gems_affixes.colossus_helmet.desc": "Critical Hits consume 1 Bastion Orb, releasing a shockwave dealing %s + %s per Orb in a %s block radius",
+  "set_affix.fallen_gems_affixes.colossus_helmet.desc": "Critical Hits consume 1 Bastion Orb, releasing a shockwave",
+  "set_affix.fallen_gems_affixes.colossus_helmet.desc.shift": " [Damage: %s + %s per Orb, Radius: %s blocks]",
 
-  "set_affix.fallen_gems_affixes.colossus_chestplate.desc": "On taking damage, gain %s Bastion Orb. Hits dealing ≥%s max HP grant %s extra. Gain %s of your missing HP as Max Health per Orb",
+  "set_affix.fallen_gems_affixes.colossus_chestplate.desc": "Taking damage grants %s Bastion Orb. Gain %s Max Health per Orb",
+  "set_affix.fallen_gems_affixes.colossus_chestplate.desc.shift": " [Hits \u2265%s max HP grant %s extra Orb]",
 
-  "set_affix.fallen_gems_affixes.colossus_leggings.desc": "Orb consumption triggers a shockwave dealing %s + %s stored damage. Consuming all orbs at once grants %sx damage and %sx radius",
+  "set_affix.fallen_gems_affixes.colossus_leggings.desc": "Consuming Orbs releases a shockwave using stored damage",
+  "set_affix.fallen_gems_affixes.colossus_leggings.desc.shift": " [Base: %s + %s stored damage. Consuming all Orbs: %sx damage, %sx radius]",
 
-  "set_affix.fallen_gems_affixes.colossus_boots.desc": "Gain %s Movement Speed per Bastion Orb. At 4 Orbs, immune to slows and melee hits root enemies for %s. Standing still for %s charges +1 Orb on your next gain",
+  "set_affix.fallen_gems_affixes.colossus_boots.desc": "Gain %s Movement Speed per Bastion Orb",
+  "set_affix.fallen_gems_affixes.colossus_boots.desc.shift": " [At max Orbs, immune to slows and melee hits root for %s. Standing still %s charges a bonus Orb]",
 
-  "set_affix.fallen_gems_affixes.colossus_shield.desc": "Blocking always grants 1 Bastion Orb. At 4 Orbs, blocking reflects %s damage and releases a stun pulse [%s blocks, %s]",
+  "set_affix.fallen_gems_affixes.colossus_shield.desc": "Blocking always grants 1 Bastion Orb",
+  "set_affix.fallen_gems_affixes.colossus_shield.desc.shift": " [At max Orbs, blocking reflects %s damage and stuns within %s blocks for %s]",
 
-  "set_bonus.fallen_gems_affixes.colossus.2": "Gain bonus Max Health equal to %s of your missing health per active Bastion Orb",
-  "set_bonus.fallen_gems_affixes.colossus.3": "Surviving death at 4 Orbs: consume all Orbs, massive shockwave, and %s invulnerability [%s]",
-  "set_bonus.fallen_gems_affixes.colossus.4": "Gaining or consuming a Bastion Orb heals you [%s max HP], boosts Attack Speed [+%s, %s], and reduce affix cooldowns by %s",
-  "set_bonus.fallen_gems_affixes.colossus.5": "At 4 Orbs: immune to negative effects, knockback, melee attacks emit shockwaves. %s chance to gain a bonus Orb on Orb gain",
+  "set_bonus.fallen_gems_affixes.colossus.2": "Gain bonus Max Health equal to %s of your missing health per active Orb",
+  "set_bonus.fallen_gems_affixes.colossus.3": "Surviving death at max Orbs consumes them all for a shockwave and %s invulnerability",
+  "set_bonus.fallen_gems_affixes.colossus.3.shift": " [Cooldown: %s]",
+  "set_bonus.fallen_gems_affixes.colossus.4": "Gaining or consuming an Orb heals you and boosts Attack Speed",
+  "set_bonus.fallen_gems_affixes.colossus.4.shift": " [Heal: %s max HP, Attack Speed: +%s for %s, reduces cooldowns by %s]",
+  "set_bonus.fallen_gems_affixes.colossus.5": "At max Orbs: immune to negative effects and knockback, melee attacks emit shockwaves",
+  "set_bonus.fallen_gems_affixes.colossus.5.shift": " [%s chance to gain a bonus Orb on Orb gain]",
+
+  "fga.colossus.orb_display": "Bastion Orbs: %s/%s",
 
   "button.fallen_gems_affixes.no_upgrade_for_locked_level": "Level is locked due to Augment",
   "button.fallen_gems_affixes.no_upgrade_for_modified_level_cap": "Reach current level cap",
@@ -713,5 +731,37 @@
   "affix.fallen_gems_affixes.shield_guard.desc": "Reduces shield disable duration by %s%%",
   "affix.fallen_gems_affixes.shield_guard.immune": "Your shield cannot be disabled",
   "affix.fallen_gems_affixes:shield/shield_guard": "Steadfast",
-  "affix.fallen_gems_affixes:shield/shield_guard.suffix": "of the Bulwark"
+  "affix.fallen_gems_affixes:shield/shield_guard.suffix": "of the Bulwark",
+
+  "set.fallen_gems_affixes.deadeye": "Deadeye",
+
+  "set_affix.fallen_gems_affixes.deadeye_helmet.desc": "Critical Hits grant %s Focus. At max Focus, release a Burst dealing %s damage",
+  "set_affix.fallen_gems_affixes.deadeye_helmet.desc.shift": " [Radius: %s blocks]",
+
+  "set_affix.fallen_gems_affixes.deadeye_chestplate.desc": "Ranged hits grant %s Focus. Gain %s Arrow Damage per Focus [Max %s Focus]",
+  "set_affix.fallen_gems_affixes.deadeye_chestplate.desc.shift": " [Hits \u2265%s HP grants +%s Focus. Focus Decays after %s idle]",
+
+  "set_affix.fallen_gems_affixes.deadeye_leggings.desc": "Consecutive hits grant %s Crit Damage per stack. Consuming Focus spends all stacks as bonus damage",
+  "set_affix.fallen_gems_affixes.deadeye_leggings.desc.shift": " [Max %s stacks, resets after %s idle]",
+
+  "set_affix.fallen_gems_affixes.deadeye_boots.desc": "At max Focus, immune to Knockback and your next hit roots the target",
+  "set_affix.fallen_gems_affixes.deadeye_boots.desc.shift": " [Cost: %s Focus, Duration: %s]",
+
+  "set_affix.fallen_gems_affixes.deadeye_bow.desc": "Hitting an enemy below %s HP instantly executes them",
+  "set_affix.fallen_gems_affixes.deadeye_bow.desc.shift": " [+%s per Focus. Marks within %s blocks for %s. Refunds %s Focus if Marked]",
+
+  "set_bonus.fallen_gems_affixes.deadeye.2": "Gain %s Arrow Damage and %s Arrow Velocity per Focus",
+
+  "set_bonus.fallen_gems_affixes.deadeye.3": "At max Focus, %s chance to not consume it. Executing grants %s Focus",
+
+  "set_bonus.fallen_gems_affixes.deadeye.4": "+%s Max Focus. Consuming Focus reduces cooldowns by %s",
+  "set_bonus.fallen_gems_affixes.deadeye.4.shift": " and Marked enemies take %s more damage from your arrows",
+
+  "set_bonus.fallen_gems_affixes.deadeye.5": "Killing a Marked enemy spawns a Spirit Echo for %s",
+  "set_bonus.fallen_gems_affixes.deadeye.5.shift": " [Shooting it deals %s damage and grants %s Focus]",
+
+  "fga.deadeye.focus_display": "Focus: %s/%s",
+
+  "config.jade.plugin_fallen_gems_affixes.deadeye_marked": "Show Deadeye Marked",
+  "entity.fallen_gems_affixes.spirit_echo": "Spirit Echo"
 }

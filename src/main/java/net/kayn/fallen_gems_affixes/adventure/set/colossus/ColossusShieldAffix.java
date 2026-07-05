@@ -47,19 +47,32 @@ public class ColossusShieldAffix extends SetAffix {
 
     @Override
     public MutableComponent getDescription(ItemStack stack, LootRarity rarity, float level) {
-        Component reflect  = Component.literal(SetAffix.fmt(reflectFraction * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
-        Component radius   = Component.literal(SetAffix.fmt(stunRadius)).withStyle(ChatFormatting.DARK_RED);
-        Component stunSec  = Component.literal(SetAffix.fmt(stunDurationTicks / 20f) + "s").withStyle(ChatFormatting.DARK_RED);
-        return Component.translatable("set_affix.fallen_gems_affixes.colossus_shield.desc",
-                reflect, radius, stunSec).withStyle(ChatFormatting.YELLOW);
+        MutableComponent desc = Component.translatable("set_affix.fallen_gems_affixes.colossus_shield.desc")
+                .withStyle(ChatFormatting.YELLOW);
+
+        if (isShiftDown()) {
+            Component reflect = Component.literal(SetAffix.fmt(reflectFraction * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
+            Component radius = Component.literal(SetAffix.fmt(stunRadius)).withStyle(ChatFormatting.DARK_RED);
+            Component stunSec = Component.literal(SetAffix.fmt(stunDurationTicks / 20f) + "s").withStyle(ChatFormatting.DARK_RED);
+            desc.append(Component.translatable("set_affix.fallen_gems_affixes.colossus_shield.desc.shift", reflect, radius, stunSec)
+                    .withStyle(ChatFormatting.GRAY));
+        }
+
+        return desc;
     }
 
     @Override
     public Component getBonusDescription(int threshold) {
         if (threshold == 5) {
-            Component bonus = Component.literal(SetAffix.fmt(fivePieceOrbGenBonus * 100f) + "%")
-                    .withStyle(ChatFormatting.DARK_RED);
-            return Component.translatable("set_bonus.fallen_gems_affixes.colossus.5", bonus);
+            MutableComponent desc = Component.translatable("set_bonus.fallen_gems_affixes.colossus.5");
+
+            if (isShiftDown()) {
+                Component bonus = Component.literal(SetAffix.fmt(fivePieceOrbGenBonus * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
+                desc.append(Component.translatable("set_bonus.fallen_gems_affixes.colossus.5.shift", bonus)
+                        .withStyle(ChatFormatting.GRAY));
+            }
+
+            return desc;
         }
         return null;
     }

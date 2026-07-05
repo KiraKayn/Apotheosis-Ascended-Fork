@@ -69,30 +69,39 @@ public class ColossusLeggingsAffix extends SetAffix {
 
     @Override
     public MutableComponent getDescription(ItemStack stack, LootRarity rarity, float level) {
-        Component base       = Component.literal(SetAffix.fmt(baseShockwaveDamage)).withStyle(ChatFormatting.DARK_RED);
-        Component scale      = Component.literal(SetAffix.fmt(damageScaleFraction * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
-        Component dmgMult    = Component.literal(SetAffix.fmt(maxOrbDamageMultiplier) + "x").withStyle(ChatFormatting.DARK_RED);
-        Component radiusMult = Component.literal(SetAffix.fmt(maxOrbRadiusMultiplier) + "x").withStyle(ChatFormatting.DARK_RED);
-        return Component.translatable("set_affix.fallen_gems_affixes.colossus_leggings.desc",
-                base, scale, dmgMult, radiusMult).withStyle(ChatFormatting.YELLOW);
+        MutableComponent desc = Component.translatable("set_affix.fallen_gems_affixes.colossus_leggings.desc")
+                .withStyle(ChatFormatting.YELLOW);
+
+        if (isShiftDown()) {
+            Component base = Component.literal(SetAffix.fmt(baseShockwaveDamage)).withStyle(ChatFormatting.DARK_RED);
+            Component scale = Component.literal(SetAffix.fmt(damageScaleFraction * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
+            Component dmgMult = Component.literal(SetAffix.fmt(maxOrbDamageMultiplier) + "x").withStyle(ChatFormatting.DARK_RED);
+            Component radiusMult = Component.literal(SetAffix.fmt(maxOrbRadiusMultiplier) + "x").withStyle(ChatFormatting.DARK_RED);
+            desc.append(Component.translatable("set_affix.fallen_gems_affixes.colossus_leggings.desc.shift",
+                    base, scale, dmgMult, radiusMult).withStyle(ChatFormatting.GRAY));
+        }
+
+        return desc;
     }
 
     @Override
     public Component getBonusDescription(int threshold) {
         if (threshold == 4) {
-            Component heal = Component.literal(SetAffix.fmt(resonanceHealFraction * 100f) + "%")
-                    .withStyle(ChatFormatting.DARK_RED);
-            Component speed = Component.literal(SetAffix.fmt(resonanceAttackSpeedBoost * 100f) + "%")
-                    .withStyle(ChatFormatting.DARK_RED);
-            Component duration = Component.literal(SetAffix.fmt(resonanceAttackSpeedDurationTicks / 20f) + "s")
-                    .withStyle(ChatFormatting.DARK_RED);
-            Component cd = Component.literal(SetAffix.fmt(resonanceCooldownReductionTicks / 20f) + "s")
-                    .withStyle(ChatFormatting.DARK_RED);
-            return Component.translatable("set_bonus.fallen_gems_affixes.colossus.4", heal, speed, duration, cd);
+            MutableComponent desc = Component.translatable("set_bonus.fallen_gems_affixes.colossus.4");
+
+            if (isShiftDown()) {
+                Component heal = Component.literal(SetAffix.fmt(resonanceHealFraction * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
+                Component speed = Component.literal(SetAffix.fmt(resonanceAttackSpeedBoost * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
+                Component duration = Component.literal(SetAffix.fmt(resonanceAttackSpeedDurationTicks / 20f) + "s").withStyle(ChatFormatting.DARK_RED);
+                Component cd = Component.literal(SetAffix.fmt(resonanceCooldownReductionTicks / 20f) + "s").withStyle(ChatFormatting.DARK_RED);
+                desc.append(Component.translatable("set_bonus.fallen_gems_affixes.colossus.4.shift", heal, speed, duration, cd)
+                        .withStyle(ChatFormatting.GRAY));
+            }
+
+            return desc;
         }
         return null;
     }
-
     @Override
     public boolean canApplyTo(ItemStack stack, LootCategory cat, LootRarity rarity) {
         return !cat.isNone() && cat == LootCategory.LEGGINGS;

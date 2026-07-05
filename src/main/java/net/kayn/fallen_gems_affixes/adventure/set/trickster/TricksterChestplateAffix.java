@@ -51,11 +51,19 @@ public class TricksterChestplateAffix extends SetAffix {
 
     @Override
     public MutableComponent getDescription(ItemStack stack, LootRarity rarity, float level) {
-        Component clonesVal   = Component.literal(String.valueOf(maxClones)).withStyle(ChatFormatting.DARK_RED);
-        Component cooldownVal = Component.literal(SetAffix.fmt(cooldownTicks / 20f) + "s").withStyle(ChatFormatting.DARK_RED);
+        Component clonesVal = Component.literal(String.valueOf(maxClones)).withStyle(ChatFormatting.DARK_RED);
         Component reductionVal = Component.literal(SetAffix.fmt(damageReduction * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
-        return Component.translatable("set_affix.fallen_gems_affixes.trickster_chestplate.desc",
-                clonesVal, cooldownVal, reductionVal).withStyle(ChatFormatting.YELLOW);
+
+        MutableComponent desc = Component.translatable("set_affix.fallen_gems_affixes.trickster_chestplate.desc",
+                clonesVal, reductionVal).withStyle(ChatFormatting.YELLOW);
+
+        if (isShiftDown()) {
+            Component cooldownVal = Component.literal(SetAffix.fmt(cooldownTicks / 20f) + "s").withStyle(ChatFormatting.DARK_RED);
+            desc.append(Component.translatable("set_affix.fallen_gems_affixes.trickster_chestplate.desc.shift", cooldownVal)
+                    .withStyle(ChatFormatting.GRAY));
+        }
+
+        return desc;
     }
 
     @Override

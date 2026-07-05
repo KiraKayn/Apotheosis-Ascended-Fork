@@ -1,4 +1,4 @@
-package net.kayn.fallen_gems_affixes.compat;
+package net.kayn.fallen_gems_affixes.compat.jade;
 
 import net.kayn.fallen_gems_affixes.FallenGemsAffixes;
 import net.kayn.fallen_gems_affixes.adventure.entity.EntityAffixHelper;

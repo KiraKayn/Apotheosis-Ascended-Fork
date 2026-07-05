@@ -43,11 +43,19 @@ public class ColossusBootsAffix extends SetAffix {
 
     @Override
     public MutableComponent getDescription(ItemStack stack, LootRarity rarity, float level) {
-        Component speed    = Component.literal(SetAffix.fmt(speedPerOrb * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
-        Component rootSec  = Component.literal(SetAffix.fmt(rootDurationTicks / 20f) + "s").withStyle(ChatFormatting.DARK_RED);
-        Component standSec = Component.literal(SetAffix.fmt(standingStillThresholdTicks / 20f) + "s").withStyle(ChatFormatting.DARK_RED);
-        return Component.translatable("set_affix.fallen_gems_affixes.colossus_boots.desc",
-                speed, rootSec, standSec).withStyle(ChatFormatting.YELLOW);
+        Component speed = Component.literal(SetAffix.fmt(speedPerOrb * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
+
+        MutableComponent desc = Component.translatable("set_affix.fallen_gems_affixes.colossus_boots.desc", speed)
+                .withStyle(ChatFormatting.YELLOW);
+
+        if (isShiftDown()) {
+            Component rootSec = Component.literal(SetAffix.fmt(rootDurationTicks / 20f) + "s").withStyle(ChatFormatting.DARK_RED);
+            Component standSec = Component.literal(SetAffix.fmt(standingStillThresholdTicks / 20f) + "s").withStyle(ChatFormatting.DARK_RED);
+            desc.append(Component.translatable("set_affix.fallen_gems_affixes.colossus_boots.desc.shift", rootSec, standSec)
+                    .withStyle(ChatFormatting.GRAY));
+        }
+
+        return desc;
     }
 
     @Override

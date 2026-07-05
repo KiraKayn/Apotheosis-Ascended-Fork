@@ -54,31 +54,42 @@ public class TricksterWeaponAffix extends SetAffix {
 
     @Override
     public MutableComponent getDescription(ItemStack stack, LootRarity rarity, float level) {
-        Component dmgVal      = Component.literal(SetAffix.fmt(damageMultiplier * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
-        Component cooldownVal = Component.literal(SetAffix.fmt(cooldownTicks / 20f) + "s").withStyle(ChatFormatting.DARK_RED);
-        return Component.translatable("set_affix.fallen_gems_affixes.trickster_weapon.desc",
-                dmgVal, cooldownVal).withStyle(ChatFormatting.YELLOW);
+        Component dmgVal = Component.literal(SetAffix.fmt(damageMultiplier * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
+
+        MutableComponent desc = Component.translatable("set_affix.fallen_gems_affixes.trickster_weapon.desc", dmgVal)
+                .withStyle(ChatFormatting.YELLOW);
+
+        if (isShiftDown()) {
+            Component cooldownVal = Component.literal(SetAffix.fmt(cooldownTicks / 20f) + "s").withStyle(ChatFormatting.DARK_RED);
+            desc.append(Component.translatable("set_affix.fallen_gems_affixes.trickster_weapon.desc.shift", cooldownVal)
+                    .withStyle(ChatFormatting.GRAY));
+        }
+
+        return desc;
     }
 
     @Override
     public Component getBonusDescription(int threshold) {
         if (threshold == 3) {
-            Component speedVal = Component.literal(SetAffix.fmt(threePieceSpeedPerClone * 100f) + "%")
-                    .withStyle(ChatFormatting.DARK_RED);
-            Component dodgeVal = Component.literal(SetAffix.fmt(threePieceDodgePerClone * 100f) + "%")
-                    .withStyle(ChatFormatting.DARK_RED);
+            Component speedVal = Component.literal(SetAffix.fmt(threePieceSpeedPerClone * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
+            Component dodgeVal = Component.literal(SetAffix.fmt(threePieceDodgePerClone * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
             return Component.translatable("set_bonus.fallen_gems_affixes.trickster.3", speedVal, dodgeVal);
         }
         if (threshold == 5) {
-            Component chanceVal = Component.literal(SetAffix.fmt(fivePieceKillRefreshChance * 100f) + "%")
-                    .withStyle(ChatFormatting.DARK_RED);
-            int bonusClones = SetAffixRegistry.INSTANCE.getValues().stream()
-                    .filter(a -> a instanceof TricksterChestplateAffix && this.setId.equals(a.getSetId()))
-                    .map(a -> ((TricksterChestplateAffix) a).getFivePieceBonusClones())
-                    .findFirst().orElse(2);
-            Component clonesVal = Component.literal(String.valueOf(bonusClones))
-                    .withStyle(ChatFormatting.DARK_RED);
-            return Component.translatable("set_bonus.fallen_gems_affixes.trickster.5", chanceVal, clonesVal);
+            Component chanceVal = Component.literal(SetAffix.fmt(fivePieceKillRefreshChance * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
+            MutableComponent desc = Component.translatable("set_bonus.fallen_gems_affixes.trickster.5", chanceVal);
+
+            if (isShiftDown()) {
+                int bonusClones = SetAffixRegistry.INSTANCE.getValues().stream()
+                        .filter(a -> a instanceof TricksterChestplateAffix && this.setId.equals(a.getSetId()))
+                        .map(a -> ((TricksterChestplateAffix) a).getFivePieceBonusClones())
+                        .findFirst().orElse(2);
+                Component clonesVal = Component.literal(String.valueOf(bonusClones)).withStyle(ChatFormatting.DARK_RED);
+                desc.append(Component.translatable("set_bonus.fallen_gems_affixes.trickster.5.shift", clonesVal)
+                        .withStyle(ChatFormatting.GRAY));
+            }
+
+            return desc;
         }
         return null;
     }

@@ -6,7 +6,9 @@ import net.kayn.fallen_gems_affixes.adventure.set.SetBonusHandler;
 import net.kayn.fallen_gems_affixes.adventure.set.trickster.*;
 import net.kayn.fallen_gems_affixes.event.ShadowCloneDeathEvent;
 import dev.shadowsoffire.attributeslib.api.ALObjects;
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -26,6 +28,18 @@ public class TricksterSetBonusHandler {
         int lastCount = player.getPersistentData().getInt(PIECE_COUNT_KEY);
         if (lastCount == newCount) return;
         player.getPersistentData().putInt(PIECE_COUNT_KEY, newCount);
+    }
+
+    public static void sendCloneActionBar(Player player) {
+        if (player.level().isClientSide) return;
+        int pieces = SetBonusHandler.getSetPieceCount(player, TricksterSetConstants.SET_ID);
+        if (pieces < 1) return;
+        SetAffix chestAffix = SetAffixHelper.getSetAffix(player.getItemBySlot(EquipmentSlot.CHEST));
+        if (!(chestAffix instanceof TricksterChestplateAffix ca)) return;
+        int maxClones = ca.getMaxClones() + (pieces >= 5 ? ca.getFivePieceBonusClones() : 0);
+        int clones = ShadowCloneManager.getCloneCount(player);
+        player.displayClientMessage(Component.translatable("fga.trickster.clone_display", clones, maxClones)
+                .withStyle(ChatFormatting.LIGHT_PURPLE), true);
     }
 
     @SubscribeEvent
@@ -114,7 +128,6 @@ public class TricksterSetBonusHandler {
             }
         }
     }
-
 
     @SubscribeEvent
     public static void onKill(LivingDeathEvent event) {

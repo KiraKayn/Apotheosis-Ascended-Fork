@@ -38,10 +38,16 @@ public class TricksterHelmetAffix extends SetAffix {
 
     @Override
     public MutableComponent getDescription(ItemStack stack, LootRarity rarity, float level) {
-        Component spawnValue = Component.literal(SetAffix.fmt(spawnChance * 100f) + "%")
-                .withStyle(ChatFormatting.DARK_RED);
-        return Component.translatable("set_affix.fallen_gems_affixes.trickster_helmet.desc", spawnValue)
+        MutableComponent desc = Component.translatable("set_affix.fallen_gems_affixes.trickster_helmet.desc")
                 .withStyle(ChatFormatting.YELLOW);
+
+        if (isShiftDown()) {
+            Component spawnValue = Component.literal(SetAffix.fmt(spawnChance * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
+            desc.append(Component.translatable("set_affix.fallen_gems_affixes.trickster_helmet.desc.shift", spawnValue)
+                    .withStyle(ChatFormatting.GRAY));
+        }
+
+        return desc;
     }
 
     @Override

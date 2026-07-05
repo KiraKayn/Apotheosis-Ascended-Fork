@@ -4,7 +4,9 @@ import net.kayn.fallen_gems_affixes.adventure.set.SetAffix;
 import net.kayn.fallen_gems_affixes.adventure.set.SetAffixHelper;
 import net.kayn.fallen_gems_affixes.adventure.set.SetBonusHandler;
 import net.kayn.fallen_gems_affixes.adventure.set.colossus.*;
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -13,6 +15,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -34,6 +37,35 @@ public class ColossusSetBonusHandler {
         int last = player.getPersistentData().getInt(PIECE_COUNT_KEY);
         if (last == newCount) return;
         player.getPersistentData().putInt(PIECE_COUNT_KEY, newCount);
+    }
+
+    public static void sendOrbActionBar(Player player) {
+        if (player.level().isClientSide) return;
+        int orbs = BastionOrbManager.getOrbs(player);
+        player.displayClientMessage(Component.translatable("fga.colossus.orb_display", orbs, ColossusSetConstants.MAX_ORBS)
+                .withStyle(ChatFormatting.GOLD), true);
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onEquipmentChange(LivingEquipmentChangeEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        if (player.level().isClientSide) return;
+        if (SetBonusHandler.getSetPieceCount(player, ColossusSetConstants.SET_ID) > 0) return;
+        if (BastionOrbManager.getOrbs(player) == 0) return;
+
+        BastionOrbManager.setOrbsDirect(player, 0);
+        BastionOrbManager.resetAccumulatedDamage(player);
+        BastionOrbManager.setStandingTicks(player, 0);
+        BastionOrbManager.setStandingBonusReady(player, false);
+        removeAdaptiveVitality(player);
+
+        AttributeInstance speedAttr = player.getAttribute(Attributes.MOVEMENT_SPEED);
+        if (speedAttr != null) speedAttr.removeModifier(UUID.fromString("c0105505-b00b-0001-cafe-000000000001"));
+
+        AttributeInstance atSpd = player.getAttribute(Attributes.ATTACK_SPEED);
+        if (atSpd != null) atSpd.removeModifier(ATSPD_UUID);
+
+        sendOrbActionBar(player);
     }
 
     @SubscribeEvent
@@ -117,6 +149,8 @@ public class ColossusSetBonusHandler {
             player.invulnerableTime = ca.getLastStandInvulnTicks();
             player.getPersistentData().putLong(LAST_STAND_KEY,
                     player.level().getGameTime() + ca.getLastStandCooldownTicks());
+
+            sendOrbActionBar(player);
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -145,6 +179,8 @@ public class ColossusSetBonusHandler {
                     }
                 }
             }
+
+            sendOrbActionBar(player);
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -158,6 +194,8 @@ public class ColossusSetBonusHandler {
 
             int pieces = SetBonusHandler.getSetPieceCount(player, ColossusSetConstants.SET_ID);
             if (pieces >= 4) applyResonance(player);
+
+            sendOrbActionBar(player);
         } catch (Throwable t) {
             t.printStackTrace();
         }

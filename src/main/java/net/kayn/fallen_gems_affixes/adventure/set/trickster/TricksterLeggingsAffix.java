@@ -42,10 +42,18 @@ public class TricksterLeggingsAffix extends SetAffix {
 
     @Override
     public MutableComponent getDescription(ItemStack stack, LootRarity rarity, float level) {
-        Component dmgVal    = Component.literal(SetAffix.fmt(explosionMultiplier * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
-        Component radiusVal = Component.literal(SetAffix.fmt(radius)).withStyle(ChatFormatting.DARK_RED);
-        return Component.translatable("set_affix.fallen_gems_affixes.trickster_leggings.desc",
-                dmgVal, radiusVal).withStyle(ChatFormatting.YELLOW);
+        Component dmgVal = Component.literal(SetAffix.fmt(explosionMultiplier * 100f) + "%").withStyle(ChatFormatting.DARK_RED);
+
+        MutableComponent desc = Component.translatable("set_affix.fallen_gems_affixes.trickster_leggings.desc", dmgVal)
+                .withStyle(ChatFormatting.YELLOW);
+
+        if (isShiftDown()) {
+            Component radiusVal = Component.literal(SetAffix.fmt(radius)).withStyle(ChatFormatting.DARK_RED);
+            desc.append(Component.translatable("set_affix.fallen_gems_affixes.trickster_leggings.desc.shift", radiusVal)
+                    .withStyle(ChatFormatting.GRAY));
+        }
+
+        return desc;
     }
 
     @Override
