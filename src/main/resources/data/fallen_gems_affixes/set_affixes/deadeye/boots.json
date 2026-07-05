@@ -1,0 +1,6 @@
+{
+  "type": "fallen_gems_affixes:deadeye_boots",
+  "set": "fallen_gems_affixes:deadeye",
+  "root_focus_cost": 5,
+  "root_duration_ticks": 40
+}

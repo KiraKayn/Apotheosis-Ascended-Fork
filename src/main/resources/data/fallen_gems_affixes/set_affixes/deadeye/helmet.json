@@ -1,0 +1,7 @@
+{
+  "type": "fallen_gems_affixes:deadeye_helmet",
+  "set": "fallen_gems_affixes:deadeye",
+  "focus_per_crit": 1,
+  "crit_burst_damage_percent": 0.6,
+  "crit_burst_radius": 4.0
+}

@@ -1,0 +1,15 @@
+{
+  "type": "fallen_gems_affixes:deadeye_bow",
+  "set": "fallen_gems_affixes:deadeye",
+  "execute_base_threshold": 0.05,
+  "execute_scaling_per_focus": 0.01,
+  "execute_mark_radius": 6.0,
+  "mark_duration_ticks": 100,
+  "execute_mark_refund": 4,
+  "three_piece_no_consume_chance": 0.25,
+  "three_piece_execute_bonus_focus": 3,
+  "echo_duration_ticks": 100,
+  "echo_damage_percent": 0.75,
+  "echo_aoe_radius": 4.0,
+  "echo_focus_grant": 3
+}

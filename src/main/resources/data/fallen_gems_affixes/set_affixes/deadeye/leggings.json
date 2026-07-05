@@ -1,0 +1,11 @@
+{
+  "type": "fallen_gems_affixes:deadeye_leggings",
+  "set": "fallen_gems_affixes:deadeye",
+  "crit_damage_per_stack": 0.05,
+  "max_stacks": 5,
+  "stack_reset_delay_ticks": 60,
+  "consume_bonus_per_stack": 0.08,
+  "four_piece_max_focus_bonus": 2,
+  "four_piece_cooldown_reduction_ticks": 20,
+  "four_piece_mark_damage_bonus": 0.20
+}

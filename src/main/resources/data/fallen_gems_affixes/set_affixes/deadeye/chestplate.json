@@ -1,0 +1,12 @@
+{
+  "type": "fallen_gems_affixes:deadeye_chestplate",
+  "set": "fallen_gems_affixes:deadeye",
+  "max_focus": 10,
+  "focus_per_hit": 1,
+  "big_hit_health_threshold": 0.15,
+  "big_hit_bonus_focus": 1,
+  "arrow_damage_per_focus": 0.02,
+  "focus_decay_delay_ticks": 90,
+  "two_piece_arrow_damage_per_focus": 0.015,
+  "two_piece_arrow_velocity_per_focus": 0.02
+}
