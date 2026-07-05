@@ -47,22 +47,14 @@ public class GenesisEventHandler {
         boolean isApoth     = data.contains("apoth.boss") || data.contains("apoth.miniboss");
         boolean isUniversal = data.contains("fga.universal_boss");
 
-        if (isApoth) {
-            String rarity = extractRarity(data, "apoth.rarity");
-            if (rarity == null) return null;
-            return SOURCE_APOTH + ":" + rarity;
-        }
-
-        if (isUniversal) {
-            String rarity = extractRarity(data, "fga.universal_boss.rarity");
-            if (rarity == null) return null;
-            return SOURCE_UNIVERSAL + ":" + rarity;
+        if (isApoth && !isUniversal) {
+            return extractRarity(data, "apoth.rarity");
         }
 
         if (entity.getType().is(BOSS_TAG)) {
             ResourceLocation entityType = EntityType.getKey(entity.getType());
             if (entityType == null) return null;
-            return "tag:" + entityType;
+            return entityType.toString();
         }
 
         return null;
@@ -72,8 +64,7 @@ public class GenesisEventHandler {
         if (!data.contains(nbtKey)) return null;
         String raw = data.getString(nbtKey).trim();
         if (raw.isEmpty()) return null;
-        int colon = raw.indexOf(':');
-        return colon >= 0 ? raw.substring(colon + 1) : raw;
+        return raw;
     }
 
     private static void tryApplyGenesis(ItemStack stack, String dedupKey) {

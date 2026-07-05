@@ -26,6 +26,7 @@ public class ModConfig {
     public static final ForgeConfigSpec.IntValue EXTRA_SOCKETS;
     public static final ForgeConfigSpec.EnumValue<TieredSocketMode> TIERED_SOCKET_MODE;
     public static final ForgeConfigSpec.DoubleValue FABLED_AUGMENT_DROP_CHANCE;
+    public static final ForgeConfigSpec.BooleanValue STRICT_UNIVERSAL_BOSS_ENCHANT_DROP;
 
     static {
         BUILDER.push("Mod Config");
@@ -109,6 +110,11 @@ public class ModConfig {
         FABLED_AUGMENT_DROP_CHANCE = BUILDER
                 .comment("Chance for a Fabled universal boss to drop a random Augment on death (0.0 = never, 1.0 = always)")
                 .defineInRange("fabledAugmentDropChance", 0.05, 0.0, 1.0);
+
+        STRICT_UNIVERSAL_BOSS_ENCHANT_DROP = BUILDER
+                .comment("Use vanilla check for enchanting book drops, unobtainable books / treasure books will be excluded",
+                         "If you want more fine-grained control, see data file located at data/fallen_gems_affixes/loot_modifiers/universal_boss_loot.json")
+                .define("strictUniversalBoosEnchantDrop", false);
 
         IRONS_ITEMS_MAP = BUILDER
                 .comment("Map of item Resource Locations to School Type IDs for Adaptive Spell Power Affixes")

@@ -1,7 +1,6 @@
 package net.kayn.fallen_gems_affixes.fallen.patch;
 
 import dev.shadowsoffire.apotheosis.adventure.socket.gem.bonus.GemBonus;
-import net.kayn.fallen_gems_affixes.FallenGemsAffixes;
 import net.kayn.fallen_gems_affixes.augment.GemBonusModifier;
 import net.rtxyd.fallen.lib.api.IFallenPatch;
 import net.rtxyd.fallen.lib.api.annotation.FallenPatch;
@@ -14,6 +13,8 @@ import net.rtxyd.fallen.lib.util.PatchUtil;
 import net.rtxyd.fallen.lib.util.patch.InserterKey;
 import net.rtxyd.fallen.lib.util.patch.InserterMethodData;
 import net.rtxyd.fallen.lib.util.patch.InserterType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
@@ -31,6 +32,8 @@ import java.util.List;
 public class GemPowerPatch implements IFallenPatch {
     private final IPatchDescriptor desc;
     public final List<String> patchedTargets = new ArrayList<>();
+    // use independent logger to avoid class loading
+    public final Logger logger = LogManager.getLogger("FallenGemsAffixes");
 
     public GemPowerPatch(IFallenPatchCtorContext iFallenPatchCtorContext) {
         desc = iFallenPatchCtorContext.currentPatch();
@@ -40,7 +43,7 @@ public class GemPowerPatch implements IFallenPatch {
     public void apply(IFallenPatchContext iFallenPatchContext) {
         if (!(iFallenPatchContext instanceof DefaultPatchContext ct)) return;
         ClassNode cn = ct.getClassNode();
-        FallenGemsAffixes.LOGGER.debug("Starting patch operation for {}. Current patch number {}", cn.name, patchedTargets.size());
+        logger.debug("Starting patch operation for {}. Current patch number {}", cn.name, patchedTargets.size());
         InserterMethodData hookMethod = iFallenPatchContext.getFallenInserter(
                 InserterKey.of("net.kayn.fallen_gems_affixes.augment.GemBonusModifier",
                         "modifier",
@@ -53,7 +56,7 @@ public class GemPowerPatch implements IFallenPatch {
             if (PatchUtil.isRecord(cn)
                     && PatchUtil.isCtor(method)
                     && !PatchUtil.isCleanRecordCtor(method, cn)) {
-                FallenGemsAffixes.LOGGER.debug("Record is not clean, please check the risky class {}", cn.name);
+                logger.debug("Record is not clean, please check the risky class {}", cn.name);
             }
             // only patches like Map.get(key), or Map.getOrDefault(key),
             // and there are other cases, but will be strictly filtered.

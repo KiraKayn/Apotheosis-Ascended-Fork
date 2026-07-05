@@ -26,7 +26,7 @@ public class TricksterEntities {
                             .sized(0.6F, 1.8F)
                             .clientTrackingRange(64)
                             .updateInterval(1)
-                            .build(null));
+                            .build("shadow_clone"));
 
     public static final ModelLayerLocation SHADOW_CLONE_LAYER =
             new ModelLayerLocation(FallenGemsAffixes.id("shadow_clone"), "main");

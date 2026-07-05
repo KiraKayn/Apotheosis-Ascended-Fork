@@ -137,8 +137,12 @@ public class UniversalBossLootModifier extends LootModifier {
     private static ItemStack rollEnchantedBook(LootContext ctx, Set<ResourceLocation> blacklist) {
         List<Enchantment> enchants = new ArrayList<>(ForgeRegistries.ENCHANTMENTS.getValues());
         Collections.shuffle(enchants, new java.util.Random(ctx.getRandom().nextLong()));
+        boolean strict = ModConfig.STRICT_UNIVERSAL_BOSS_ENCHANT_DROP.get();
         for (Enchantment ench : enchants) {
             if (ench.isCurse()) continue;
+            if (strict) {
+                if (!ench.isAllowedOnBooks() || !ench.isDiscoverable() || ench.isTreasureOnly()) continue;
+            }
             ResourceLocation enchId = ForgeRegistries.ENCHANTMENTS.getKey(ench);
             if (enchId != null && blacklist.contains(enchId)) continue;
             int maxLevel = ench.getMaxLevel();
