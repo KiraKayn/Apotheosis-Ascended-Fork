@@ -1,4 +1,4 @@
-package net.kayn.fallen_gems_affixes.compat;
+package net.kayn.fallen_gems_affixes.compat.celestisynth;
 
 import net.kayn.fallen_gems_affixes.config.ModConfig;
 import net.minecraft.resources.ResourceLocation;
@@ -13,18 +13,14 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class PoltergeistSpellPowerPatch {
+public class RainfallSpellPowerPatch {
 
     private static final boolean HAS_CELESTISYNTH = ModList.get().isLoaded("celestisynth");
     private static final boolean HAS_IRONS = ModList.get().isLoaded("irons_spellbooks");
 
-    private static final ResourceLocation ELDRITCH_SPELL_POWER_ID = ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "eldritch_spell_power");
-    private static final ResourceLocation POLTERGEIST_ID = ResourceLocation.fromNamespaceAndPath("celestisynth", "poltergeist");
-
-    private static final Lazy<Attribute> ELDRITCH_SPELL_POWER = Lazy.of(() -> {
-        if (!HAS_IRONS) return null;
-        return ForgeRegistries.ATTRIBUTES.getValue(ELDRITCH_SPELL_POWER_ID);
-    });
+    private static final ResourceLocation RAINFALL_SERENITY_ID = ResourceLocation.fromNamespaceAndPath("celestisynth", "rainfall_serenity");
+    private static final ResourceLocation LIGHTNING_SPELL_POWER_ID = ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "lightning_spell_power");
+    private static final Lazy<Attribute> LIGHTNING_SPELL_POWER = Lazy.of(() -> HAS_IRONS ? ForgeRegistries.ATTRIBUTES.getValue(LIGHTNING_SPELL_POWER_ID) : null);
 
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
@@ -35,9 +31,9 @@ public class PoltergeistSpellPowerPatch {
         if (!(source.getEntity() instanceof Player player)) return;
 
         ItemStack held = player.getMainHandItem();
-        if (!held.is(ForgeRegistries.ITEMS.getValue(POLTERGEIST_ID))) return;
+        if (!held.is(ForgeRegistries.ITEMS.getValue(RAINFALL_SERENITY_ID))) return;
 
-        Attribute attr = ELDRITCH_SPELL_POWER.get();
+        Attribute attr = LIGHTNING_SPELL_POWER.get();
         if (attr == null) return;
 
         AttributeInstance instance = player.getAttribute(attr);
@@ -46,8 +42,6 @@ public class PoltergeistSpellPowerPatch {
         double value = instance.getValue();
         if (value <= 0) return;
 
-        float original = event.getAmount();
-        float scaled = original + (original * (float) value);
-        event.setAmount(scaled);
+        event.setAmount(event.getAmount() + (event.getAmount() * (float) value));
     }
 }
