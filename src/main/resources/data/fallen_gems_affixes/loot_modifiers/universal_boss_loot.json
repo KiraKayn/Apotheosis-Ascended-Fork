@@ -12,6 +12,12 @@
         "chance": 0.25,
         "min_count": 1,
         "max_count": 2
+      },
+      {
+      "item": "apotheosis:common_material",
+      "chance": 0.15,
+      "min_count": 1,
+      "max_count": 2
       }
     ],
     "uncommon": [
@@ -19,7 +25,13 @@
         "item": "apotheosis:gem_dust",
         "chance": 0.25,
         "min_count": 1,
-        "max_count": 3
+        "max_count": 3,
+      },
+      {
+        "item": "apotheosis:uncommon_material",
+        "chance": 0.15,
+        "min_count": 1,
+        "max_count": 2
       }
     ],
     "rare": [
@@ -27,7 +39,13 @@
         "item": "apotheosis:gem_dust",
         "chance": 0.25,
         "min_count": 2,
-        "max_count": 4
+        "max_count": 4,
+      },
+      {
+        "item": "apotheosis:rare_material",
+        "chance": 0.15,
+        "min_count": 1,
+        "max_count": 2
       }
     ],
     "epic": [
@@ -35,7 +53,13 @@
         "item": "apotheosis:gem_dust",
         "chance": 0.25,
         "min_count": 2,
-        "max_count": 5
+        "max_count": 5,
+      },
+      {
+        "item": "apotheosis:epic_material",
+        "chance": 0.15,
+        "min_count": 1,
+        "max_count": 2
       }
     ],
     "mythic": [
@@ -43,7 +67,13 @@
         "item": "apotheosis:gem_dust",
         "chance": 0.25,
         "min_count": 3,
-        "max_count": 6
+        "max_count": 6,
+      },
+      {
+        "item": "apotheosis:mythic_material",
+        "chance": 0.15,
+        "min_count": 1,
+        "max_count": 2
       }
     ],
     "ancient": [
@@ -51,7 +81,21 @@
         "item": "apotheosis:gem_dust",
         "chance": 0.25,
         "min_count": 4,
-        "max_count": 8
+        "max_count": 8,
+      },
+      {
+        "item": "apotheosis:ancient_material",
+        "chance": 0.15,
+        "min_count": 1,
+        "max_count": 2
+      }
+    ],
+    "fabled": [
+      {
+        "item": "fallen_gems_affixes:fabled_material",
+        "chance": 0.15,
+        "min_count": 1,
+        "max_count": 2
       }
     ]
   }
