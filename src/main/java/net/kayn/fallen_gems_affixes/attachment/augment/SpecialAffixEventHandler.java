@@ -45,8 +45,8 @@ public class SpecialAffixEventHandler {
         ToModifyAffixes toModifyAffixes = getToModifyAffixes(stack);
         if (toModifyAffixes == ToModifyAffixes.EMPTY) return;
         var augs = AugmentHelper.getAugments(stack);
-        if (toModifyAffixes.getFactor() != augs) {
-            toModifyAffixes = getToModifyAffixesManualRefresh(stack, toModifyAffixes.getInput(), augs);
+        if (toModifyAffixes.getFactor() != augs || toModifyAffixes.getInput() != event.getAffixesView()) {
+            toModifyAffixes = getToModifyAffixesManualRefresh(stack, event.getAffixesView(), augs);
         }
         event.setTransientAffixes(toModifyAffixes.getOutput());
     }
