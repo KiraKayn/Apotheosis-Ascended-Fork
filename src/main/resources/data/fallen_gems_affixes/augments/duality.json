@@ -4,10 +4,21 @@
     "texture": "fallen_gems_affixes:textures/item/augments/duality.png",
     "categories": [
       "sword",
-      "heavy_weapon",
-      "staffs",
-      "celestial_melee",
-      "celestial_ranged"
+      "heavy_weapon"
+    ],
+    "con_cat": [
+      {
+        "modid": "irons_spellbooks",
+        "category": "staffs"
+      },
+      {
+        "modid": "celestisynth",
+        "category": "celestial_melee"
+      },
+      {
+        "modid": "celestisynth",
+        "category": "celestial_ranged"
+      }
     ]
   },
   "inner_data": {
