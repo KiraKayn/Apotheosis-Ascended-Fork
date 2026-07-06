@@ -72,9 +72,12 @@ public class AugmentMeta implements ICodecProvider<AugmentMeta> {
                 P3.apply(inst, (texture, categories, conCategories) -> {
                     AugmentGeneral general = new AugmentGeneral();
                     general.texture = texture;
-                    ConditionalLootCategory.addAll(conCategories, categories);
+
+                    Set<LootCategory> mutableCategories = new java.util.HashSet<>(categories);
+                    ConditionalLootCategory.addAll(conCategories, mutableCategories);
+
                     general.conCat = conCategories;
-                    general.categories = Collections.unmodifiableSet(categories);
+                    general.categories = Collections.unmodifiableSet(mutableCategories);
                     return general;
                 }));
 
