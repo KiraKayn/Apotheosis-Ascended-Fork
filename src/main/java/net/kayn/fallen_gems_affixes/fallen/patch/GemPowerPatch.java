@@ -44,7 +44,7 @@ public class GemPowerPatch implements IFallenPatch {
         if (!(iFallenPatchContext instanceof DefaultPatchContext ct)) return;
         ClassNode cn = ct.getClassNode();
         logger.debug("Starting patch operation for {}. Current patch number {}", cn.name, patchedTargets.size());
-        InserterMethodData hookMethod = iFallenPatchContext.getFallenInserter(
+        InserterMethodData hookMethod = iFallenPatchContext.getInserterMethodData(
                 InserterKey.of("net.kayn.fallen_gems_affixes.augment.GemBonusModifier",
                         "modifier",
                         InserterType.STANDARD));

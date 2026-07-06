@@ -50,7 +50,7 @@ public class GemBonusModifier {
                 String name = s.toLowerCase();
                 if (name.startsWith("cool") || name.endsWith("cool")) return true;
                 return name.startsWith("cost") || name.endsWith("cost");
-            });
+            }, 1);
         }
         eventBus.addListener(EventPriority.HIGHEST, GemBonusModifier::onTooltipEvent);
     }
