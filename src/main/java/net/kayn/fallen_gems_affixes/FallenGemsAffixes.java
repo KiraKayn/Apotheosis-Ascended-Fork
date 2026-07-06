@@ -31,7 +31,7 @@ import net.kayn.fallen_gems_affixes.augment.GemBonusModifier;
 import net.kayn.fallen_gems_affixes.augment.GenesisEventHandler;
 import net.kayn.fallen_gems_affixes.color.FabledColor;
 import net.kayn.fallen_gems_affixes.commands.ModCommands;
-import net.kayn.fallen_gems_affixes.compat.*;
+import net.kayn.fallen_gems_affixes.compat.celestisynth.*;
 import net.kayn.fallen_gems_affixes.config.ModConfig;
 import net.kayn.fallen_gems_affixes.event.*;
 import net.kayn.fallen_gems_affixes.init.loot.ModLootModifier;

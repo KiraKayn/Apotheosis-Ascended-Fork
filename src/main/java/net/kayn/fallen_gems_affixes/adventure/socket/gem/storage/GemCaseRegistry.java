@@ -36,7 +36,7 @@ public final class GemCaseRegistry {
             () -> new GemCaseBlock(GemCaseTile.BasicGemCaseTile::new,
                     BlockBehaviour.Properties.of()
                             .requiresCorrectToolForDrops()
-                            .strength(5, 1200F)
+                            .strength(2.5F, 1200F)
                             .sound(SoundType.GLASS)
                             .noOcclusion()
                             .lightLevel(s -> 2),
@@ -46,7 +46,7 @@ public final class GemCaseRegistry {
             () -> new GemCaseBlock(GemCaseTile.EnderGemCaseTile::new,
                     BlockBehaviour.Properties.of()
                             .requiresCorrectToolForDrops()
-                            .strength(5, 1200F)
+                            .strength(2.5F, 1200F)
                             .sound(SoundType.GLASS)
                             .noOcclusion()
                             .lightLevel(s -> 2),

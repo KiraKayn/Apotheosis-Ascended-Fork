@@ -1,4 +1,4 @@
-package net.kayn.fallen_gems_affixes.compat;
+package net.kayn.fallen_gems_affixes.compat.celestisynth;
 
 import net.kayn.fallen_gems_affixes.config.ModConfig;
 import net.minecraft.resources.ResourceLocation;
@@ -13,14 +13,14 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class SolarisSpellPowerPatch {
+public class KeresSpellPowerPatch {
 
     private static final boolean HAS_CELESTISYNTH = ModList.get().isLoaded("celestisynth");
     private static final boolean HAS_IRONS = ModList.get().isLoaded("irons_spellbooks");
 
-    private static final ResourceLocation SOLARIS_ID = ResourceLocation.fromNamespaceAndPath("celestisynth", "solaris");
-    private static final ResourceLocation FIRE_SPELL_POWER_ID = ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "fire_spell_power");
-    private static final Lazy<Attribute> FIRE_SPELL_POWER = Lazy.of(() -> HAS_IRONS ? ForgeRegistries.ATTRIBUTES.getValue(FIRE_SPELL_POWER_ID) : null);
+    private static final ResourceLocation KERES_ID = ResourceLocation.fromNamespaceAndPath("celestisynth", "keres");
+    private static final ResourceLocation BLOOD_SPELL_POWER_ID = ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "blood_spell_power");
+    private static final Lazy<Attribute> BLOOD_SPELL_POWER = Lazy.of(() -> HAS_IRONS ? ForgeRegistries.ATTRIBUTES.getValue(BLOOD_SPELL_POWER_ID) : null);
 
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
@@ -31,9 +31,9 @@ public class SolarisSpellPowerPatch {
         if (!(source.getEntity() instanceof Player player)) return;
 
         ItemStack held = player.getMainHandItem();
-        if (!held.is(ForgeRegistries.ITEMS.getValue(SOLARIS_ID))) return;
+        if (!held.is(ForgeRegistries.ITEMS.getValue(KERES_ID))) return;
 
-        Attribute attr = FIRE_SPELL_POWER.get();
+        Attribute attr = BLOOD_SPELL_POWER.get();
         if (attr == null) return;
 
         AttributeInstance instance = player.getAttribute(attr);

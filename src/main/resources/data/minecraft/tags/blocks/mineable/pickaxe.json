@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "fallen_gems_affixes:gem_case"
+    },
+    {
+      "id": "fallen_gems_affixes:ender_gem_case"
+    },
+    {
+      "id": "fallen_gems_affixes:fabled_reforging_table"
+    }
+  ]
+}

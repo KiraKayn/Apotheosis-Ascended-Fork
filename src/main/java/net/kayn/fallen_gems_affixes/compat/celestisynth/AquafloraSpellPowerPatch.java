@@ -1,4 +1,4 @@
-package net.kayn.fallen_gems_affixes.compat;
+package net.kayn.fallen_gems_affixes.compat.celestisynth;
 
 import net.kayn.fallen_gems_affixes.config.ModConfig;
 import net.minecraft.resources.ResourceLocation;
@@ -13,14 +13,17 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class KeresSpellPowerPatch {
+public class AquafloraSpellPowerPatch {
 
     private static final boolean HAS_CELESTISYNTH = ModList.get().isLoaded("celestisynth");
     private static final boolean HAS_IRONS = ModList.get().isLoaded("irons_spellbooks");
 
-    private static final ResourceLocation KERES_ID = ResourceLocation.fromNamespaceAndPath("celestisynth", "keres");
-    private static final ResourceLocation BLOOD_SPELL_POWER_ID = ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "blood_spell_power");
-    private static final Lazy<Attribute> BLOOD_SPELL_POWER = Lazy.of(() -> HAS_IRONS ? ForgeRegistries.ATTRIBUTES.getValue(BLOOD_SPELL_POWER_ID) : null);
+    private static final ResourceLocation AQUAFLORA_ID = ResourceLocation.fromNamespaceAndPath("celestisynth", "aquaflora");
+    private static final ResourceLocation NATURE_SPELL_POWER_ID = ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "nature_spell_power");
+    private static final Lazy<Attribute> NATURE_SPELL_POWER = Lazy.of(() -> {
+        if (!HAS_IRONS) return null;
+        return ForgeRegistries.ATTRIBUTES.getValue(NATURE_SPELL_POWER_ID);
+    });
 
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
@@ -31,9 +34,9 @@ public class KeresSpellPowerPatch {
         if (!(source.getEntity() instanceof Player player)) return;
 
         ItemStack held = player.getMainHandItem();
-        if (!held.is(ForgeRegistries.ITEMS.getValue(KERES_ID))) return;
+        if (!held.is(ForgeRegistries.ITEMS.getValue(AQUAFLORA_ID))) return;
 
-        Attribute attr = BLOOD_SPELL_POWER.get();
+        Attribute attr = NATURE_SPELL_POWER.get();
         if (attr == null) return;
 
         AttributeInstance instance = player.getAttribute(attr);

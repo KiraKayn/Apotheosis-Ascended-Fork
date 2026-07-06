@@ -39,7 +39,7 @@ public class FabledReforging {
                     new FabledReforgingTableBlock(
                             BlockBehaviour.Properties.of()
                                     .mapColor(MapColor.COLOR_PURPLE)
-                                    .strength(4.0F, 1000.0F)
+                                    .strength(2.5F, 1200F)
                                     .sound(SoundType.METAL)
                                     .requiresCorrectToolForDrops(),
                             5)

@@ -1,4 +1,4 @@
-package net.kayn.fallen_gems_affixes.compat;
+package net.kayn.fallen_gems_affixes.compat.celestisynth;
 
 import net.kayn.fallen_gems_affixes.config.ModConfig;
 import net.minecraft.resources.ResourceLocation;
@@ -13,27 +13,27 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class FrostboundSpellPowerPatch {
+public class CrescentiaSpellPowerPatch {
 
-    private static final boolean HAS_IRONS = ModList.get().isLoaded("irons_spellbooks");
     private static final boolean HAS_CELESTISYNTH = ModList.get().isLoaded("celestisynth");
+    private static final boolean HAS_IRONS = ModList.get().isLoaded("irons_spellbooks");
 
-    private static final ResourceLocation FROSTBOUND_ID = ResourceLocation.fromNamespaceAndPath("celestisynth", "frostbound");
-    private static final ResourceLocation ICE_SPELL_POWER_ID = ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "ice_spell_power");
-    private static final Lazy<Attribute> ICE_SPELL_POWER = Lazy.of(() -> HAS_IRONS ? ForgeRegistries.ATTRIBUTES.getValue(ICE_SPELL_POWER_ID) : null);
+    private static final ResourceLocation CRESCENTIA_ID = ResourceLocation.fromNamespaceAndPath("celestisynth", "crescentia");
+    private static final ResourceLocation ENDER_SPELL_POWER_ID = ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "ender_spell_power");
+    private static final Lazy<Attribute> ENDER_SPELL_POWER = Lazy.of(() -> HAS_IRONS ? ForgeRegistries.ATTRIBUTES.getValue(ENDER_SPELL_POWER_ID) : null);
 
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
         if (!ModConfig.ENABLE_SPELL_POWER_PATCH.get()) return;
-        if (!HAS_IRONS || !HAS_CELESTISYNTH) return;
+        if (!HAS_CELESTISYNTH || !HAS_IRONS) return;
 
         DamageSource source = event.getSource();
         if (!(source.getEntity() instanceof Player player)) return;
 
         ItemStack held = player.getMainHandItem();
-        if (!held.is(ForgeRegistries.ITEMS.getValue(FROSTBOUND_ID))) return;
+        if (!held.is(ForgeRegistries.ITEMS.getValue(CRESCENTIA_ID))) return;
 
-        Attribute attr = ICE_SPELL_POWER.get();
+        Attribute attr = ENDER_SPELL_POWER.get();
         if (attr == null) return;
 
         AttributeInstance instance = player.getAttribute(attr);
