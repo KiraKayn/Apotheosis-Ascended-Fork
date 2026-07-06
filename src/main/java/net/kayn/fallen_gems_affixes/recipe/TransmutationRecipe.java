@@ -4,6 +4,8 @@ import dev.shadowsoffire.apotheosis.adventure.affix.AffixHelper;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootCategory;
 import dev.shadowsoffire.apotheosis.adventure.socket.SocketHelper;
 import net.kayn.fallen_gems_affixes.Fallen;
+import net.kayn.fallen_gems_affixes.attachment.augment.AugmentHelper;
+import net.kayn.fallen_gems_affixes.event.FallenEventHandler;
 import net.kayn.fallen_gems_affixes.registry.ModItems;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -29,19 +31,14 @@ public class TransmutationRecipe extends SmithingTransformRecipe {
 
     private static final ResourceLocation ID = ResourceLocation.parse("fallen_gems_affixes:transmutation");
 
-    private static Ingredient buildGearIngredient() {
-        List<Item> gear = new ArrayList<>();
-        for (Item item : ForgeRegistries.ITEMS.getValues()) {
-            ItemStack s = new ItemStack(item);
-            if (!LootCategory.forItem(s).isNone()) {
-                gear.add(item);
-            }
-        }
-        return gear.isEmpty() ? Ingredient.EMPTY : Ingredient.of(gear.toArray(new Item[0]));
+    public TransmutationRecipe() {
+        super(ID, Ingredient.of(ModItems.SIGIL_OF_TRANSMUTATION.get()), Ingredient.EMPTY, Ingredient.EMPTY, ItemStack.EMPTY);
     }
 
-    public TransmutationRecipe() {
-        super(ID, Ingredient.of(ModItems.SIGIL_OF_TRANSMUTATION.get()), buildGearIngredient(), buildGearIngredient(), ItemStack.EMPTY);
+
+    @Override
+    public boolean isAdditionIngredient(ItemStack pStack) {
+        return !pStack.isEmpty();
     }
 
     @Override
@@ -58,16 +55,17 @@ public class TransmutationRecipe extends SmithingTransformRecipe {
         LootCategory srcCat = LootCategory.forItem(source);
         if (baseCat.isNone() || srcCat.isNone() || baseCat != srcCat) return false;
 
+        if (FallenEventHandler.isAffixCombined(base) || FallenEventHandler.isAffixCombined(source))   return false;
+
         if (AffixHelper.hasAffixes(base)) return false;
-        if (SocketHelper.getSockets(base) > 0) return false;
-        if (base.getTagElement(AffixHelper.AFFIX_DATA) != null) return false;
-        if (base.getTag() != null && base.getTag().contains(Fallen.AugmentMisc.AUGMENT_DATA)) return false;
+        if (!SocketHelper.getGems(base).isEmpty()) return false;
+        if (!AugmentHelper.getAugments(base).isEmpty()) return false;
 
         boolean hasAffixes = AffixHelper.hasAffixes(source);
-        boolean hasSockets = SocketHelper.getSockets(source) > 0;
-        boolean hasAugments = source.getTagElement(Fallen.AugmentMisc.AUGMENT_DATA) != null;
-
-        return hasAffixes || hasSockets || hasAugments;
+        if (hasAffixes) return true;
+        boolean hasGems = !SocketHelper.getGems(source).isEmpty();
+        if (hasGems) return true;
+        return AugmentHelper.hasAugments(base);
     }
 
     @Override
@@ -78,22 +76,19 @@ public class TransmutationRecipe extends SmithingTransformRecipe {
         ItemStack result = base.copy();
         result.setCount(1);
 
-        CompoundTag srcAffix = source.getTagElement(AffixHelper.AFFIX_DATA);
-        if (srcAffix != null) {
-            result.getOrCreateTag().put(AffixHelper.AFFIX_DATA, srcAffix.copy());
-        }
+        CompoundTag srcTag = source.getTag();
+        if (srcTag == null) return result;
+        CompoundTag resultTag = result.getOrCreateTag();
 
-        CompoundTag srcAugmentRoot = source.getTagElement(Fallen.AugmentMisc.AUGMENT_DATA);
-        if (srcAugmentRoot != null) {
-            CompoundTag newAugmentRoot = srcAugmentRoot.copy();
-            ListTag augments = newAugmentRoot.getList(Fallen.AugmentMisc.AUGMENTS, Tag.TAG_COMPOUND);
-            for (int i = 0; i < augments.size(); i++) {
-                CompoundTag augTag = augments.getCompound(i);
-                augTag.putUUID(Fallen.AugmentMisc.UNIQUE_ID, UUID.randomUUID());
-            }
-            result.getOrCreateTag().put(Fallen.AugmentMisc.AUGMENT_DATA, newAugmentRoot);
-        }
+        CompoundTag srcAffix = srcTag.getCompound(AffixHelper.AFFIX_DATA);
 
+        resultTag.put(AffixHelper.AFFIX_DATA, srcAffix.copy());
+
+        CompoundTag srcAugmentRoot = srcTag.getCompound(Fallen.AugmentMisc.AUGMENT_DATA);
+        CompoundTag newAugmentRoot = srcAugmentRoot.copy();
+        resultTag.put(Fallen.AugmentMisc.AUGMENT_DATA, newAugmentRoot);
+        resultTag.put(ErasureRecipe.TAG_SCROLL_AFFIXES, srcTag.getList(ErasureRecipe.TAG_SCROLL_AFFIXES, CompoundTag.TAG_STRING));
+        resultTag.putInt(ErasureRecipe.TAG_SCROLL_SLOTS_USED, srcTag.getInt(ErasureRecipe.TAG_SCROLL_SLOTS_USED));
         return result;
     }
 

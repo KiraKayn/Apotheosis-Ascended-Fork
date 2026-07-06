@@ -2,7 +2,6 @@ package net.kayn.fallen_gems_affixes.event;
 
 import dev.shadowsoffire.apotheosis.adventure.affix.Affix;
 import dev.shadowsoffire.apotheosis.adventure.affix.AffixHelper;
-import dev.shadowsoffire.apotheosis.adventure.affix.AffixInstance;
 import dev.shadowsoffire.apotheosis.adventure.affix.AffixRegistry;
 import dev.shadowsoffire.apotheosis.adventure.event.GetItemSocketsEvent;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootCategory;
@@ -12,15 +11,10 @@ import dev.shadowsoffire.placebo.reload.DynamicHolder;
 import net.kayn.fallen_gems_affixes.Fallen;
 import net.kayn.fallen_gems_affixes.adventure.affix.SocketBonusAffix;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.rtxyd.fallen.lib.runtime.forgemod.util.ItemStackCakyHandler;
 import net.rtxyd.fallen.lib.runtime.forgemod.util.NBTFingerprints;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import static dev.shadowsoffire.apotheosis.adventure.affix.AffixHelper.*;
 
@@ -31,11 +25,20 @@ public class FallenEventHandler {
         ItemStack stack = event.getStack();
         if (stack.isEmpty()) return;
         if (!AffixHelper.hasAffixes(stack)) return;
-        event.setSockets(event.getSockets() + getAdditionalSockets(stack));
+        event.setSockets(event.getSockets() + getAdditionalSocketsByAffix(stack));
     }
 
-    public static int getAdditionalSockets(ItemStack stack) {
+    public static int getAdditionalSocketsByAffix(ItemStack stack) {
         return ItemStackCakyHandler.resolve(stack, Fallen.AugmentMisc.ADDITIONAL_SOCKET_AFFIX_CACHE, FallenEventHandler::getAdditionalSocketsA, NBTFingerprints.subTag(AFFIX_DATA));
+    }
+
+    public static int getPureSockets(ItemStack stack) {
+        CompoundTag afxData = stack.getTagElement("affix_data");
+        return afxData != null ? afxData.getInt("sockets") : 0;
+    }
+
+    public static boolean isAffixCombined(ItemStack stack) {
+        return stack.getTag() != null && stack.getTag().contains(Fallen.AugmentMisc.AFFIX_COMBINED);
     }
 
     private static int getAdditionalSocketsA(ItemStack stack) {

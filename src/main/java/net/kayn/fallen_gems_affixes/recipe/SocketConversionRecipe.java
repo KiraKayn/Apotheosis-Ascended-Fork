@@ -3,6 +3,7 @@ package net.kayn.fallen_gems_affixes.recipe;
 import net.kayn.fallen_gems_affixes.Fallen;
 import net.kayn.fallen_gems_affixes.adventure.socket.TieredSocketHelper;
 import net.kayn.fallen_gems_affixes.attachment.augment.AugmentSlotHelper;
+import net.kayn.fallen_gems_affixes.event.FallenEventHandler;
 import net.kayn.fallen_gems_affixes.registry.ModItems;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -37,6 +38,8 @@ public class SocketConversionRecipe extends SmithingTransformRecipe {
         if (!sigil.is(ModItems.SIGIL_OF_ASCENSION.get())) return false;
 
         if (!TieredSocketHelper.hasEmptyRegularSocket(base)) return false;
+
+        if (FallenEventHandler.isAffixCombined(base))   return false;
 
         return AugmentSlotHelper.canAddMoreSlots(base);
     }

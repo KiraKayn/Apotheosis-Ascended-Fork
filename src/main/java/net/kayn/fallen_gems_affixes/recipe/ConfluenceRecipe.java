@@ -4,15 +4,23 @@ import dev.shadowsoffire.apotheosis.adventure.affix.AffixHelper;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootCategory;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
 import dev.shadowsoffire.apotheosis.adventure.socket.SocketHelper;
+import dev.shadowsoffire.apotheosis.adventure.socket.gem.Gem;
+import dev.shadowsoffire.apotheosis.adventure.socket.gem.GemRegistry;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
 import net.kayn.fallen_gems_affixes.Fallen;
+import net.kayn.fallen_gems_affixes.adventure.affix.SocketBonusAffix;
+import net.kayn.fallen_gems_affixes.attachment.augment.AugmentHelper;
+import net.kayn.fallen_gems_affixes.config.ModConfig;
+import net.kayn.fallen_gems_affixes.event.FallenEventHandler;
 import net.kayn.fallen_gems_affixes.registry.ModItems;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -20,32 +28,27 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmithingTransformRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ConfluenceRecipe extends SmithingTransformRecipe {
 
     private static final ResourceLocation ID = ResourceLocation.parse("fallen_gems_affixes:confluence");
 
-    private static Ingredient buildGearIngredient() {
-        List<Item> gear = new ArrayList<>();
-        for (Item item : ForgeRegistries.ITEMS.getValues()) {
-            ItemStack s = new ItemStack(item);
-            if (!LootCategory.forItem(s).isNone()) {
-                gear.add(item);
-            }
-        }
-        return gear.isEmpty() ? Ingredient.EMPTY : Ingredient.of(gear.toArray(new Item[0]));
-    }
 
     public ConfluenceRecipe() {
         super(ID,
                 Ingredient.of(ModItems.SIGIL_OF_CONFLUENCE.get()),
-                buildGearIngredient(),
-                buildGearIngredient(),
+                Ingredient.EMPTY,
+                Ingredient.EMPTY,
                 ItemStack.EMPTY);
+    }
+
+    @Override
+    public boolean isAdditionIngredient(ItemStack pStack) {
+        return !pStack.isEmpty();
     }
 
     @Override
@@ -66,17 +69,16 @@ public class ConfluenceRecipe extends SmithingTransformRecipe {
         if (!baseRarity.isBound() || !srcRarity.isBound()) return false;
         if (!baseRarity.getId().equals(srcRarity.getId())) return false;
 
-        if (base.getTag()   != null && base.getTag().contains(Fallen.AugmentMisc.AUGMENT_DATA))   return false;
-        if (source.getTag() != null && source.getTag().contains(Fallen.AugmentMisc.AUGMENT_DATA)) return false;
+        if (!AugmentHelper.getAugments(base).isEmpty())   return false;
+        if (!AugmentHelper.getAugments(source).isEmpty()) return false;
 
-        if (base.getTag()   != null && base.getTag().contains(Fallen.AugmentMisc.AFFIX_COMBINED))   return false;
-        if (source.getTag() != null && source.getTag().contains(Fallen.AugmentMisc.AFFIX_COMBINED)) return false;
+        if (FallenEventHandler.isAffixCombined(base) || FallenEventHandler.isAffixCombined(source))   return false;
 
         boolean baseHasAffixes = AffixHelper.hasAffixes(base);
+        if (baseHasAffixes) return true;
         boolean srcHasAffixes  = AffixHelper.hasAffixes(source);
-        boolean srcHasSockets  = SocketHelper.getSockets(source) > 0;
-
-        return baseHasAffixes || srcHasAffixes || srcHasSockets;
+        if (srcHasAffixes) return true;
+        return  !SocketHelper.getGems(source).isEmpty();
     }
 
     @Override
@@ -86,43 +88,114 @@ public class ConfluenceRecipe extends SmithingTransformRecipe {
 
         ItemStack result = base.copy();
         result.setCount(1);
+        CompoundTag baseTag = base.getTag();
+        CompoundTag srcTag = source.getTag();
+        if (baseTag == null || srcTag == null) return result;
+        CompoundTag resultTag = result.getOrCreateTag();
 
-        CompoundTag baseAffixData = base.getTagElement(AffixHelper.AFFIX_DATA);
-        CompoundTag srcAffixData  = source.getTagElement(AffixHelper.AFFIX_DATA);
+        CompoundTag baseAffixData = baseTag.getCompound(AffixHelper.AFFIX_DATA);
+        CompoundTag srcAffixData  = srcTag.getCompound(AffixHelper.AFFIX_DATA);
 
-        if (srcAffixData != null || baseAffixData != null) {
+        mergeAffixScrolls(baseTag, srcTag, resultTag);
 
-            CompoundTag mergedAffixData = srcAffixData != null
-                    ? srcAffixData.copy()
-                    : new CompoundTag();
-            if (baseAffixData != null && baseAffixData.contains(AffixHelper.AFFIXES, Tag.TAG_COMPOUND)) {
-                CompoundTag baseAffixes = baseAffixData.getCompound(AffixHelper.AFFIXES);
+        CompoundTag mergedAffixData = baseAffixData.copy();
 
-                CompoundTag mergedAffixes = mergedAffixData.contains(AffixHelper.AFFIXES, Tag.TAG_COMPOUND)
-                        ? mergedAffixData.getCompound(AffixHelper.AFFIXES).copy()
-                        : new CompoundTag();
+        mergedAffixData.put(AffixHelper.AFFIXES, mergeAffixes(srcAffixData, mergedAffixData));
 
-
-                for (String key : baseAffixes.getAllKeys()) {
-                    if (!mergedAffixes.contains(key)) {
-                        mergedAffixes.putFloat(key, baseAffixes.getFloat(key));
-                    }
-                }
-                mergedAffixData.put(AffixHelper.AFFIXES, mergedAffixes);
-            }
-
-            if (baseAffixData != null && baseAffixData.contains(AffixHelper.RARITY)) {
-                mergedAffixData.putString(AffixHelper.RARITY, baseAffixData.getString(AffixHelper.RARITY));
-            }
-
-            result.getOrCreateTag().put(AffixHelper.AFFIX_DATA, mergedAffixData);
+        if (baseAffixData.contains(AffixHelper.RARITY)) {
+            mergedAffixData.putString(AffixHelper.RARITY, baseAffixData.getString(AffixHelper.RARITY));
         }
 
-        result.getOrCreateTag().putBoolean(Fallen.AugmentMisc.AFFIX_COMBINED, true);
+        mergedAffixData.put(SocketHelper.GEMS, mergeGems(srcAffixData, mergedAffixData, SocketHelper.getSockets(base)));
 
-        result.getOrCreateTag().remove(Fallen.AugmentMisc.AUGMENT_DATA);
+        resultTag.put(AffixHelper.AFFIX_DATA, mergedAffixData);
+
+        resultTag.putBoolean(Fallen.AugmentMisc.AFFIX_COMBINED, true);
+
+        resultTag.remove(Fallen.AugmentMisc.AUGMENT_DATA);
 
         return result;
+    }
+
+    public void mergeAffixScrolls(CompoundTag baseTag, CompoundTag srcTag, CompoundTag resultTag) {
+        ListTag baseScrollAffixes = baseTag.getList(ErasureRecipe.TAG_SCROLL_AFFIXES, CompoundTag.TAG_STRING);
+        Set<String> affixesSet = baseScrollAffixes.stream().map(Tag::getAsString).collect(Collectors.toSet());
+        int baseScrollSlotsUsed = baseTag.getInt(ErasureRecipe.TAG_SCROLL_SLOTS_USED);
+        ListTag srcScrollAffixes = srcTag.getList(ErasureRecipe.TAG_SCROLL_AFFIXES, CompoundTag.TAG_STRING);
+        int maxSlots = ModConfig.MAX_SCROLL_SLOTS.get();
+
+        for (int i = 0; i < srcScrollAffixes.size(); i++) {
+            String affix = srcScrollAffixes.getString(i);
+            if (affixesSet.add(affix)) {
+                baseScrollSlotsUsed++;
+                if (baseScrollSlotsUsed >= maxSlots) {
+                    resultTag.putInt(ErasureRecipe.TAG_SCROLL_SLOTS_USED, baseScrollSlotsUsed);
+                    break;
+                }
+            }
+        }
+        ListTag newList = new ListTag();
+        for (String s : affixesSet) {
+            newList.add(StringTag.valueOf(s));
+        }
+        resultTag.put(ErasureRecipe.TAG_SCROLL_AFFIXES, newList);
+    }
+
+    public Tag mergeGems(CompoundTag srcAffixData, CompoundTag mergedAffixData, int sockets) {
+        if (srcAffixData != null && sockets > 0) {
+            ListTag mergedGems = mergedAffixData.getList(SocketHelper.GEMS, 10).copy();
+            ListTag srcGems = srcAffixData.getList(SocketHelper.GEMS, 10).copy();
+            boolean[] validSockets = new boolean[mergedGems.size()];
+            Arrays.fill(validSockets, false);
+            for (int i = 0; i < mergedGems.size(); i++) {
+                CompoundTag tag = mergedGems.getCompound(i);
+                if (tag.getCompound("tag").isEmpty()) {
+                    validSockets[i] = true;
+                }
+            }
+            for(Tag tag : srcGems) {
+                CompoundTag tag1 = ((CompoundTag) tag).getCompound("tag");
+                if (tag1.isEmpty()) continue;
+                ResourceLocation gemId = ResourceLocation.tryParse(tag1.getString("gem"));
+                if (gemId == null) continue;
+                Gem gem = GemRegistry.INSTANCE.getValue(gemId);
+                if (gem != null && gem.isUnique()) {
+                    for (int i = 0; i < validSockets.length; i++) {
+                        if (validSockets[i]) {
+                            mergedGems.set(i, tag);
+                            validSockets[i] = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            return mergedGems;
+        }
+        return new ListTag();
+    }
+
+    public Tag mergeAffixes(CompoundTag srcAffixData, CompoundTag mergedAffixData) {
+        if (srcAffixData != null && srcAffixData.contains(AffixHelper.AFFIXES, Tag.TAG_COMPOUND)) {
+            CompoundTag srcAffixes = srcAffixData.getCompound(AffixHelper.AFFIXES);
+            CompoundTag mergedAffixes = mergedAffixData.getCompound(AffixHelper.AFFIXES).copy();
+
+            for (String key : srcAffixes.getAllKeys()) {
+                if (!mergedAffixes.contains(key)) {
+                    mergedAffixes.putFloat(key, srcAffixes.getFloat(key));
+                } else {
+                    float value = mergedAffixes.getFloat(key);
+                    if (key.equals(SocketBonusAffix.ID.toString())) {
+                        mergedAffixes.putFloat(key, Mth.clamp(value + srcAffixes.getFloat(key) + 1, 0, 1.5f));
+                    } else {
+                        mergedAffixes.putFloat(key, Mth.clamp(value + srcAffixes.getFloat(key), 0, 1f));
+                    }
+                }
+            }
+            return mergedAffixes;
+        }
+
+
+        return new CompoundTag();
     }
 
     @Override

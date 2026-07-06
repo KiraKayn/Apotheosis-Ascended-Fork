@@ -137,7 +137,7 @@ public class AffixHelperMixin {
             }
         }
         var affixes1 = SpecialAffixEventHandler.getToModifyAffixes(stack);
-        var affixes2 = affixes1.output();
+        var affixes2 = affixes1.getOutput();
         for (AffixInstance value : affixes1.getInput().values()) {
             AffixInstance inst = affixes.get(value.affix());
             if (inst == null) continue;
