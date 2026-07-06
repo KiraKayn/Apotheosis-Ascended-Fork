@@ -17,7 +17,7 @@ import java.util.UUID;
 public class DualityCritModifierHandler {
     private static final UUID DUALITY_CRIT_BONUS_UUID = UUID.fromString("518354e7-2959-48b3-b809-f7d66f844a21");
     private static final UUID DUALITY_CRIT_REDUCTION_UUID = UUID.fromString("518354e7-2959-48b3-b809-f7d66f844a22");
-    @SubscribeEvent(priority = EventPriority.LOWEST)
+    @SubscribeEvent(priority = EventPriority.LOW)
     public void attributeModifier(ItemAttributeModifierEvent e) {
         ItemStack stack = e.getItemStack();
         if (e.getSlotType() != EquipmentSlot.MAINHAND) return;
@@ -27,7 +27,9 @@ public class DualityCritModifierHandler {
         if (inst != null) {
             double value = 0f;
             for (var am : e.getModifiers().get(ALObjects.Attributes.CRIT_CHANCE.get())) {
-                value += am.getAmount();
+                if (am.getOperation() == AttributeModifier.Operation.ADDITION) {
+                    value += am.getAmount();
+                }
             }
             DualityAugment.DualityData data = (DualityAugment.DualityData) inst.getData();
             float critChanceMultiplier = data.critChanceMultiplier;

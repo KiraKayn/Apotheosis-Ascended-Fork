@@ -25,6 +25,7 @@ import net.kayn.fallen_gems_affixes.adventure.socket.gem.storage.GemCaseRegistry
 import net.kayn.fallen_gems_affixes.attachment.augment.SpecialAffixEventHandler;
 import net.kayn.fallen_gems_affixes.attributes.AAAttributes;
 import net.kayn.fallen_gems_affixes.attributes.MaxHealthDamageHandler;
+import net.kayn.fallen_gems_affixes.augment.ItemAllStatsAugmentHandler;
 import net.kayn.fallen_gems_affixes.augment.DualityCritModifierHandler;
 import net.kayn.fallen_gems_affixes.augment.GemBonusModifier;
 import net.kayn.fallen_gems_affixes.augment.GenesisEventHandler;
@@ -155,6 +156,7 @@ public class FallenGemsAffixes {
         // Any common setup logic
         event.enqueueWork(() -> {
             PlaceboUtil.registerCustomColor(FabledColor.FABLED);
+            ItemAllStatsAugmentHandler.init();
         });
     }
 
