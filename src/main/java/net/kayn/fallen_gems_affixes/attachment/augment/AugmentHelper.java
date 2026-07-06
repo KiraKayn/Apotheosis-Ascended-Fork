@@ -71,6 +71,10 @@ public class AugmentHelper {
         return getAugments(stack).get(augment) != null;
     }
 
+    public static boolean hasAugments(ItemStack stack) {
+        return stack.getTag() != null && stack.getTag().contains(Fallen.AugmentMisc.AUGMENT_DATA);
+    }
+
     private static LiveAugments getAugmentsA(ItemStack stack) {
         if (stack.isEmpty()) return LiveAugments.EMPTY;
         Map<IAugment, AugmentInstance> map = new HashMap<>();
