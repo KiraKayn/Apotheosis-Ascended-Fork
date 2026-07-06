@@ -14,10 +14,10 @@
         "max_count": 2
       },
       {
-      "item": "apotheosis:common_material",
-      "chance": 0.15,
-      "min_count": 1,
-      "max_count": 2
+        "item": "apotheosis:common_material",
+        "chance": 0.15,
+        "min_count": 1,
+        "max_count": 2
       }
     ],
     "uncommon": [
@@ -25,7 +25,7 @@
         "item": "apotheosis:gem_dust",
         "chance": 0.25,
         "min_count": 1,
-        "max_count": 3,
+        "max_count": 3
       },
       {
         "item": "apotheosis:uncommon_material",
@@ -39,7 +39,7 @@
         "item": "apotheosis:gem_dust",
         "chance": 0.25,
         "min_count": 2,
-        "max_count": 4,
+        "max_count": 4
       },
       {
         "item": "apotheosis:rare_material",
@@ -53,7 +53,7 @@
         "item": "apotheosis:gem_dust",
         "chance": 0.25,
         "min_count": 2,
-        "max_count": 5,
+        "max_count": 5
       },
       {
         "item": "apotheosis:epic_material",
@@ -67,7 +67,7 @@
         "item": "apotheosis:gem_dust",
         "chance": 0.25,
         "min_count": 3,
-        "max_count": 6,
+        "max_count": 6
       },
       {
         "item": "apotheosis:mythic_material",
@@ -81,7 +81,7 @@
         "item": "apotheosis:gem_dust",
         "chance": 0.25,
         "min_count": 4,
-        "max_count": 8,
+        "max_count": 8
       },
       {
         "item": "apotheosis:ancient_material",
