@@ -231,18 +231,23 @@ public class ModCommands {
         mob.getPersistentData().putBoolean("apoth.boss", true);
         ResourceLocation resId = rarity.getClassifier();
         String rarityIdStr = resId != null ? resId.toString() : rarityId.toString();
-        mob.getPersistentData().putString("apoth.rarity", rarityIdStr);
+        if (rarity.getRarity() instanceof LootRarity r) {
+            mob.getPersistentData().putString("apoth.rarity", rarityIdStr);
 
-        mob.setCustomName(mob.getName().copy().withStyle(Style.EMPTY.withColor(1234)));
-        mob.setCustomNameVisible(false);
+            mob.setCustomName(mob.getName().copy().withStyle(Style.EMPTY.withColor(r.getColor())));
+            mob.setCustomNameVisible(false);
 
-        level.addFreshEntity(mob);
+            level.addFreshEntity(mob);
 
-        final Vec3 finalPos = spawnPos;
-        ctx.getSource().sendSuccess(() -> Component.literal(
-                "Spawned " + rarityId.getPath() + " " + entityId.getPath() +
-                        " at " + String.format("%.1f %.1f %.1f", finalPos.x, finalPos.y, finalPos.z)), true);
-        return 1;
+            final Vec3 finalPos = spawnPos;
+            ctx.getSource().sendSuccess(() -> Component.literal(
+                    "Spawned " + rarityId.getPath() + " " + entityId.getPath() +
+                            " at " + String.format("%.1f %.1f %.1f", finalPos.x, finalPos.y, finalPos.z)), true);
+            return 1;
+        } else {
+            ctx.getSource().sendFailure(Component.literal("Unknown rarity: " + rarityId));
+            return -1;
+        }
     }
 
     private static int clearAugments(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
