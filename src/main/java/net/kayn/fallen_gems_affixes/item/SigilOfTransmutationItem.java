@@ -19,5 +19,9 @@ public class SigilOfTransmutationItem extends Item {
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable("item.fallen_gems_affixes.sigil_of_transmutation.desc")
                 .withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("item.fallen_gems_affixes.sigil_of_transmutation.desc.base")
+                .withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("item.fallen_gems_affixes.sigil_of_transmutation.desc.source")
+                .withStyle(ChatFormatting.GRAY));
     }
 }

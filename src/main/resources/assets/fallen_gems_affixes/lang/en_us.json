@@ -402,7 +402,9 @@
   "fallen_gems_affixes.augment.supremacy.type": "Supremacy:",
 
   "item.fallen_gems_affixes.sigil_of_transmutation": "Sigil of Transmutation",
-  "item.fallen_gems_affixes.sigil_of_transmutation.desc": "Transfers affixes, sockets and gems between gear",
+  "item.fallen_gems_affixes.sigil_of_transmutation.desc": "Transfers affixes, sockets and gems between gear.",
+  "item.fallen_gems_affixes.sigil_of_transmutation.desc.base": "Base gear must not have any affix / augment / sockets.",
+  "item.fallen_gems_affixes.sigil_of_transmutation.desc.source": "Source gear must have the same LootCategory with base gear.",
 
   "item.fallen_gems_affixes.sigil_of_severance": "Sigil of Severance",
   "item.fallen_gems_affixes.sigil_of_severance.tooltip": "Removes all socketed augments from an item",
@@ -663,8 +665,9 @@
   "bonus.fallen_gems_affixes.echoing_strike.desc": "Striking an enemy triggers a second hit dealing %s damage after %s",
 
   "item.fallen_gems_affixes.sigil_of_confluence": "Sigil of Confluence",
-  "item.fallen_gems_affixes.sigil_of_confluence.desc": "Merges the affixes, sockets and gems of two identical items",
+  "item.fallen_gems_affixes.sigil_of_confluence.desc": "Merges the affixes and unique gems of two identical items which don't have augment",
   "item.fallen_gems_affixes.sigil_of_confluence.desc2": "The item will no longer be able to receive Augments",
+  "item.fallen_gems_affixes.sigil_of_confluence.desc_special": "Special rule: Only unique gems will be merged, if base item doesn't have empty socket, then overflowed gems will be discarded",
 
   "block.fallen_gems_affixes.fabled_reforging_table": "Fabled Reforging Table",
   "block.fallen_gems_affixes.fabled_reforging_table.desc": "Sets the reforged item's rarity to Fabled and adds a Set Affix to it",
