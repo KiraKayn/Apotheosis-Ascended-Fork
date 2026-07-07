@@ -77,7 +77,7 @@ public class SoulboundEventHandler {
     /**
      * Check if an ItemStack has the Soulbound affix applied to it.
      */
-    private static boolean hasSoulboundAffix(ItemStack stack) {
+    public static boolean hasSoulboundAffix(ItemStack stack) {
         var affixes = AffixHelper.getAffixes(stack);
         // Check if any affix has the soulbound ID
         for (var affixHolder : affixes.keySet()) {
@@ -131,9 +131,11 @@ public class SoulboundEventHandler {
                 boolean wasEquipped = false;
 
                 // Check if this item was equipped
-                for (ItemStack equippedItem : equippedItems) {
+                for (int i = 0; i < equippedItems.size(); i++) {
+                    ItemStack equippedItem = equippedItems.get(i);
                     if (ItemStack.isSameItemSameTags(stack, equippedItem)) {
                         wasEquipped = true;
+                        equippedItems.remove(i);
                         break;
                     }
                 }
