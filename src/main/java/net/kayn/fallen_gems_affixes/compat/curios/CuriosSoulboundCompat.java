@@ -49,10 +49,10 @@ public class CuriosSoulboundCompat {
                     if (ItemStack.isSameItemSameTags(stack, entry.stack)) {
                         soulboundCurios.add(entry);
                         equippedCurios.remove(i);
-                        break;
+                        return true;
                     }
                 }
-                soulboundCurios.add(new CurioEntry("fga.unknown", 0, stack.copy()));
+                soulboundCurios.add(new CurioEntry("", 0, stack.copy()));
                 return true;
             }
             return false;
@@ -146,6 +146,7 @@ public class CuriosSoulboundCompat {
     }
 
     public static boolean equipCurio(Player player, String identifier, int index, ItemStack stack) {
+        if (identifier.isEmpty()) return false;
         var handlerOpt = CuriosApi.getCuriosInventory(player);
         var stacksHandler = handlerOpt.map(handler -> handler.getCurios().get(identifier)).orElse(null);
 
