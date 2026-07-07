@@ -9,6 +9,8 @@ import dev.shadowsoffire.apotheosis.adventure.socket.gem.GemRegistry;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
 import net.kayn.fallen_gems_affixes.Fallen;
 import net.kayn.fallen_gems_affixes.adventure.affix.SocketBonusAffix;
+import net.kayn.fallen_gems_affixes.adventure.socket.TieredSocketHelper;
+import net.kayn.fallen_gems_affixes.adventure.socket.TieredSocketMode;
 import net.kayn.fallen_gems_affixes.attachment.augment.AugmentHelper;
 import net.kayn.fallen_gems_affixes.config.ModConfig;
 import net.kayn.fallen_gems_affixes.event.FallenEventHandler;
@@ -29,7 +31,6 @@ import net.minecraft.world.item.crafting.SmithingTransformRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 
-import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -106,7 +107,7 @@ public class ConfluenceRecipe extends SmithingTransformRecipe {
             mergedAffixData.putString(AffixHelper.RARITY, baseAffixData.getString(AffixHelper.RARITY));
         }
 
-        mergedAffixData.put(SocketHelper.GEMS, mergeGems(srcAffixData, mergedAffixData, SocketHelper.getSockets(base)));
+        mergedAffixData.put(SocketHelper.GEMS, mergeGems(srcAffixData, mergedAffixData, base, SocketHelper.getSockets(base)));
 
         resultTag.put(AffixHelper.AFFIX_DATA, mergedAffixData);
 
@@ -141,37 +142,46 @@ public class ConfluenceRecipe extends SmithingTransformRecipe {
         resultTag.put(ErasureRecipe.TAG_SCROLL_AFFIXES, newList);
     }
 
-    public Tag mergeGems(CompoundTag srcAffixData, CompoundTag mergedAffixData, int sockets) {
-        if (srcAffixData != null && sockets > 0) {
-            ListTag mergedGems = mergedAffixData.getList(SocketHelper.GEMS, 10).copy();
-            ListTag srcGems = srcAffixData.getList(SocketHelper.GEMS, 10).copy();
-            boolean[] validSockets = new boolean[mergedGems.size()];
-            Arrays.fill(validSockets, false);
-            for (int i = 0; i < mergedGems.size(); i++) {
-                CompoundTag tag = mergedGems.getCompound(i);
-                if (tag.getCompound("tag").isEmpty()) {
-                    validSockets[i] = true;
-                }
-            }
-            for(Tag tag : srcGems) {
-                CompoundTag tag1 = ((CompoundTag) tag).getCompound("tag");
-                if (tag1.isEmpty()) continue;
-                ResourceLocation gemId = ResourceLocation.tryParse(tag1.getString("gem"));
-                if (gemId == null) continue;
-                Gem gem = GemRegistry.INSTANCE.getValue(gemId);
-                if (gem != null && gem.isUnique()) {
-                    for (int i = 0; i < validSockets.length; i++) {
-                        if (validSockets[i]) {
-                            mergedGems.set(i, tag);
-                            validSockets[i] = false;
-                            break;
-                        }
-                    }
-                }
-            }
-            return mergedGems;
+    public Tag mergeGems(CompoundTag srcAffixData, CompoundTag mergedAffixData, ItemStack base, int sockets) {
+        if (srcAffixData == null || sockets <= 0) return new ListTag();
+
+        ListTag mergedGems = mergedAffixData.getList(SocketHelper.GEMS, 10).copy();
+        ListTag srcGems = srcAffixData.getList(SocketHelper.GEMS, 10).copy();
+
+        int[] tiers = TieredSocketHelper.getSocketTiers(base);
+        boolean[] occupied = new boolean[mergedGems.size()];
+        for (int i = 0; i < mergedGems.size(); i++) {
+            occupied[i] = !mergedGems.getCompound(i).getCompound("tag").isEmpty();
         }
-        return new ListTag();
+
+        TieredSocketMode mode = ModConfig.TIERED_SOCKET_MODE.get();
+
+        for (Tag tag : srcGems) {
+            CompoundTag gemEntry = (CompoundTag) tag;
+            CompoundTag gemTag = gemEntry.getCompound("tag");
+            if (gemTag.isEmpty()) continue;
+
+            ResourceLocation gemId = ResourceLocation.tryParse(gemTag.getString("gem"));
+            if (gemId == null) continue;
+
+            Gem gem = GemRegistry.INSTANCE.getValue(gemId);
+            if (gem == null || !gem.isUnique()) continue;
+
+            int gemOrdinal = resolveGemRarityOrdinal(gemEntry);
+            int socketIndex = TieredSocketHelper.getFirstCompatibleEmptySocket(tiers, occupied, gemOrdinal, mode);
+            if (socketIndex < 0) continue;
+
+            mergedGems.set(socketIndex, tag);
+            occupied[socketIndex] = true;
+        }
+
+        return mergedGems;
+    }
+
+    private int resolveGemRarityOrdinal(CompoundTag gemEntry) {
+        ItemStack gemStack = ItemStack.of(gemEntry);
+        DynamicHolder<LootRarity> holder = AffixHelper.getRarity(gemStack);
+        return holder.isBound() ? holder.get().ordinal() : -1;
     }
 
     public Tag mergeAffixes(CompoundTag srcAffixData, CompoundTag mergedAffixData) {

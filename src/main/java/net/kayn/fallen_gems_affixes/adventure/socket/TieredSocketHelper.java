@@ -42,10 +42,11 @@ public final class TieredSocketHelper {
     }
 
     public static boolean canGemFitSocket(ItemStack item, GemInstance gem, int socketIndex, TieredSocketMode mode) {
-        int socketTier = getSocketTier(item, socketIndex);
-        if (socketTier == REGULAR_SOCKET) return true;
+        return canGemFitTier(getSocketTier(item, socketIndex), getGemRarityOrdinal(gem), mode);
+    }
 
-        int gemOrdinal = getGemRarityOrdinal(gem);
+    public static boolean canGemFitTier(int socketTier, int gemOrdinal, TieredSocketMode mode) {
+        if (socketTier == REGULAR_SOCKET) return true;
         if (gemOrdinal < 0) return false;
 
         return switch (mode) {
@@ -60,17 +61,38 @@ public final class TieredSocketHelper {
 
     public static int getFirstCompatibleEmptySocket(ItemStack item, GemInstance gem, TieredSocketMode mode) {
         SocketedGems gems = SocketHelper.getGems(item);
+        int gemOrdinal = getGemRarityOrdinal(gem);
 
-        int bestIndex       = -1;
-        int bestEffective   = Integer.MAX_VALUE;
+        int bestIndex     = -1;
+        int bestEffective = Integer.MAX_VALUE;
 
         for (int i = 0; i < gems.size(); i++) {
             if (gems.get(i).isValid()) continue;
-            if (!canGemFitSocket(item, gem, i, mode)) continue;
 
-            int tier      = getSocketTier(item, i);
+            int tier = getSocketTier(item, i);
+            if (!canGemFitTier(tier, gemOrdinal, mode)) continue;
+
             int effective = (tier == REGULAR_SOCKET) ? Integer.MAX_VALUE - 1 : tier;
+            if (effective < bestEffective) {
+                bestEffective = effective;
+                bestIndex     = i;
+            }
+        }
 
+        return bestIndex;
+    }
+
+    public static int getFirstCompatibleEmptySocket(int[] tiers, boolean[] occupied, int gemOrdinal, TieredSocketMode mode) {
+        int bestIndex     = -1;
+        int bestEffective = Integer.MAX_VALUE;
+
+        for (int i = 0; i < occupied.length; i++) {
+            if (occupied[i]) continue;
+
+            int tier = (i < tiers.length) ? tiers[i] : REGULAR_SOCKET;
+            if (!canGemFitTier(tier, gemOrdinal, mode)) continue;
+
+            int effective = (tier == REGULAR_SOCKET) ? Integer.MAX_VALUE - 1 : tier;
             if (effective < bestEffective) {
                 bestEffective = effective;
                 bestIndex     = i;
