@@ -21,7 +21,9 @@ public class SigilOfConfluenceItem extends Item {
                 .withStyle(ChatFormatting.GRAY));
         tooltip.add(Component.translatable("item.fallen_gems_affixes.sigil_of_confluence.desc2")
                 .withStyle(ChatFormatting.DARK_GRAY));
-        tooltip.add(Component.translatable("item.fallen_gems_affixes.sigil_of_confluence.desc_special")
+        tooltip.add(Component.translatable("item.fallen_gems_affixes.sigil_of_confluence.desc3")
+                .withStyle(ChatFormatting.DARK_GRAY));
+        tooltip.add(Component.translatable("item.fallen_gems_affixes.sigil_of_confluence.desc4")
                 .withStyle(ChatFormatting.DARK_GRAY));
     }
 }
