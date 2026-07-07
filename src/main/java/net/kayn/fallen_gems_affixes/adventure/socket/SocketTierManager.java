@@ -81,12 +81,13 @@ public final class SocketTierManager extends SimplePreparableReloadListener<Map<
 
         for (SocketTierDefinition def : definitions) {
             if (rand.nextFloat() < def.chance()) {
-                return def.ordinal();
+                return def.enabled() ? def.ordinal() : TieredSocketHelper.REGULAR_SOCKET;
             }
         }
 
         if (!definitions.isEmpty()) {
-            return definitions.get(definitions.size() - 1).ordinal();
+            SocketTierDefinition last = definitions.get(definitions.size() - 1);
+            return last.enabled() ? last.ordinal() : TieredSocketHelper.REGULAR_SOCKET;
         }
 
         return TieredSocketHelper.REGULAR_SOCKET;
