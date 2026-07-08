@@ -44,14 +44,18 @@ public class CuriosSoulboundCompat {
         event.getDrops().removeIf(itemEntity -> {
             ItemStack stack = itemEntity.getItem();
             if (hasSoulboundAffix(stack)) {
+                // there's a risk when you change this loop:
+                // use iterator instead if you don't return in this loop.
                 for (int i = 0; i < equippedCurios.size(); i++) {
                     CuriosSoulboundCompat.CurioEntry entry = equippedCurios.get(i);
                     if (ItemStack.isSameItemSameTags(stack, entry.stack)) {
+                        // validated entry pop
                         soulboundCurios.add(entry);
                         equippedCurios.remove(i);
                         return true;
                     }
                 }
+                // unknown entry will be empty identifier for fast fallback.
                 soulboundCurios.add(new CurioEntry("", 0, stack.copy()));
                 return true;
             }
@@ -146,6 +150,7 @@ public class CuriosSoulboundCompat {
     }
 
     public static boolean equipCurio(Player player, String identifier, int index, ItemStack stack) {
+        // fast fallback, check curiosDropEvent
         if (identifier.isEmpty()) return false;
         var handlerOpt = CuriosApi.getCuriosInventory(player);
         var stacksHandler = handlerOpt.map(handler -> handler.getCurios().get(identifier)).orElse(null);
