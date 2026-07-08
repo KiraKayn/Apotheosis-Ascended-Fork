@@ -78,7 +78,7 @@ public class AugmentTooltipHandler {
             CompoundTag tag = listTag.getCompound(i);
 
             ResourceLocation typeId = ResourceLocation.tryParse(tag.getString(TYPE));
-            IAugment augment = Fallen.Registries.AUGMENT_REGISTRY.getValue(typeId);
+            IAugment augment = Fallen.Registries.AUGMENT_REGISTRY.getAug(typeId);
 
             if (augment != null) {
                 IAugmentInnerData inner = augment.deserializeInnerData(tag.getCompound(INNER_DATA));

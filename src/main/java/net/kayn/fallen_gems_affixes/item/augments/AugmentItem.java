@@ -42,7 +42,7 @@ public class AugmentItem extends Item {
     }
 
     public static ItemStack createAugment(ResourceLocation id) {
-        IAugment aug = AUGMENT_REGISTRY.getValue(id);
+        IAugment aug = AUGMENT_REGISTRY.getAug(id);
         if (aug != null) {
             return createAugment(aug);
         }
@@ -59,7 +59,7 @@ public class AugmentItem extends Item {
 
     public static AugmentMeta getAugmentData(ItemStack stack) {
         String augmentId = getAugmentId(stack);
-        IAugment augment = AUGMENT_REGISTRY.getValue(augmentId);
+        IAugment augment = AUGMENT_REGISTRY.getAug(augmentId);
         if (augment != null) {
             return AUGMENT_REGISTRY.getMetaData(augment);
         }
@@ -115,7 +115,7 @@ public class AugmentItem extends Item {
         }
 
         String id = getAugmentId(stack);
-        IAugment augment = AUGMENT_REGISTRY.getValue(id);
+        IAugment augment = AUGMENT_REGISTRY.getAug(id);
         if (augment != null) {
             augment.appendItemTooltip(stack, level, tooltip, flag);
 

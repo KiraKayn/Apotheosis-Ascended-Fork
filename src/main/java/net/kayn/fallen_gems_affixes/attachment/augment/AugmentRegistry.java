@@ -44,7 +44,7 @@ public class AugmentRegistry extends AbstractPacketBoundRegistry<AugmentMeta, Cl
     }
 
     public AugmentMeta getMetaData(ResourceLocation id) {
-        IAugment augment = getValue(id);
+        IAugment augment = getAug(id);
         if (augment != null) {
             return getMetaData(augment);
         }
@@ -65,11 +65,11 @@ public class AugmentRegistry extends AbstractPacketBoundRegistry<AugmentMeta, Cl
        return augment;
     }
     // Get an augment by ID
-    public IAugment getValue(ResourceLocation id) {
+    public IAugment getAug(ResourceLocation id) {
         return REGISTRY.get(id);
     }
-    public IAugment getValue(String id) {
-        return this.getValue(ResourceLocation.tryParse(id));
+    public IAugment getAug(String id) {
+        return this.getAug(ResourceLocation.tryParse(id));
     }
     public ResourceLocation getId(IAugment augment) {
         return REGISTRY.inverse().get(augment);

@@ -33,7 +33,7 @@ public interface IAugment {
         @Override
         public <T> DataResult<Pair<Supplier<IAugment>, T>> decode(DynamicOps<T> ops, T input) {
             ResourceLocation id = ResourceLocation.CODEC.decode(ops, input).getOrThrow(false, t -> {}).getFirst();
-            Supplier<IAugment> augment = () -> Fallen.Registries.AUGMENT_REGISTRY.getValue(id);
+            Supplier<IAugment> augment = () -> Fallen.Registries.AUGMENT_REGISTRY.getAug(id);
             return DataResult.success(new Pair<>(augment, input));
         }
 

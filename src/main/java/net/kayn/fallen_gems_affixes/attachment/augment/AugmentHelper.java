@@ -82,7 +82,7 @@ public class AugmentHelper {
             ListTag listTag = stack.getTagElement(Fallen.AugmentMisc.AUGMENT_DATA).getList(AUGMENTS, Tag.TAG_COMPOUND);
             for (int i = 0; i < listTag.size(); i++) {
                 CompoundTag tag = listTag.getCompound(i);
-                IAugment augment = Fallen.Registries.AUGMENT_REGISTRY.getValue(tag.getString(TYPE));
+                IAugment augment = Fallen.Registries.AUGMENT_REGISTRY.getAug(tag.getString(TYPE));
                 if (augment != null) {
                     CompoundTag inner = tag.getCompound(INNER_DATA);
                     if (inner.isEmpty()) continue;

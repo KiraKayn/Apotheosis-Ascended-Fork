@@ -119,7 +119,7 @@ public class AugmentInstance implements INBTSerializable<CompoundTag> {
             String augmentIdString = tag.getString(AUGMENT_ID);
             ResourceLocation augmentId = ResourceLocation.parse(augmentIdString);
 
-            IAugment template = Fallen.Registries.AUGMENT_REGISTRY.getValue(augmentId);
+            IAugment template = Fallen.Registries.AUGMENT_REGISTRY.getAug(augmentId);
             if (template != null) {
                 this.augment = template;
 
