@@ -1,5 +1,6 @@
 package net.kayn.fallen_gems_affixes.adventure.set;
 
+import net.kayn.fallen_gems_affixes.Fallen;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -59,30 +60,27 @@ public class SetBonusHandler {
 
     private static int computeTier(ResourceLocation setId, int pieceCount) {
         int tier = 0;
-        for (SetAffix affix : SetAffixRegistry.INSTANCE.getValues()) {
-            if (!affix.getSetId().equals(setId)) continue;
+        SetAffix affix = Fallen.Registries.SET_AFFIX_REGISTRY.getValue(setId);
+        if (affix != null) {
             for (int threshold : affix.getBonusThresholds()) {
                 if (pieceCount >= threshold) tier = Math.max(tier, threshold);
             }
-            break;
         }
         return tier;
     }
 
     private static void applyBonusChange(Player player, ResourceLocation setId, int pieceCount, int tier) {
-        for (SetAffix affix : SetAffixRegistry.INSTANCE.getValues()) {
-            if (affix.getSetId().equals(setId)) {
-                affix.removeSetBonus(player);
-                if (tier > 0) affix.applySetBonus(player, pieceCount);
-            }
+        SetAffix affix = Fallen.Registries.SET_AFFIX_REGISTRY.getValue(setId);
+        if (affix != null) {
+            affix.removeSetBonus(player);
+            if (tier > 0) affix.applySetBonus(player, pieceCount);
         }
     }
 
     private static void removeSetBonuses(Player player, ResourceLocation setId) {
-        for (SetAffix affix : SetAffixRegistry.INSTANCE.getValues()) {
-            if (affix.getSetId().equals(setId)) {
-                affix.removeSetBonus(player);
-            }
+        SetAffix affix = Fallen.Registries.SET_AFFIX_REGISTRY.getValue(setId);
+        if (affix != null) {
+            affix.removeSetBonus(player);
         }
     }
 

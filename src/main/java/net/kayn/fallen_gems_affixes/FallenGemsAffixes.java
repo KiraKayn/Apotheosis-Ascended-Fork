@@ -87,7 +87,6 @@ public class FallenGemsAffixes {
         TricksterEntities.bootstrap(modEventBus);
         DeadeyeEntities.bootstrap(modEventBus);
         FabledReforging.bootstrap(modEventBus);
-        SetAffixRegistry.INSTANCE.registerToBus();
         MinecraftForge.EVENT_BUS.register(SetBonusHandler.class);
         GenesisEventHandler.bootstrap(MinecraftForge.EVENT_BUS);
         SpecialAffixEventHandler.register();

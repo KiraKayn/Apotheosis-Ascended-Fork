@@ -1,6 +1,7 @@
 package net.kayn.fallen_gems_affixes.adventure.reforging;
 
 import com.mojang.logging.LogUtils;
+import net.kayn.fallen_gems_affixes.Fallen;
 import org.slf4j.Logger;
 
 import dev.shadowsoffire.apotheosis.adventure.Adventure.Items;
@@ -109,9 +110,9 @@ public class FabledReforgingMenu extends BlockEntityMenu<FabledReforgingTableTil
         LootRarity fabledRarity = getFabledRarity();
 
         LOGGER.info("=== REFORGE SCANNING SYSTEM REGISTRIES ===");
-        SetAffixRegistry.INSTANCE.getKeys().forEach(key -> LOGGER.info("Discovered SetAffix ID: {}", key));
+        Fallen.Registries.SET_AFFIX_REGISTRY.getKeys().forEach(key -> LOGGER.info("Discovered SetAffix ID: {}", key));
 
-        List<SetAffix> applicable = SetAffixRegistry.INSTANCE.getValues().stream()
+        List<SetAffix> applicable = Fallen.Registries.SET_AFFIX_REGISTRY.getValues().stream()
                 .filter(sa -> sa.canApplyTo(input, cat, fabledRarity))
                 .collect(Collectors.toList());
 

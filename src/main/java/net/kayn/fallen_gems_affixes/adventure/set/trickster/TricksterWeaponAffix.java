@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootCategory;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
+import net.kayn.fallen_gems_affixes.Fallen;
 import net.kayn.fallen_gems_affixes.FallenGemsAffixes;
 import net.kayn.fallen_gems_affixes.adventure.set.SetAffix;
 import net.kayn.fallen_gems_affixes.adventure.set.SetAffixRegistry;
@@ -80,7 +81,7 @@ public class TricksterWeaponAffix extends SetAffix {
             MutableComponent desc = Component.translatable("set_bonus.fallen_gems_affixes.trickster.5", chanceVal);
 
             if (isShiftDown()) {
-                int bonusClones = SetAffixRegistry.INSTANCE.getValues().stream()
+                int bonusClones = Fallen.Registries.SET_AFFIX_REGISTRY.getValues().stream()
                         .filter(a -> a instanceof TricksterChestplateAffix && this.setId.equals(a.getSetId()))
                         .map(a -> ((TricksterChestplateAffix) a).getFivePieceBonusClones())
                         .findFirst().orElse(2);

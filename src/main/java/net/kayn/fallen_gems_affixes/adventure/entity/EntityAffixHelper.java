@@ -10,7 +10,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.rtxyd.fallen.lib.runtime.forgemod.util.EntityCakyHandler;
+import net.rtxyd.fallen.lib.runtime.forgemod.util.NBTFingerprints;
+import net.rtxyd.fallen.lib.util.IObjectCaky;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +27,7 @@ import java.util.List;
 public final class EntityAffixHelper {
 
     public static final String TAG = "fga.entity_affixes";
+    public static final IObjectCaky.CakyReviewer<Entity> HASHER = NBTFingerprints.entitySubTag(TAG);
 
     private EntityAffixHelper() {
     }
@@ -41,9 +46,13 @@ public final class EntityAffixHelper {
         data.put(TAG, list);
     }
 
+    public static List<EntityAffixInstance> getAffixes(LivingEntity entity) {
+        return EntityCakyHandler.resolveWith(entity, TAG, IObjectCaky.Type.FINAL, EntityAffixHelper::getAffixesInner, HASHER);
+    }
+
 // read
 
-    public static List<EntityAffixInstance> getAffixes(LivingEntity entity) {
+    public static List<EntityAffixInstance> getAffixesInner(Entity entity) {
         CompoundTag data = entity.getPersistentData();
         if (!data.contains(TAG, Tag.TAG_LIST)) return Collections.emptyList();
 

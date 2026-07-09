@@ -25,7 +25,7 @@ public class ClientLikeSyncAugmentPacket extends AbstractRegistryBoundPacketPayl
         return TYPE;
     }
 
-    public static class Begin implements IBegin<ClientLikeSyncAugmentPacket> {
+    public static class Begin implements IBegin {
         public static final Type<ClientLikeSyncAugmentPacket.Begin> TYPE = IVanillaLikeCustomPacketPayload.createType(FallenGemsAffixes.MOD_ID, "aug_cl_begin");
 
         @Override
@@ -39,7 +39,7 @@ public class ClientLikeSyncAugmentPacket extends AbstractRegistryBoundPacketPayl
         }
     }
 
-    public static class End implements IEnd<ClientLikeSyncAugmentPacket> {
+    public static class End implements IEnd {
         public static final Type<ClientLikeSyncAugmentPacket.End> TYPE = IVanillaLikeCustomPacketPayload.createType(FallenGemsAffixes.MOD_ID, "aug_cl_end");
 
         @Override

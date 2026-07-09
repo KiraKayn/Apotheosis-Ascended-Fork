@@ -3,6 +3,7 @@ package net.kayn.fallen_gems_affixes;
 import dev.shadowsoffire.apotheosis.adventure.affix.Affix;
 import dev.shadowsoffire.apotheosis.adventure.affix.AffixInstance;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
+import net.kayn.fallen_gems_affixes.adventure.set.SetAffixRegistry;
 import net.kayn.fallen_gems_affixes.attachment.augment.AugmentRecipeSerializer;
 import net.kayn.fallen_gems_affixes.attachment.augment.AugmentRegistry;
 import net.kayn.fallen_gems_affixes.attachment.rarity.ClientLikeSyncFallenRarityPacket;
@@ -57,8 +58,10 @@ public class Fallen {
     public static class Registries {
         public static final AugmentRegistry AUGMENT_REGISTRY = new AugmentRegistry();
         public static final FallenRarityRegistry RARITY_REGISTRY = new FallenRarityRegistry();
+        public static final SetAffixRegistry SET_AFFIX_REGISTRY = new SetAffixRegistry();
 
         public static void bootstrap() {
+            Connection.registerDefaultPacketBoundRegistry(SET_AFFIX_REGISTRY);
             Connection.registerRegistryBoundPacketPayloads(AUGMENT_REGISTRY, ClientLikeSyncAugmentPacket.BUF_CODEC,
                     ClientLikeSyncAugmentPacket.Begin.class, ClientLikeSyncAugmentPacket.Begin::new, ClientLikeSyncAugmentPacket.Begin::handle,
                     ClientLikeSyncAugmentPacket.class, ClientLikeSyncAugmentPacket::new, ClientLikeSyncAugmentPacket::handle,

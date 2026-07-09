@@ -4,6 +4,7 @@ import dev.shadowsoffire.apotheosis.adventure.loot.LootCategory;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
 import dev.shadowsoffire.placebo.codec.CodecProvider;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.kayn.fallen_gems_affixes.Fallen;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.CommonComponents;
@@ -28,12 +29,13 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.HitResult;
+import net.rtxyd.fallen.lib.runtime.forgemod.util.ICodecProvider;
 
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public abstract class SetAffix implements CodecProvider<SetAffix> {
+public abstract class SetAffix implements CodecProvider<SetAffix>, ICodecProvider<SetAffix> {
     protected final ResourceLocation setId;
 
     protected SetAffix(ResourceLocation setId) {
@@ -129,7 +131,7 @@ public abstract class SetAffix implements CodecProvider<SetAffix> {
     }
 
     public final ResourceLocation getId() {
-        return SetAffixRegistry.INSTANCE.getKey(this);
+        return Fallen.Registries.SET_AFFIX_REGISTRY.getKey(this);
     }
 
     @Override

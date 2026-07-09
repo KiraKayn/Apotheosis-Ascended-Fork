@@ -1,5 +1,6 @@
 package net.kayn.fallen_gems_affixes.client;
 
+import net.kayn.fallen_gems_affixes.Fallen;
 import net.kayn.fallen_gems_affixes.adventure.set.SetAffix;
 import net.kayn.fallen_gems_affixes.adventure.set.SetAffixHelper;
 import net.kayn.fallen_gems_affixes.adventure.set.SetAffixInstance;
@@ -81,7 +82,7 @@ public class TooltipHandler {
     }
 
     private static Component resolveBonusDescription(ResourceLocation setId, int threshold, String setKey) {
-        for (SetAffix affix : SetAffixRegistry.INSTANCE.getValues()) {
+        for (SetAffix affix : Fallen.Registries.SET_AFFIX_REGISTRY.getValues()) {
             if (!setId.equals(affix.getSetId())) continue;
             Component desc = affix.getBonusDescription(threshold);
             if (desc != null) return desc;

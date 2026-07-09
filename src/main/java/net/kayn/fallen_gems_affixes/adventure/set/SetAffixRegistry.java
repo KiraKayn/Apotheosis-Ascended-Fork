@@ -1,19 +1,26 @@
 package net.kayn.fallen_gems_affixes.adventure.set;
 
+import com.google.common.base.Predicates;
 import com.mojang.logging.LogUtils;
+import com.mojang.serialization.Codec;
 import dev.shadowsoffire.placebo.reload.DynamicRegistry;
 import net.kayn.fallen_gems_affixes.FallenGemsAffixes;
 import net.kayn.fallen_gems_affixes.adventure.set.colossus.*;
 import net.kayn.fallen_gems_affixes.adventure.set.deadeye.*;
 import net.kayn.fallen_gems_affixes.adventure.set.trickster.*;
-import org.slf4j.Logger;
+import net.kayn.fallen_gems_affixes.attachment.rarity.ClientLikeSyncFallenRarityPacket;
+import net.kayn.fallen_gems_affixes.attachment.rarity.FallenRarity;
+import net.minecraft.resources.ResourceLocation;
+import net.rtxyd.fallen.lib.runtime.forgemod.network.AbstractPacketBoundRegistry;
+import net.rtxyd.fallen.lib.runtime.forgemod.network.DefaultPacketBoundRegistry;
+import org.apache.logging.log4j.Logger;
 
-public class SetAffixRegistry extends DynamicRegistry<SetAffix> {
-    private static final Logger LOGGER = LogUtils.getLogger();
-    public static final SetAffixRegistry INSTANCE = new SetAffixRegistry();
+import java.util.function.Predicate;
+
+public class SetAffixRegistry extends DefaultPacketBoundRegistry<SetAffix> {
 
     public SetAffixRegistry() {
-        super(org.apache.logging.log4j.LogManager.getLogger("FallenGemsAffixes"), "set_affixes", true, true);
+        super(org.apache.logging.log4j.LogManager.getLogger("FallenGemsAffixes"), "set_affixes", "type", Predicates.alwaysTrue(), true, true);
     }
 
     @Override

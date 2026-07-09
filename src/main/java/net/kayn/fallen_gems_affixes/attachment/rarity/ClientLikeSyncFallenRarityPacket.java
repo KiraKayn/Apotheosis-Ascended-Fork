@@ -25,7 +25,7 @@ public class ClientLikeSyncFallenRarityPacket extends AbstractRegistryBoundPacke
         return TYPE;
     }
 
-    public static class Begin implements IBegin<ClientLikeSyncFallenRarityPacket> {
+    public static class Begin implements IBegin {
         public static final Type<ClientLikeSyncFallenRarityPacket.Begin> TYPE =
                 IVanillaLikeCustomPacketPayload.createType(FallenLib.MODID, "fr_cl_begin");
 
@@ -40,7 +40,7 @@ public class ClientLikeSyncFallenRarityPacket extends AbstractRegistryBoundPacke
         }
     }
 
-    public static class End implements AbstractRegistryBoundPacketPayload.IEnd<ClientLikeSyncFallenRarityPacket> {
+    public static class End implements AbstractRegistryBoundPacketPayload.IEnd {
         public static final Type<ClientLikeSyncFallenRarityPacket.End> TYPE =
                 IVanillaLikeCustomPacketPayload.createType(FallenLib.MODID, "fr_cl_end");
 

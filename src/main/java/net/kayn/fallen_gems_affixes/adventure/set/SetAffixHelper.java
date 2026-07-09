@@ -8,9 +8,11 @@ import dev.shadowsoffire.apotheosis.adventure.loot.RarityRegistry;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
 import dev.shadowsoffire.placebo.util.CachedObject;
 import dev.shadowsoffire.placebo.util.CachedObject.CachedObjectSource;
+import net.kayn.fallen_gems_affixes.Fallen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.rtxyd.fallen.lib.runtime.forgemod.network.BoundHolder;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -26,7 +28,7 @@ public final class SetAffixHelper {
     }
 
     public static void applySetAffix(ItemStack stack, SetAffix affix, float level) {
-        ResourceLocation key = SetAffixRegistry.INSTANCE.getKey(affix);
+        ResourceLocation key = Fallen.Registries.SET_AFFIX_REGISTRY.getKey(affix);
         if (key == null) return;
         CompoundTag afxData = stack.getOrCreateTagElement(AffixHelper.AFFIX_DATA);
         afxData.putString(SET_AFFIX_KEY, key.toString());
@@ -34,7 +36,7 @@ public final class SetAffixHelper {
     }
 
     public static Optional<SetAffixInstance> getSetAffixInstance(ItemStack stack) {
-        if (SetAffixRegistry.INSTANCE.getValues().isEmpty() || stack.isEmpty()) return Optional.empty();
+        if (Fallen.Registries.SET_AFFIX_REGISTRY.getValues().isEmpty() || stack.isEmpty()) return Optional.empty();
         SetAffixInstance inst = CachedObjectSource.getOrCreate(stack, SET_AFFIX_CACHED_OBJECT, SetAffixHelper::getSetAffixImpl, CachedObject.hashSubkey(AffixHelper.AFFIX_DATA));
         return Optional.ofNullable(inst);
     }
@@ -48,12 +50,12 @@ public final class SetAffixHelper {
         String raw = afxData.getString(SET_AFFIX_KEY);
         if (raw.isEmpty()) return null;
 
-        DynamicHolder<SetAffix> affix = SetAffixRegistry.INSTANCE.holder(new ResourceLocation(raw));
+        BoundHolder<SetAffix> affix = Fallen.Registries.SET_AFFIX_REGISTRY.holder(new ResourceLocation(raw));
         DynamicHolder<LootRarity> rarity = AffixHelper.getRarity(stack);
         if (!rarity.isBound()) rarity = RarityRegistry.getMinRarity();
 
         LootCategory cat = LootCategory.forItem(stack);
-        if (!affix.isBound() || !affix.get().canApplyTo(stack, cat, rarity.get())) return null;
+        if (!affix.isValid() || !affix.get().canApplyTo(stack, cat, rarity.get())) return null;
 
         float lvl = afxData.contains(SET_AFFIX_LEVEL) ? afxData.getFloat(SET_AFFIX_LEVEL) : 0.5F;
         return new SetAffixInstance(affix, stack, rarity, lvl);

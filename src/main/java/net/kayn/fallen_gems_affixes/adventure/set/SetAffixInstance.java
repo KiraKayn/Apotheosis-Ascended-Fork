@@ -25,15 +25,16 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.HitResult;
+import net.rtxyd.fallen.lib.runtime.forgemod.network.BoundHolder;
 
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public record SetAffixInstance(DynamicHolder<? extends SetAffix> affix, ItemStack stack, DynamicHolder<LootRarity> rarity, float level) {
+public record SetAffixInstance(BoundHolder<SetAffix> affix, ItemStack stack, DynamicHolder<LootRarity> rarity, float level) {
 
     public boolean isValid() {
-        return this.affix.isBound() && this.rarity.isBound();
+        return this.affix.isValid() && this.rarity.isBound();
     }
 
     public SetAffix afx() {
