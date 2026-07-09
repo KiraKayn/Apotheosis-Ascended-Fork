@@ -768,5 +768,6 @@
   "fga.deadeye.focus_display": "Focus: %s/%s",
 
   "config.jade.plugin_fallen_gems_affixes.deadeye_marked": "Show Deadeye Marked",
-  "entity.fallen_gems_affixes.spirit_echo": "Spirit Echo"
+  "entity.fallen_gems_affixes.spirit_echo": "Spirit Echo",
+  "fallen_gems_affixes.augment.malice.socket_desc.hidden": "Unrevealed"
 }
