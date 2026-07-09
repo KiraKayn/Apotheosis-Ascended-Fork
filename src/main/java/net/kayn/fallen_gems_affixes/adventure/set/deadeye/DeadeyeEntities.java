@@ -23,7 +23,7 @@ public class DeadeyeEntities {
                             .clientTrackingRange(64)
                             .updateInterval(1)
                             .fireImmune()
-                            .build(null));
+                            .build("spirit_echo"));
 
     public static void bootstrap(IEventBus modBus) {
         ENTITY_TYPES.register(modBus);
