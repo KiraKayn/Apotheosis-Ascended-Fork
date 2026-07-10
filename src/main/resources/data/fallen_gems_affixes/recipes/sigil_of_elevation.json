@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RUR",
+    "LME",
+    "RCR"
+  ],
+  "key": {
+    "C": {
+      "item": "apotheosis:common_material"
+    },
+    "L": {
+      "item": "apotheosis:rare_material"
+    },
+    "M": {
+      "item": "apotheosis:mythic_material"
+    },
+    "U": {
+      "item": "apotheosis:uncommon_material"
+    },
+    "E": {
+      "item": "apotheosis:epic_material"
+    },
+    "R": {
+      "item": "fallen_gems_affixes:reinforced_gem_slate"
+    }
+  },
+  "result": {
+    "item": "fallen_gems_affixes:sigil_of_elevation",
+    "count": 1
+  }
+}

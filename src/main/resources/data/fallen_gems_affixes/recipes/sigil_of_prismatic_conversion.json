@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RGR",
+    "GEG",
+    "RGR"
+  ],
+  "key": {
+    "G": {
+      "item": "apotheosis:gem_dust"
+    },
+    "E": {
+      "item": "fallen_gems_affixes:sigil_of_elevation"
+    },
+    "R": {
+      "item": "fallen_gems_affixes:reinforced_gem_slate"
+    }
+  },
+  "result": {
+    "item": "fallen_gems_affixes:sigil_of_prismatic_conversion",
+    "count": 1
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "apotheosis:enchanting",
+  "conditions": [{
+    "type": "apotheosis:module",
+    "module": "enchantment"
+  }],
+  "input": {
+    "item": "fallen_gems_affixes:sigil_of_severance"
+  },
+  "requirements": {
+    "eterna": 30,
+    "quanta": 40,
+    "arcana": 50
+  },
+  "max_requirements": {
+    "eterna": -1,
+    "quanta": 50,
+    "arcana": -1
+  },
+  "result": {
+    "item": "fallen_gems_affixes:sigil_of_erasure",
+    "count": 1
+  }
+}
