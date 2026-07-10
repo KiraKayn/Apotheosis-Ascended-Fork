@@ -19,6 +19,7 @@
 - Added Paradox Gem, grants Echoing Strike Bonus and revives the Double Strike Affix
 - Renamed Augment Slots to Empty Inlay
 ## Universal Bosses
+- Added bunch of new Attributes for them for more variety
 - Universal Bosses now glow and show their rarity on hover
 - Added Fabled Rarity for Universal Bosses
 - Added Gear Bonus feature, boosts spawn chance based on your gear's rarity
@@ -29,6 +30,7 @@
 - Added Rarity Name Prefix to Affix Scrolls
 ## Crafting and Recipes
 - Added Sigil of Confluence, combines affixed items - rtxyd
+- Added Sigil of Elevation, elevates all tiered socket's rarity by one
 - Added Salvaging Recipe for Affix Scrolls
 - Improved the Erasure Recipe
 ## Compatibility
