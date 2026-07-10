@@ -18,6 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -55,6 +56,11 @@ public class Fallen {
         ContextKeys.register();
     }
 
+    public static class Common {
+        public static final ResourceLocation FABLED_ID = ResourceLocation.fromNamespaceAndPath(FallenGemsAffixes.MOD_ID, "fabled");
+        public static final Set<ResourceLocation> FALLEN_RARITIES = Set.of(FABLED_ID);
+    }
+
     public static class Registries {
         public static final AugmentRegistry AUGMENT_REGISTRY = new AugmentRegistry();
         public static final FallenRarityRegistry RARITY_REGISTRY = new FallenRarityRegistry();
@@ -71,10 +77,11 @@ public class Fallen {
                 AUGMENT_REGISTRY.registerCodec(augment.getId(), augment.getMetaDataCodec());
             }
 
-            Connection.registerRegistryBoundPacketPayloads(RARITY_REGISTRY, ClientLikeSyncFallenRarityPacket.BUF_CODEC,
+            Connection.registerRegistryBoundPacketPayloadsWithPriority(RARITY_REGISTRY, ClientLikeSyncFallenRarityPacket.BUF_CODEC,
                     ClientLikeSyncFallenRarityPacket.Begin.class, ClientLikeSyncFallenRarityPacket.Begin::new, ClientLikeSyncFallenRarityPacket.Begin::handle,
                     ClientLikeSyncFallenRarityPacket.class, ClientLikeSyncFallenRarityPacket::new, ClientLikeSyncFallenRarityPacket::handle,
-                    ClientLikeSyncFallenRarityPacket.End.class, ClientLikeSyncFallenRarityPacket.End::new, ClientLikeSyncFallenRarityPacket.End::handle);
+                    ClientLikeSyncFallenRarityPacket.End.class, ClientLikeSyncFallenRarityPacket.End::new, ClientLikeSyncFallenRarityPacket.End::handle,
+                    EventPriority.LOW);
         }
     }
 
@@ -119,7 +126,6 @@ public class Fallen {
 
     public static class AugmentMisc {
         public static final ResourceLocation AUGMENT_CAP_ID = ResourceLocation.fromNamespaceAndPath(FallenGemsAffixes.MOD_ID, "augment_cap");
-        public static final ResourceLocation FABLED_ID = ResourceLocation.fromNamespaceAndPath(FallenGemsAffixes.MOD_ID, "fabled");
         // Not a tag key
         public static final String ADDITIONAL_SOCKET_AFFIX_CACHE = "fallen_gems_affixes:additional_socket";
         /**

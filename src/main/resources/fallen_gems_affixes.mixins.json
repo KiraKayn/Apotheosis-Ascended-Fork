@@ -22,7 +22,10 @@
     "LootRuleExecuteMixin",
     "AffixHelperMixin",
     "ApotheosisCritMixin",
-    "PlayerShieldGuardMixin"
+    "PlayerShieldGuardMixin",
+    "RarityRegistryAccessor",
+    "DynamicRegistryAccessor",
+    "DynamicHolderAccessor"
   ],
   "client": [
     "AugmentingScreenMixin",

@@ -666,7 +666,7 @@
 
   "item.fallen_gems_affixes.sigil_of_confluence": "Sigil of Confluence",
   "item.fallen_gems_affixes.sigil_of_confluence.desc": "Combine two identical items in a Smithing Table: affixes and unique gems from the addition item are merged into the base item",
-  "item.fallen_gems_affixes.sigil_of_confluence.desc2": "Shared affixes are combined into one, stronger affix",
+  "item.fallen_gems_affixes.sigil_of_confluence.desc2": "Shared affixes are combined into one, stronger affix (max affix level sensitive)",
   "item.fallen_gems_affixes.sigil_of_confluence.desc3": "Unique gems from the addition item fill the base item's empty sockets; gems that don't fit are lost",
   "item.fallen_gems_affixes.sigil_of_confluence.desc4": "Neither item can have Augments, and the resulting item can never receive Augments",
   "item.fallen_gems_affixes.confluence.affix_combined": "§7Affixes already merged - cannot be combined again",

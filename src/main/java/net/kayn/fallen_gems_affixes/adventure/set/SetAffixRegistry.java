@@ -43,4 +43,11 @@ public class SetAffixRegistry extends DefaultPacketBoundRegistry<SetAffix> {
         this.registerCodec(FallenGemsAffixes.id("deadeye_boots"),      DeadeyeBootsAffix.CODEC);
         this.registerCodec(FallenGemsAffixes.id("deadeye_bow"),     DeadeyeBowAffix.CODEC);
     }
+
+    public void onReload() {
+        FallenGemsAffixes.LOGGER.info("Loading set affixes...");
+        super.onReload();
+        FallenGemsAffixes.LOGGER.info("Finalize loading...");
+        FallenGemsAffixes.LOGGER.info("Loading complete with {} entries", registry.size());
+    }
 }

@@ -12,7 +12,6 @@ import net.kayn.fallen_gems_affixes.adventure.entity.EntityAffixHelper;
 import net.kayn.fallen_gems_affixes.adventure.entity.EntityAffixInstance;
 import net.kayn.fallen_gems_affixes.adventure.entity.MobAffixHelper;
 import net.kayn.fallen_gems_affixes.attachment.rarity.FallenRarity;
-import net.kayn.fallen_gems_affixes.attachment.rarity.FallenRarityRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;

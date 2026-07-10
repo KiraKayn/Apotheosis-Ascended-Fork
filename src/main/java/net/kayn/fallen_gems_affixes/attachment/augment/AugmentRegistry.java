@@ -30,13 +30,16 @@ public class AugmentRegistry extends AbstractPacketBoundRegistry<AugmentMeta, Cl
 
     @Override
     public void onReload() {
+        FallenGemsAffixes.LOGGER.info("Loading augments...");
         super.onReload();
+        FallenGemsAffixes.LOGGER.info("Finalize loading...");
         for (Map.Entry<ResourceLocation, AugmentMeta> entry : this.registry.entrySet()) {
             IAugment augment = REGISTRY.get(entry.getKey());
             if (augment != null) {
                 META_DATA.put(entry.getKey(), entry.getValue());
             }
         }
+        FallenGemsAffixes.LOGGER.info("Loading complete with {} entries", META_DATA.size());
     }
 
     public AugmentMeta getMetaData(IAugment augment) {

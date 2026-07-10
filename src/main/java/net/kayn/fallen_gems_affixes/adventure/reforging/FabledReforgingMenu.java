@@ -98,17 +98,13 @@ public class FabledReforgingMenu extends BlockEntityMenu<FabledReforgingTableTil
 
     @Nullable
     public LootRarity getFabledRarity() {
-        try {
-            return RarityRegistry.byLegacyId("fallen_gems_affixes:fabled").get();
-        } catch (Exception e) {
-            return null;
-        }
+        return RarityRegistry.INSTANCE.getValue(Fallen.Common.FABLED_ID);
     }
 
     private List<SetAffix> computeChoices(ItemStack input) {
         LootCategory cat = LootCategory.forItem(input);
         LootRarity fabledRarity = getFabledRarity();
-
+        if (fabledRarity == null) return List.of();
         LOGGER.info("=== REFORGE SCANNING SYSTEM REGISTRIES ===");
         Fallen.Registries.SET_AFFIX_REGISTRY.getKeys().forEach(key -> LOGGER.info("Discovered SetAffix ID: {}", key));
 
@@ -128,10 +124,11 @@ public class FabledReforgingMenu extends BlockEntityMenu<FabledReforgingTableTil
         ItemStack output = input.copy();
         LootRarity fabled = getFabledRarity();
 
-        output.getOrCreateTagElement(dev.shadowsoffire.apotheosis.adventure.affix.AffixHelper.AFFIX_DATA);
-
         if (fabled != null) {
+            output.getOrCreateTagElement(dev.shadowsoffire.apotheosis.adventure.affix.AffixHelper.AFFIX_DATA);
             AffixHelper.setRarity(output, fabled);
+        } else {
+            return ItemStack.EMPTY;
         }
 
         SetAffixHelper.applySetAffix(output, setAffix);

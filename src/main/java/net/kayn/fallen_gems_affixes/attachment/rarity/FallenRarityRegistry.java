@@ -1,11 +1,19 @@
 package net.kayn.fallen_gems_affixes.attachment.rarity;
 
 import com.google.common.base.Predicates;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableBiMap;
+import com.google.common.collect.ImmutableList;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
 import dev.shadowsoffire.apotheosis.adventure.loot.RarityRegistry;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
+import dev.shadowsoffire.placebo.reload.DynamicRegistry;
 import net.kayn.fallen_gems_affixes.Fallen;
 import net.kayn.fallen_gems_affixes.FallenGemsAffixes;
+import net.kayn.fallen_gems_affixes.mixin.DynamicHolderAccessor;
+import net.kayn.fallen_gems_affixes.mixin.DynamicRegistryAccessor;
+import net.kayn.fallen_gems_affixes.mixin.RarityRegistryAccessor;
 import net.minecraft.resources.ResourceLocation;
 import net.rtxyd.fallen.lib.runtime.forgemod.addon.apotheosis.SimpleRarityRegistry;
 import net.rtxyd.fallen.lib.runtime.forgemod.network.AbstractPacketBoundRegistry;
@@ -36,6 +44,7 @@ public class FallenRarityRegistry extends AbstractPacketBoundRegistry<FallenRari
     @Override
     public void onReload() {
         super.onReload();
+        FallenGemsAffixes.LOGGER.info("Loading rarities...");
         for (DynamicHolder<LootRarity> ra : RarityRegistry.INSTANCE.getOrderedRarities()) {
             if (ra.get() instanceof ILocalRarity rarity) {
                 rarityRegistry.register(new FallenRarity(rarity.fallen_lib$getId(), rarity));
@@ -45,8 +54,34 @@ public class FallenRarityRegistry extends AbstractPacketBoundRegistry<FallenRari
             FallenRarity rarity = en.getValue();
             rarityRegistry.register(rarity);
         }
-        GameLifecycleHelper.submitContextCall(Fallen.ContextKeys.FALLEN_RARITIES, () -> this.registry.values());
-        GameLifecycleHelper.callAndRemoveIfPresent(Fallen.ContextKeys.DELAYED_RARITY_REGISTER, GameLifecycleHelper.EMPTY_EX_CONSUMER);
+        FallenGemsAffixes.LOGGER.info("Finalize loading...");
+        processApothRarities();
+        FallenGemsAffixes.LOGGER.info("Loading complete with {} entries", rarityRegistry.getRarityMapView().size());
+    }
+
+    private void processApothRarities() {
+        var regAccessor = (DynamicRegistryAccessor)RarityRegistry.INSTANCE;
+        var ordAccessor = (RarityRegistryAccessor)RarityRegistry.INSTANCE;
+        BiMap<ResourceLocation, LootRarity> map = HashBiMap.create(regAccessor.getRegistry());
+        // clean ordered
+        var ordered = new ArrayList<>(ordAccessor.getOrdered());
+        ordered.removeIf(i -> Fallen.Common.FALLEN_RARITIES.contains(i.getId()));
+        var fallenRarities = registry.values();
+        // force registering fallen rarity into RarityRegister
+        for (FallenRarity fallenRarity : fallenRarities) {
+            ResourceLocation location = fallenRarity.getClassifier();
+            LootRarity rarity = (LootRarity) fallenRarity.getRarity();
+            if (rarity == null) continue;
+            // refresh the holder
+            regAccessor.getHolders().remove(location);
+            RarityRegistry.INSTANCE.holder(location);
+            map.put(location, rarity);
+        }
+        // freeze again
+        ordAccessor.setOrdered(ImmutableList.copyOf(ordered));
+        regAccessor.setRegistry(ImmutableBiMap.copyOf(map));
+        // rebind the holders
+        regAccessor.getHolders().values().forEach(h -> ((DynamicHolderAccessor)h).invokeBind());
     }
 
     @SuppressWarnings("unchecked")
