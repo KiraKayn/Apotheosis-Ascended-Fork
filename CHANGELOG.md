@@ -31,6 +31,7 @@
 ## Crafting and Recipes
 - Added Sigil of Confluence, combines affixed items - rtxyd
 - Added Sigil of Elevation, elevates all tiered socket's rarity by one
+- Added Sigil of Prismatic Conversion, unifies all sockets on the item into one, Catalyst Socket
 - Added Salvaging Recipe for Affix Scrolls
 - Improved the Erasure Recipe
 ## Compatibility
