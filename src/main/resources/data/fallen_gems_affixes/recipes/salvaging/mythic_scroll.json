@@ -1,0 +1,18 @@
+{
+  "type": "apotheosis:salvaging",
+  "conditions": [{
+    "type": "apotheosis:module",
+    "module": "adventure"
+  }],
+  "input": {
+    "type": "fallen_gems_affixes:affix_scroll",
+    "rarity": "apotheosis:mythic"
+  },
+  "outputs": [{
+    "min_count": 1,
+    "max_count": 2,
+    "stack": {
+      "item": "apotheosis:mythic_material"
+    }
+  }]
+}

@@ -25,10 +25,10 @@ import net.kayn.fallen_gems_affixes.adventure.socket.gem.storage.GemCaseRegistry
 import net.kayn.fallen_gems_affixes.attachment.augment.SpecialAffixEventHandler;
 import net.kayn.fallen_gems_affixes.attributes.AAAttributes;
 import net.kayn.fallen_gems_affixes.attributes.MaxHealthDamageHandler;
-import net.kayn.fallen_gems_affixes.augment.ItemAllStatsAugmentHandler;
 import net.kayn.fallen_gems_affixes.augment.DualityCritModifierHandler;
 import net.kayn.fallen_gems_affixes.augment.GemBonusModifier;
 import net.kayn.fallen_gems_affixes.augment.GenesisEventHandler;
+import net.kayn.fallen_gems_affixes.augment.ItemAllStatsAugmentHandler;
 import net.kayn.fallen_gems_affixes.color.FabledColor;
 import net.kayn.fallen_gems_affixes.commands.ModCommands;
 import net.kayn.fallen_gems_affixes.compat.celestisynth.*;
@@ -38,6 +38,7 @@ import net.kayn.fallen_gems_affixes.event.*;
 import net.kayn.fallen_gems_affixes.init.loot.ModLootModifier;
 import net.kayn.fallen_gems_affixes.loot.CelestialLootCategory;
 import net.kayn.fallen_gems_affixes.loot.StaffLootCategory;
+import net.kayn.fallen_gems_affixes.recipe.AffixScrollIngredient;
 import net.kayn.fallen_gems_affixes.registry.ModCreativeTabs;
 import net.kayn.fallen_gems_affixes.registry.ModItems;
 import net.kayn.fallen_gems_affixes.util.AffixTypeExtender;
@@ -91,6 +92,8 @@ public class FallenGemsAffixes {
         GenesisEventHandler.bootstrap(MinecraftForge.EVENT_BUS);
         SpecialAffixEventHandler.register();
         AALootCategories.init();
+        net.minecraftforge.common.crafting.CraftingHelper.register(
+                AffixScrollIngredient.ID, AffixScrollIngredient.SERIALIZER);
 
         // Attributes / handlers
         new MaxHealthDamageHandler();

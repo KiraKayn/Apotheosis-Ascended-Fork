@@ -1,5 +1,6 @@
 package net.kayn.fallen_gems_affixes.compat.jei;
 
+import dev.shadowsoffire.apotheosis.adventure.loot.RarityRegistry;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
@@ -9,6 +10,7 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import net.kayn.fallen_gems_affixes.FallenGemsAffixes;
+import net.kayn.fallen_gems_affixes.item.AffixScrollItem;
 import net.kayn.fallen_gems_affixes.item.augments.AugmentItem;
 import net.kayn.fallen_gems_affixes.recipe.TransmutationRecipe;
 import net.kayn.fallen_gems_affixes.registry.ModItems;
@@ -67,6 +69,10 @@ public class FallenJeiPlugin implements IModPlugin {
                 ModItems.AUGMENT_ITEM.get(),
                 new AugmentSubtypes()
         );
+        registration.registerSubtypeInterpreter(
+                ModItems.AFFIX_SCROLL.get(),
+                new AffixScrollSubtypes()
+        );
     }
 
     @Override
@@ -82,7 +88,17 @@ public class FallenJeiPlugin implements IModPlugin {
                 return ForgeRegistries.ITEMS.getKey(stack.getItem()).toString();
             }
             return augmentId;
+        }
+    }
 
+    static class AffixScrollSubtypes implements IIngredientSubtypeInterpreter<ItemStack> {
+        @Override
+        public String apply(ItemStack stack, UidContext context) {
+            var rarity = AffixScrollItem.getAffixRarity(stack);
+            if (rarity == null) {
+                return ForgeRegistries.ITEMS.getKey(stack.getItem()).toString();
+            }
+            return RarityRegistry.INSTANCE.getKey(rarity).toString();
         }
     }
 }
