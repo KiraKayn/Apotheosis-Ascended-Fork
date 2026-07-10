@@ -1,3 +1,49 @@
+# 2.1.0 - Huge Update
+## Augments - rtxyd
+- Completely Rewrote Augment System
+- Added Malice and Convergence Augments
+- Genesis Augment can now stack Apotheosis Invaders, 1 per rarity
+- Gem Power Augment boost increased from 1.35 to 1.5
+## Affixes
+- Added Enchant Boost Affix, boosts a specific enchantment on the item
+- Added Shield Guard Affix, reduces shield disable cooldown
+- Added Entity Affixes for the Universal Boss feature: Apex, Arcane Shield, Colossus, Enrage, Executioner, Fear Aura, Hunter, Overload, Pack Leader, Phase, Predator, Regeneration, Shadow Step, Soul Drain, Thorns, Undying
+## Affix Sets
+- Added Trickster, Colossus and Deadeye Affix Sets
+- Added Fabled Reforging for the Affix Set feature
+## Gems and Sockets
+- Backported Gem Case from 1.21.1 Apotheosis, compatible with any new rarity
+- Added Tiered Sockets
+- Added Catalyst Socket
+- Added Hemophage Core (Blood) and Hallowed Relic (Holy) ISS gems
+- Added Paradox Gem, grants Echoing Strike Bonus and revives the Double Strike Affix
+- Renamed Augment Slots to Empty Inlay
+## Universal Bosses
+- Universal Bosses now glow and show their rarity on hover
+- Added Fabled Rarity for Universal Bosses
+- Added Gear Bonus feature, boosts spawn chance based on your gear's rarity
+- Fabled Universal Bosses now drop augments with a 5% chance (configurable), augment recipes removed
+- Added Strict Mode config for Universal Boss Enchanting Books - rtxyd
+## Rarity and Materials
+- Added Fabled Rarity and Fabled Material
+- Added Rarity Name Prefix to Affix Scrolls
+## Crafting and Recipes
+- Added Sigil of Confluence, combines affixed items - rtxyd
+- Added Salvaging Recipe for Affix Scrolls
+- Improved the Erasure Recipe
+## Compatibility
+- Added Curios compatibility for Soulbound, curios are now preserved in their slot - rtxyd
+## Misc
+- Added Celestial Ranged category to Void Hunter
+## Fixes
+- Fixed fired arrows not triggering Slash again on a second impact - rtxyd
+- Fixed Damage Affix for guns
+- Fixed Spread Reduction Affix for guns
+- Fixed Scroll Affix NBT not deleting on reforge
+## Removed
+- Removed Boss Spawner Conversion feature due to issues
+
+
 # 2.0.9HF
 - Fixed crash caused by Universal Boss Spawns
 
