@@ -1,3 +1,8 @@
+# 2.1.1
+- Fixed Tiered Sockets not working
+- Fixed Server desync bug - rtxyd
+- Added Rule description to Sigil of Ascension
+
 # 2.1.0 - Huge Update
 ## Augments - rtxyd
 - Completely Rewrote Augment System
