@@ -392,6 +392,7 @@
 
   "item.fallen_gems_affixes.sigil_of_ascension": "Sigil of Ascension",
   "item.fallen_gems_affixes.sigil_of_ascension.desc": "Converts a Socket slot into an Augment slot",
+  "item.fallen_gems_affixes.sigil_of_ascension.rule.desc": "Only untiered sockets can get converted",
 
   "item.fallen_gems_affixes.augment.gem_power": "Augment of Empowerment",
   "fallen_gems_affixes.augment.gem_power.type": "Empowerment:",
