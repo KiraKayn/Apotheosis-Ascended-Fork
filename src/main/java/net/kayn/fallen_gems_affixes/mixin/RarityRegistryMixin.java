@@ -7,9 +7,7 @@ import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
 import dev.shadowsoffire.apotheosis.adventure.loot.RarityRegistry;
 import dev.shadowsoffire.placebo.reload.WeightedDynamicRegistry;
 import net.kayn.fallen_gems_affixes.Fallen;
-import net.kayn.fallen_gems_affixes.attachment.rarity.FallenRarity;
 import net.minecraft.resources.ResourceLocation;
-import net.rtxyd.fallen.lib.runtime.forgemod.util.GameLifecycleHelper;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,21 +24,10 @@ public abstract class RarityRegistryMixin extends WeightedDynamicRegistry<LootRa
         super(logger, path, synced, subtypes);
     }
 
-    @Inject(method = "onReload", at = @At("TAIL"))
-    private void hookRarity(CallbackInfo ci) {
-        GameLifecycleHelper.submitContextCall(Fallen.ContextKeys.DELAYED_RARITY_REGISTER, () -> {
-            BiMap<ResourceLocation, LootRarity> map = HashBiMap.create(this.registry);
-            var fallenRarities = GameLifecycleHelper.callAndRemoveIfPresent(Fallen.ContextKeys.FALLEN_RARITIES, GameLifecycleHelper.EMPTY_EX_CONSUMER);
-            if (fallenRarities == null) return null;
-            for (FallenRarity fallenRarity : fallenRarities) {
-                ResourceLocation location = fallenRarity.getClassifier();
-                LootRarity rarity = (LootRarity) fallenRarity.getRarity();
-                if (rarity == null) continue;
-                this.holder(location);
-                map.put(location, rarity);
-            }
-            this.registry = ImmutableBiMap.copyOf(map);
-            return null;
-        });
+    @Inject(method = "onReload", at = @At(value = "INVOKE", target = "Ldev/shadowsoffire/placebo/reload/WeightedDynamicRegistry;onReload()V", shift = At.Shift.AFTER))
+    private void hookRarityPre(CallbackInfo ci) {
+        BiMap<ResourceLocation, LootRarity> map = HashBiMap.create(this.registry);
+        map.keySet().removeIf(Fallen.Common.FALLEN_RARITIES::contains);
+        this.registry = ImmutableBiMap.copyOf(map);
     }
 }

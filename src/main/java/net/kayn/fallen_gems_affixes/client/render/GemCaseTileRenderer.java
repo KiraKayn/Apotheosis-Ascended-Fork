@@ -1,10 +1,13 @@
-package net.kayn.fallen_gems_affixes.adventure.socket.gem.storage;
+package net.kayn.fallen_gems_affixes.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.shadowsoffire.apotheosis.adventure.socket.gem.Gem;
 import dev.shadowsoffire.apotheosis.adventure.socket.gem.GemRegistry;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
+import net.kayn.fallen_gems_affixes.adventure.socket.gem.storage.GemCaseAnimationState;
+import net.kayn.fallen_gems_affixes.adventure.socket.gem.storage.GemCaseBlock;
+import net.kayn.fallen_gems_affixes.adventure.socket.gem.storage.GemCaseTile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -12,10 +15,13 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@OnlyIn(Dist.CLIENT)
 public class GemCaseTileRenderer implements BlockEntityRenderer<GemCaseTile> {
 
     private final Map<DynamicHolder<Gem>, ItemStack> gemCache = new HashMap<>();

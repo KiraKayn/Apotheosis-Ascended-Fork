@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import dev.shadowsoffire.placebo.block_entity.TickingBlockEntityType;
 import dev.shadowsoffire.placebo.menu.MenuUtil;
 import net.kayn.fallen_gems_affixes.FallenGemsAffixes;
+import net.kayn.fallen_gems_affixes.client.render.FabledReforgingTableTileRenderer;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.inventory.MenuType;
@@ -81,20 +82,5 @@ public class FabledReforging {
         SOUNDS.register(modBus);
         RECIPE_TYPES.register(modBus);
         RECIPE_SERIALIZERS.register(modBus);
-
-        modBus.addListener(FabledReforging::registerRenderers);
-        modBus.addListener(FabledReforging::clientSetup);
-        modBus.addListener(FabledReforging::commonSetup);
-    }
-
-    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(TILE_TYPE.get(), ctx -> new FabledReforgingTableTileRenderer());
-    }
-
-    public static void clientSetup(FMLClientSetupEvent event) {
-        event.enqueueWork(() -> MenuScreens.register(MENU_TYPE.get(), FabledReforgingScreen::new));
-    }
-
-    public static void commonSetup(FMLCommonSetupEvent event) {
     }
 }

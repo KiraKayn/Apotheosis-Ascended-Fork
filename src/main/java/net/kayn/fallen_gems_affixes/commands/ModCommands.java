@@ -19,7 +19,6 @@ import net.kayn.fallen_gems_affixes.attachment.augment.AugmentInstance;
 import net.kayn.fallen_gems_affixes.attachment.augment.AugmentMeta;
 import net.kayn.fallen_gems_affixes.attachment.augment.AugmentSlotHelper;
 import net.kayn.fallen_gems_affixes.attachment.rarity.FallenRarity;
-import net.kayn.fallen_gems_affixes.attachment.rarity.FallenRarityRegistry;
 import net.kayn.fallen_gems_affixes.item.AffixScrollItem;
 import net.kayn.fallen_gems_affixes.types.augment.IAugment;
 import net.minecraft.commands.CommandBuildContext;

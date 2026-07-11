@@ -28,14 +28,9 @@ public class DeadeyeEntities {
     public static void bootstrap(IEventBus modBus) {
         ENTITY_TYPES.register(modBus);
         modBus.addListener(DeadeyeEntities::registerAttributes);
-        modBus.addListener(DeadeyeEntities::registerRenderers);
     }
 
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(SPIRIT_ECHO.get(), SpiritEchoEntity.createAttributes().build());
-    }
-
-    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(SPIRIT_ECHO.get(), ThrownItemRenderer::new);
     }
 }
