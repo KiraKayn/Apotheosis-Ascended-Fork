@@ -19,9 +19,10 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(Dist.CLIENT)
+@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 @OnlyIn(Dist.CLIENT)
 public class ShadowCloneRenderer extends MobRenderer<ShadowCloneEntity, HumanoidModel<ShadowCloneEntity>> {
+
     public static final ResourceLocation TEXTURE = FallenGemsAffixes.id("textures/entity/shadow_clone.png");
 
     public ShadowCloneRenderer(EntityRendererProvider.Context ctx) {
