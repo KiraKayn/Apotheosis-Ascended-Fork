@@ -6,7 +6,7 @@
     "epic":     0.03,
     "mythic":   0.02,
     "ancient":  0.01,
-    "fabled":   0.025
+    "fabled":   0.005
   },
   "gear_bonus": {
     "common":   0.002,

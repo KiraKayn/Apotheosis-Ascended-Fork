@@ -20,5 +20,7 @@ public class SigilOfAscensionItem extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable("item.fallen_gems_affixes.sigil_of_ascension.desc")
                 .withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("item.fallen_gems_affixes.sigil_of_ascension.rule.desc")
+                .withStyle(ChatFormatting.DARK_GRAY));
     }
 }

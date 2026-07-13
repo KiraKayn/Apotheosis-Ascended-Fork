@@ -1,5 +1,6 @@
 package net.kayn.fallen_gems_affixes;
 
+import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 import dev.shadowsoffire.placebo.util.PlaceboUtil;
 import net.kayn.fallen_gems_affixes.adventure.affix.AdaptiveSpellPowerAffix;
 import net.kayn.fallen_gems_affixes.adventure.affix.BerserkerAffix;
@@ -9,7 +10,6 @@ import net.kayn.fallen_gems_affixes.adventure.boss.UniversalBossEventHandler;
 import net.kayn.fallen_gems_affixes.adventure.entity.EntityAffixEventHandler;
 import net.kayn.fallen_gems_affixes.adventure.entity.affix.MobAffixEventHandler;
 import net.kayn.fallen_gems_affixes.adventure.reforging.FabledReforging;
-import net.kayn.fallen_gems_affixes.adventure.set.SetAffixRegistry;
 import net.kayn.fallen_gems_affixes.adventure.set.SetBonusHandler;
 import net.kayn.fallen_gems_affixes.adventure.set.colossus.ColossusSetAffixEventHandler;
 import net.kayn.fallen_gems_affixes.adventure.set.colossus.bonus.ColossusSetBonusHandler;
@@ -63,6 +63,7 @@ public class FallenGemsAffixes {
     public static boolean curiosLoaded = false;
 
     public FallenGemsAffixes(FMLJavaModLoadingContext context) {
+        MixinExtrasBootstrap.init();
         AffixTypeExtender.init();
         IEventBus modEventBus = context.getModEventBus();
         LOGGER.info("Loading Fallen Gems & Affixes");

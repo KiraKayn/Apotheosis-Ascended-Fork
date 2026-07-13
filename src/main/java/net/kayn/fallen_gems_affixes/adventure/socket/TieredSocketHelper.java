@@ -82,6 +82,29 @@ public final class TieredSocketHelper {
         return bestIndex;
     }
 
+    public static int getFirstCompatibleEmptySocketExcluding(ItemStack item, GemInstance gem, TieredSocketMode mode, int excludeIndex) {
+        SocketedGems gems = SocketHelper.getGems(item);
+        int gemOrdinal = getGemRarityOrdinal(gem);
+
+        int bestIndex     = -1;
+        int bestEffective = Integer.MAX_VALUE;
+
+        for (int i = 0; i < gems.size(); i++) {
+            if (i != excludeIndex && gems.get(i).isValid()) continue;
+
+            int tier = getSocketTier(item, i);
+            if (!canGemFitTier(tier, gemOrdinal, mode)) continue;
+
+            int effective = (tier == REGULAR_SOCKET) ? Integer.MAX_VALUE - 1 : tier;
+            if (effective < bestEffective) {
+                bestEffective = effective;
+                bestIndex     = i;
+            }
+        }
+
+        return bestIndex;
+    }
+
     public static int getFirstCompatibleEmptySocket(int[] tiers, boolean[] occupied, int gemOrdinal, TieredSocketMode mode) {
         int bestIndex     = -1;
         int bestEffective = Integer.MAX_VALUE;
@@ -116,26 +139,28 @@ public final class TieredSocketHelper {
         return -1;
     }
 
-    public static void assignSocketTiersToLootItem(ItemStack stack, RandomSource rand) {
+    public static void assignSocketTiersToLootItem(ItemStack stack, RandomSource rand, int[] previousTiers, int previousSocketCount) {
         if (!SocketTierManager.INSTANCE.isEnabled()) return;
 
         CompoundTag afxData = stack.getTagElement("affix_data");
         int totalSockets = afxData != null ? afxData.getInt("sockets") : 0;
         if (totalSockets <= 0) return;
 
-        int[] existing = getSocketTiers(stack);
+        SocketedGems gems = SocketHelper.getGems(stack);
         int[] newTiers = new int[totalSockets];
 
-        SocketedGems gems = SocketHelper.getGems(stack);
-
         for (int i = 0; i < totalSockets; i++) {
-            if (i < existing.length && i < gems.size() && gems.get(i).isValid()) {
-                newTiers[i] = existing[i];
-            }
-            else if (i < existing.length && existing[i] == REGULAR_SOCKET) {
+            boolean hasPrevious = i < previousTiers.length;
+            boolean occupied = i < gems.size() && gems.get(i).isValid();
+            boolean isPreExistingSocket = i < previousSocketCount;
+
+            if (occupied && hasPrevious) {
+                newTiers[i] = previousTiers[i];
+            } else if (hasPrevious && previousTiers[i] == REGULAR_SOCKET) {
                 newTiers[i] = REGULAR_SOCKET;
-            }
-            else {
+            } else if (!hasPrevious && isPreExistingSocket) {
+                newTiers[i] = REGULAR_SOCKET;
+            } else {
                 newTiers[i] = SocketTierManager.INSTANCE.rollSocketTier(rand);
             }
         }

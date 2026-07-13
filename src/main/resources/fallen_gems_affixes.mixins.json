@@ -16,7 +16,6 @@
     "permanent_effect.InventoryMixin",
     "permanent_effect.LivingEntityMixin",
     "TieredAddSocketsRecipeMixin",
-    "TieredSocketingRecipeMixin",
     "StepFunctionMixin",
     "RarityRegistryMixin",
     "LootRuleExecuteMixin",
