@@ -1,5 +1,7 @@
 package net.kayn.fallen_gems_affixes.event;
 
+import dev.shadowsoffire.apotheosis.Apoth;
+import dev.shadowsoffire.apotheosis.adventure.Adventure;
 import dev.shadowsoffire.apotheosis.adventure.affix.Affix;
 import dev.shadowsoffire.apotheosis.adventure.affix.AffixHelper;
 import dev.shadowsoffire.apotheosis.adventure.affix.AffixRegistry;
@@ -47,6 +49,9 @@ public class FallenEventHandler {
         if (afxData != null && afxData.contains(AFFIXES)) {
             CompoundTag affixes = afxData.getCompound(AFFIXES);
             DynamicHolder<LootRarity> rarity = getRarity(afxData);
+            if (rarity.is(Fallen.Common.FABLED_ID)) {
+                rarity = RarityRegistry.getMaterialRarity(Adventure.Items.ANCIENT_MATERIAL.get());
+            }
             if (!rarity.isBound()) {
                 rarity = RarityRegistry.getMinRarity();
             }
