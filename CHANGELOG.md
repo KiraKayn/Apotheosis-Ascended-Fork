@@ -1,3 +1,8 @@
+# 2.1.2
+- Fixed crash caused by Trickster's armor set affix
+- Fixed Fabled being more common than Ancient (Universal Bosses)
+- Fixed Socket Bonus affix giving 0 sockets when item is Fabled rarity
+
 # 2.1.1
 - Fixed Tiered Sockets not working
 - Fixed Server desync bug - rtxyd
