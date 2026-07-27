@@ -45,7 +45,7 @@ public class SocketTooltipRendererMixin {
                                   BufferSource bufferSource, CallbackInfo ci) {
 
         ItemStack socketed = this.comp.socketed();
-
+        if (socketed.isEmpty()) return;
         if (CatalystSocketHelper.hasCatalystSocket(socketed)) {
             ci.cancel();
             GemInstance inst = this.comp.gems().isEmpty() ? null : this.comp.gems().get(0);
