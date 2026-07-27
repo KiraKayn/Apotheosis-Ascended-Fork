@@ -62,11 +62,12 @@ public class Fallen {
         public static final ResourceLocation FABLED_ID = ResourceLocation.fromNamespaceAndPath(FallenGemsAffixes.MOD_ID, "fabled");
         public static final Set<ResourceLocation> FALLEN_RARITIES = Set.of(FABLED_ID);
         public static final float STANDARD_MAX_LEVEL = 1.0f;
+        public static final float MAX_AFFIX_LEVEL = 2.0f;
 
-        public static final boolean AFFIX_POWER_CAPPED = ModConfig.HARD_AFFIX_POWER_CAP_SWITCH.get();
-        public static final boolean GEM_POWER_CAPPED = ModConfig.HARD_GEM_POWER_CAP_SWITCH.get();
-        public static final float AFFIX_POWER_CAP = AFFIX_POWER_CAPPED ? ModConfig.HARD_AFFIX_POWER_CAP.get().floatValue() : 2.0f;
-        public static final float GEM_POWER_CAP = GEM_POWER_CAPPED ? ModConfig.HARD_AFFIX_POWER_CAP.get().floatValue() : Integer.MAX_VALUE;
+//        public static final boolean AFFIX_POWER_CAPPED = ModConfig.HARD_AFFIX_POWER_CAP_SWITCH.get();
+//        public static final float AFFIX_POWER_CAP = AFFIX_POWER_CAPPED ? ModConfig.HARD_AFFIX_POWER_CAP.get().floatValue() : 2.0f;
+//        public static final boolean GEM_POWER_CAPPED = ModConfig.HARD_GEM_POWER_CAP_SWITCH.get();
+//        public static final float GEM_POWER_CAP = GEM_POWER_CAPPED ? ModConfig.HARD_GEM_POWER_CAP.get().floatValue() : Integer.MAX_VALUE;
         public static void bootstrap(FMLCommonSetupEvent event) {}
     }
 

@@ -26,10 +26,10 @@ public class ModConfig {
     public static final ForgeConfigSpec.EnumValue<TieredSocketMode> TIERED_SOCKET_MODE;
     public static final ForgeConfigSpec.DoubleValue FABLED_AUGMENT_DROP_CHANCE;
     public static final ForgeConfigSpec.BooleanValue STRICT_UNIVERSAL_BOSS_ENCHANT_DROP;
-    public static final ForgeConfigSpec.BooleanValue HARD_GEM_POWER_CAP_SWITCH;
-    public static final ForgeConfigSpec.DoubleValue HARD_GEM_POWER_CAP;
-    public static final ForgeConfigSpec.BooleanValue HARD_AFFIX_POWER_CAP_SWITCH;
-    public static final ForgeConfigSpec.DoubleValue HARD_AFFIX_POWER_CAP;
+//    public static final ForgeConfigSpec.BooleanValue HARD_GEM_POWER_CAP_SWITCH;
+//    public static final ForgeConfigSpec.DoubleValue HARD_GEM_POWER_CAP;
+//    public static final ForgeConfigSpec.BooleanValue HARD_AFFIX_POWER_CAP_SWITCH;
+//    public static final ForgeConfigSpec.DoubleValue HARD_AFFIX_POWER_CAP;
 
     static {
         BUILDER.push("Mod Config");
@@ -110,27 +110,27 @@ public class ModConfig {
                 .comment("Chance for a Fabled universal boss to drop a random Augment on death (0.0 = never, 1.0 = always)")
                 .defineInRange("fabledAugmentDropChance", 0.05, 0.0, 1.0);
 
-        HARD_GEM_POWER_CAP_SWITCH = BUILDER
-                .comment("Turn on or off hard power cap, changing it needs a restart to actually effect")
-                .define("hardGemPowerCapSwitch", false);
-
-        HARD_GEM_POWER_CAP = BUILDER
-                .comment(
-                        "Hard cap for Gem Power, changing it needs a restart to actually effect.",
-                        "Must turn on the HARD_GEM_POWER_CAP_SWITCH to effect."
-                )
-                .defineInRange("hardGemPowerCap", Integer.MAX_VALUE, 0.01, Integer.MAX_VALUE);
-
-        HARD_AFFIX_POWER_CAP_SWITCH = BUILDER
-                .comment("Turn on or off hard power cap, changing it needs a restart to actually effect")
-                .define("hardAffixPowerCapSwitch", true);
-
-        HARD_AFFIX_POWER_CAP = BUILDER
-                .comment(
-                        "Hard cap for Affix Power, changing it needs a restart to actually effect.",
-                        "Must turn on the HARD_AFFIX_POWER_CAP_SWITCH to effect."
-                )
-                .defineInRange("hardAffixPowerCap", 2.0, 0.01, Integer.MAX_VALUE);
+//        HARD_GEM_POWER_CAP_SWITCH = BUILDER
+//                .comment("Turn on or off hard power cap, changing it needs a restart to actually effect")
+//                .define("hardGemPowerCapSwitch", false);
+//
+//        HARD_GEM_POWER_CAP = BUILDER
+//                .comment(
+//                        "Hard cap for Gem Power, changing it needs a restart to actually effect.",
+//                        "Must turn on the HARD_GEM_POWER_CAP_SWITCH to effect."
+//                )
+//                .defineInRange("hardGemPowerCap", Integer.MAX_VALUE, 0.01, Integer.MAX_VALUE);
+//
+//        HARD_AFFIX_POWER_CAP_SWITCH = BUILDER
+//                .comment("Turn on or off hard power cap, changing it needs a restart to actually effect")
+//                .define("hardAffixPowerCapSwitch", true);
+//
+//        HARD_AFFIX_POWER_CAP = BUILDER
+//                .comment(
+//                        "Hard cap for Affix Power, changing it needs a restart to actually effect.",
+//                        "Must turn on the HARD_AFFIX_POWER_CAP_SWITCH to effect."
+//                )
+//                .defineInRange("hardAffixPowerCap", 2.0, 0.01, Integer.MAX_VALUE);
 
         STRICT_UNIVERSAL_BOSS_ENCHANT_DROP = BUILDER
                 .comment("Use vanilla check for enchanting book drops, unobtainable books / treasure books will be excluded",

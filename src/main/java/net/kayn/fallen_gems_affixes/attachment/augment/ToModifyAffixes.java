@@ -42,7 +42,7 @@ public class ToModifyAffixes extends AFactorInsAttributeSystem<DynamicHolder<? e
 
     @Override
     public AffixInstance createInsWith(AffixInstance old, float value) {
-        return new AffixInstance(old.affix(), old.stack(), old.rarity(), Mth.clamp(value, 0, Fallen.Common.AFFIX_POWER_CAP));
+        return new AffixInstance(old.affix(), old.stack(), old.rarity(), Mth.clamp(value, 0, Fallen.Common.MAX_AFFIX_LEVEL));
     }
 
     public Map<DynamicHolder<? extends Affix>, AffixInstance> getOutput() {

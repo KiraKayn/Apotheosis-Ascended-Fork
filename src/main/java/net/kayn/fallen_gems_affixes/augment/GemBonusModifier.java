@@ -164,9 +164,9 @@ public class GemBonusModifier {
                 currentGemPower += data.getGemPower();
             }
         }
-        if (Fallen.Common.GEM_POWER_CAPPED) {
-            return Math.min(currentGemPower * CatalystSocketHelper.getGemPowerMultiplier(stack), Fallen.Common.GEM_POWER_CAP);
-        }
+//        if (Fallen.Common.GEM_POWER_CAPPED) {
+//            return Math.min(currentGemPower * CatalystSocketHelper.getGemPowerMultiplier(stack), Fallen.Common.GEM_POWER_CAP);
+//        }
 
         return currentGemPower * CatalystSocketHelper.getGemPowerMultiplier(stack);
     }
