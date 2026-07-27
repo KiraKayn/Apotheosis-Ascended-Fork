@@ -3,6 +3,7 @@ package net.kayn.fallen_gems_affixes.augment;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
 import dev.shadowsoffire.apotheosis.adventure.socket.gem.bonus.GemBonus;
 import dev.shadowsoffire.placebo.util.StepFunction;
+import net.kayn.fallen_gems_affixes.Fallen;
 import net.kayn.fallen_gems_affixes.adventure.socket.CatalystSocketHelper;
 import net.kayn.fallen_gems_affixes.attachment.augment.AugmentHelper;
 import net.kayn.fallen_gems_affixes.attachment.augment.AugmentInstance;
@@ -12,7 +13,6 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.rtxyd.fallen.lib.api.annotation.FallenInserter;
 import net.rtxyd.fallen.lib.api.annotation.Options;
-import net.rtxyd.fallen.lib.api.annotation.Params;
 import net.rtxyd.fallen.lib.type.util.patch.IInserterContext;
 import net.rtxyd.fallen.lib.util.ObjectModifierFactory;
 import net.rtxyd.fallen.lib.util.patch.InserterType;
@@ -163,6 +163,9 @@ public class GemBonusModifier {
             if (instance.getData() instanceof IGemPowerProvider data) {
                 currentGemPower += data.getGemPower();
             }
+        }
+        if (Fallen.Common.GEM_POWER_CAPPED) {
+            return Math.min(currentGemPower * CatalystSocketHelper.getGemPowerMultiplier(stack), Fallen.Common.GEM_POWER_CAP);
         }
 
         return currentGemPower * CatalystSocketHelper.getGemPowerMultiplier(stack);
