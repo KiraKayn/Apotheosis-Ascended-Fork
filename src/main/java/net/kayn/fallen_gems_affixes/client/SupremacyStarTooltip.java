@@ -59,7 +59,7 @@ public class SupremacyStarTooltip {
                     .forEach(inst -> {
                         Component desc = inst.getDescription();
                         if (desc.getContents() != ComponentContents.EMPTY) {
-                            if (inst.level() > SupremacyAugment.STANDARD_MAX_LEVEL) {
+                            if (inst.level() > Fallen.Common.STANDARD_MAX_LEVEL) {
                                 components.add(Component.empty());
                                 components.add(Component.translatable("text.apotheosis.dot_prefix", desc).withStyle(ChatFormatting.YELLOW));
                                 components.add(starPrefix(desc).withStyle(ChatFormatting.YELLOW));
@@ -89,7 +89,7 @@ public class SupremacyStarTooltip {
         // So to fix that, we have to ask all over-max affixes for their modifier tooltips, and search for them in the tooltip.
         // If we find them, we add a star prefix to them.
         AffixHelper.streamAffixes(stack)
-                .filter(inst -> inst.level() > SupremacyAugment.STANDARD_MAX_LEVEL)
+                .filter(inst -> inst.level() > Fallen.Common.STANDARD_MAX_LEVEL)
                 .filter(inst -> inst.affix().get() instanceof AttributeAffix)
                 .forEach(inst -> {
                     Component comp = attributeToComponent(stack, inst);

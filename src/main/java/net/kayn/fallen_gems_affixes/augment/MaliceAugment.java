@@ -46,7 +46,6 @@ public class MaliceAugment implements IAugment {
 
     private static final String AFFIX_DATA  = "affix_data";
     private static final String AFFIXES_KEY = "affixes";
-    public  static final float  MAX_AFFIX_LEVEL = SupremacyAugment.MAX_AFFIX_LEVEL;
 
     private static final Codec<AugmentMeta> META_CODEC = AugmentMeta.codecCreate(MaliceData.CODEC);
 

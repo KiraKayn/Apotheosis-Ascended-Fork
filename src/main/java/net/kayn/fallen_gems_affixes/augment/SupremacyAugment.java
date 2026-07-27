@@ -3,9 +3,6 @@ package net.kayn.fallen_gems_affixes.augment;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.shadowsoffire.apotheosis.adventure.affix.Affix;
-import dev.shadowsoffire.apotheosis.adventure.affix.AffixHelper;
-import dev.shadowsoffire.apotheosis.adventure.affix.AffixInstance;
-import dev.shadowsoffire.apotheosis.adventure.affix.effect.DurableAffix;
 import dev.shadowsoffire.apotheosis.adventure.socket.gem.bonus.GemBonus;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
 import net.kayn.fallen_gems_affixes.Fallen;
@@ -21,7 +18,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -30,13 +26,8 @@ import net.rtxyd.fallen.lib.util.ins_attr.InsAttributeModifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class SupremacyAugment implements IAugment {
     private static final ResourceLocation SUPREMACY_ID = ResourceLocation.fromNamespaceAndPath(FallenGemsAffixes.MOD_ID, "supremacy");
-    public static final float STANDARD_MAX_LEVEL = 1.0f;
-    public static final float MAX_AFFIX_LEVEL = 2.0f;
     private static final Codec<AugmentMeta> META_CODEC = AugmentMeta.codecCreate(SupremacyData.CODEC);
 
     @Override

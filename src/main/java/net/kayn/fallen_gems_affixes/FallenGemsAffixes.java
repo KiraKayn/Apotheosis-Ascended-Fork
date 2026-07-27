@@ -157,6 +157,7 @@ public class FallenGemsAffixes {
 
     public void commonSetup(final FMLCommonSetupEvent event) {
         GemCaseNetwork.init();
+        Fallen.Common.bootstrap(event);
         // Any common setup logic
         event.enqueueWork(() -> {
             PlaceboUtil.registerCustomColor(FabledColor.FABLED);

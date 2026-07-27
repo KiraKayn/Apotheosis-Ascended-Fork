@@ -3,6 +3,7 @@ package net.kayn.fallen_gems_affixes.attachment.augment;
 import dev.shadowsoffire.apotheosis.adventure.affix.Affix;
 import dev.shadowsoffire.apotheosis.adventure.affix.AffixInstance;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
+import net.kayn.fallen_gems_affixes.Fallen;
 import net.kayn.fallen_gems_affixes.augment.AffixEither;
 import net.kayn.fallen_gems_affixes.augment.IAffixPowerProvider;
 import net.kayn.fallen_gems_affixes.augment.SupremacyAugment;
@@ -41,7 +42,7 @@ public class ToModifyAffixes extends AFactorInsAttributeSystem<DynamicHolder<? e
 
     @Override
     public AffixInstance createInsWith(AffixInstance old, float value) {
-        return new AffixInstance(old.affix(), old.stack(), old.rarity(), Mth.clamp(value, 0, SupremacyAugment.MAX_AFFIX_LEVEL));
+        return new AffixInstance(old.affix(), old.stack(), old.rarity(), Mth.clamp(value, 0, Fallen.Common.AFFIX_POWER_CAP));
     }
 
     public Map<DynamicHolder<? extends Affix>, AffixInstance> getOutput() {

@@ -10,6 +10,7 @@ import net.kayn.fallen_gems_affixes.attachment.rarity.ClientLikeSyncFallenRarity
 import net.kayn.fallen_gems_affixes.attachment.rarity.FallenRarity;
 import net.kayn.fallen_gems_affixes.attachment.rarity.FallenRarityRegistry;
 import net.kayn.fallen_gems_affixes.augment.*;
+import net.kayn.fallen_gems_affixes.config.ModConfig;
 import net.kayn.fallen_gems_affixes.network.ClientLikeSyncAugmentPacket;
 import net.kayn.fallen_gems_affixes.recipe.*;
 import net.kayn.fallen_gems_affixes.types.augment.IAugment;
@@ -20,6 +21,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -59,6 +61,13 @@ public class Fallen {
     public static class Common {
         public static final ResourceLocation FABLED_ID = ResourceLocation.fromNamespaceAndPath(FallenGemsAffixes.MOD_ID, "fabled");
         public static final Set<ResourceLocation> FALLEN_RARITIES = Set.of(FABLED_ID);
+        public static final float STANDARD_MAX_LEVEL = 1.0f;
+
+        public static final boolean AFFIX_POWER_CAPPED = ModConfig.HARD_AFFIX_POWER_CAP_SWITCH.get();
+        public static final boolean GEM_POWER_CAPPED = ModConfig.HARD_GEM_POWER_CAP_SWITCH.get();
+        public static final float AFFIX_POWER_CAP = AFFIX_POWER_CAPPED ? ModConfig.HARD_AFFIX_POWER_CAP.get().floatValue() : 2.0f;
+        public static final float GEM_POWER_CAP = GEM_POWER_CAPPED ? ModConfig.HARD_AFFIX_POWER_CAP.get().floatValue() : Integer.MAX_VALUE;
+        public static void bootstrap(FMLCommonSetupEvent event) {}
     }
 
     public static class Registries {
