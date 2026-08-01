@@ -71,6 +71,7 @@ public class AffixHelperMixin {
 
             float lvl = affixesTag.getFloat(key);
             DynamicHolder<LootRarity> effectiveRarity = fga$findBestCompatibleRarity(affixHolder.get(), stack, cat);
+            if (effectiveRarity == null) continue;
             result.put(affixHolder, new AffixInstance(affixHolder, stack, effectiveRarity, lvl));
         }
 
@@ -90,7 +91,7 @@ public class AffixHelperMixin {
                 if (affix.canApplyTo(stack, cat, holder.get())) return holder;
             } catch (Exception ignored) {}
         }
-        return RarityRegistry.getMinRarity();
+        return null;
     }
 
     @Inject(method = "setAffixes", at = @At("HEAD"))
