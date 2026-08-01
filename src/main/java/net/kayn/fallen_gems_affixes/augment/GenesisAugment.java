@@ -60,8 +60,6 @@ public class GenesisAugment implements IAugment {
     private static final String AFFIX_DATA   = "affix_data";
     public static final String AFFIXES_KEY  = "affixes";
 
-    public static final float MAX_AFFIX_LEVEL = SupremacyAugment.MAX_AFFIX_LEVEL;
-
 
     @Override public ResourceLocation getId()   { return GENESIS_ID; }
     @Override public boolean isUnique()          { return true; }
