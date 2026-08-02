@@ -1,17 +1,17 @@
 package net.kayn.fallen_gems_affixes.event;
 
-import dev.shadowsoffire.apotheosis.Apoth;
 import dev.shadowsoffire.apotheosis.adventure.Adventure;
 import dev.shadowsoffire.apotheosis.adventure.affix.Affix;
-import dev.shadowsoffire.apotheosis.adventure.affix.AffixHelper;
 import dev.shadowsoffire.apotheosis.adventure.affix.AffixRegistry;
 import dev.shadowsoffire.apotheosis.adventure.event.GetItemSocketsEvent;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootCategory;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
 import dev.shadowsoffire.apotheosis.adventure.loot.RarityRegistry;
+import dev.shadowsoffire.apotheosis.adventure.socket.SocketHelper;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
 import net.kayn.fallen_gems_affixes.Fallen;
 import net.kayn.fallen_gems_affixes.adventure.affix.SocketBonusAffix;
+import net.kayn.fallen_gems_affixes.config.ModConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,8 +26,15 @@ public class FallenEventHandler {
     public static void hookAddSocketsAffix(GetItemSocketsEvent event) {
         ItemStack stack = event.getStack();
         if (stack.isEmpty()) return;
-        if (!AffixHelper.hasAffixes(stack)) return;
-        event.setSockets(event.getSockets() + getAdditionalSocketsByAffix(stack));
+        CompoundTag afxData = stack.getTagElement(SocketHelper.AFFIX_DATA);
+        if (afxData != null && afxData.contains(SocketHelper.SOCKETS)) {
+            event.setSockets(event.getSockets() + getAdditionalSocketsByAffix(stack));
+            return;
+        }
+        // This is a hot spot event, don't add heavy logic here.
+        // But, if we don't check the LootCategory here,
+        // there will be minor extra codes to run, comparing to adding forItem here, it's acceptable
+        event.setSockets(event.getSockets() + ModConfig.EXTRA_SOCKETS.get());
     }
 
     public static int getAdditionalSocketsByAffix(ItemStack stack) {
