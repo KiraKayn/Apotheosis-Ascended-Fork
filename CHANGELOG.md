@@ -1,3 +1,9 @@
+# 2.1.3
+- Fixed Fabled Reforging Table crashes
+- Fixed Sigil of Transmutation not working in some modpacks
+- Fixed Performance issue with extra socket feature - rtxyd
+- Fixed rare catalyst socket rendering bug - rtxyd
+
 # 2.1.2
 - Fixed crash caused by Trickster's armor set affix
 - Fixed Fabled being more common than Ancient (Universal Bosses)
