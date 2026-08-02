@@ -3,17 +3,15 @@ package net.kayn.fallen_gems_affixes.recipe;
 import dev.shadowsoffire.apotheosis.adventure.affix.AffixHelper;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootCategory;
 import dev.shadowsoffire.apotheosis.adventure.socket.SocketHelper;
+import dev.shadowsoffire.apotheosis.adventure.socket.gem.GemInstance;
 import net.kayn.fallen_gems_affixes.Fallen;
 import net.kayn.fallen_gems_affixes.attachment.augment.AugmentHelper;
 import net.kayn.fallen_gems_affixes.event.FallenEventHandler;
 import net.kayn.fallen_gems_affixes.registry.ModItems;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -21,11 +19,6 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmithingTransformRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public class TransmutationRecipe extends SmithingTransformRecipe {
 
@@ -40,6 +33,8 @@ public class TransmutationRecipe extends SmithingTransformRecipe {
     public boolean isAdditionIngredient(ItemStack pStack) {
         return !pStack.isEmpty();
     }
+
+
 
     @Override
     public boolean matches(Container inv, Level level) {
@@ -58,14 +53,14 @@ public class TransmutationRecipe extends SmithingTransformRecipe {
         if (FallenEventHandler.isAffixCombined(base) || FallenEventHandler.isAffixCombined(source))   return false;
 
         if (AffixHelper.hasAffixes(base)) return false;
-        if (!SocketHelper.getGems(base).isEmpty()) return false;
+        if (SocketHelper.getGems(base).gems().stream().anyMatch(GemInstance::isValid)) return false;
         if (!AugmentHelper.getAugments(base).isEmpty()) return false;
 
         boolean hasAffixes = AffixHelper.hasAffixes(source);
         if (hasAffixes) return true;
         boolean hasGems = !SocketHelper.getGems(source).isEmpty();
         if (hasGems) return true;
-        return AugmentHelper.hasAugments(base);
+        return AugmentHelper.hasAugments(source);
     }
 
     @Override
