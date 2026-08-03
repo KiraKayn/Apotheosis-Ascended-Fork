@@ -27,14 +27,15 @@
     "DynamicHolderAccessor"
   ],
   "client": [
-    "AugmentingScreenMixin",
+    "client.AugmentingScreenMixin",
     "permanent_effect.client.AbstractContainerMenuMixin",
     "permanent_effect.client.LivingEntityMixin",
     "permanent_effect.client.MinecraftMixin",
     "permanent_effect.client.PlayerMixin",
     "permanent_effect.client.SlotMixin",
     "SocketTooltipRendererMixin",
-    "UniversalBossGlowMixin"
+    "UniversalBossGlowMixin",
+    "client.AdventureModuleClientMixin"
   ],
   "minVersion": "0.8"
 }

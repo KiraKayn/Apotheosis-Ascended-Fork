@@ -1,4 +1,4 @@
-package net.kayn.fallen_gems_affixes.mixin;
+package net.kayn.fallen_gems_affixes.mixin.iss;
 
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import io.redspace.ironsspellbooks.api.spells.CastSource;

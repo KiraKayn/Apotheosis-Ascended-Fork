@@ -1,20 +1,16 @@
-package net.kayn.fallen_gems_affixes.mixin;
+package net.kayn.fallen_gems_affixes.mixin.client;
 
-import dev.shadowsoffire.apotheosis.adventure.affix.Affix;
 import dev.shadowsoffire.apotheosis.adventure.affix.AffixInstance;
 import dev.shadowsoffire.apotheosis.adventure.affix.augmenting.AugmentingMenu;
 import dev.shadowsoffire.apotheosis.adventure.affix.augmenting.AugmentingScreen;
 import dev.shadowsoffire.apotheosis.adventure.client.SimpleTexButton;
-import dev.shadowsoffire.placebo.reload.DynamicHolder;
 import net.kayn.fallen_gems_affixes.attachment.augment.SpecialAffixEventHandler;
-import net.kayn.fallen_gems_affixes.attachment.augment.ToModifyAffixes;
 import net.kayn.fallen_gems_affixes.recipe.ErasureRecipe;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import net.rtxyd.fallen.lib.runtime.forgemod.util.ItemStackCakyHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,7 +18,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
-import java.util.Map;
 
 @Mixin(value = AugmentingScreen.class, remap = false)
 public abstract class AugmentingScreenMixin {
