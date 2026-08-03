@@ -13,9 +13,13 @@ import net.kayn.fallen_gems_affixes.adventure.set.SetAffixHelper;
 import net.kayn.fallen_gems_affixes.attachment.augment.SpecialAffixEventHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.rtxyd.fallen.lib.runtime.forgemod.util.GameLifecycleHelper;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -155,5 +159,21 @@ public class AffixHelperMixin {
         GameLifecycleHelper.callAndRemoveIfPresent(Fallen.ContextKeys.APPLIED_AFFIX, GameLifecycleHelper.EMPTY_EX_CONSUMER);
         GameLifecycleHelper.callAndRemoveIfPresent(Fallen.ContextKeys.REROLLED_AFFIX, GameLifecycleHelper.EMPTY_EX_CONSUMER);
         GameLifecycleHelper.callAndRemoveIfPresent(Fallen.ContextKeys.REROLLED_REMOVE, GameLifecycleHelper.EMPTY_EX_CONSUMER);
+    }
+
+    // apply affix power on arrow
+    @Inject(method = "copyFrom", at = @At(value = "RETURN"))
+    private static void copyTweak(ItemStack stack, Entity entity, CallbackInfo ci) {
+        Map<DynamicHolder<? extends Affix>, AffixInstance> affixes = AffixHelper.getAffixes(stack);
+        if (affixes.isEmpty()) return;
+
+        CompoundTag entityAffixData = entity.getPersistentData().getCompound(AffixHelper.AFFIX_DATA);
+        if (entityAffixData.isEmpty()) return;
+
+        CompoundTag affixesTag = new CompoundTag();
+        for(AffixInstance inst : affixes.values()) {
+            affixesTag.putFloat(inst.affix().getId().toString(), inst.level());
+        }
+        entityAffixData.put(AffixHelper.AFFIXES, affixesTag);
     }
 }
