@@ -9,7 +9,10 @@ import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
 import dev.shadowsoffire.placebo.util.StepFunction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.HitResult;
 
 import java.util.Map;
 import java.util.Set;
@@ -19,6 +22,7 @@ public class HomingAffix extends Affix {
     public static final float SEARCH_RANGE = 20f;
 
     public static final String KEY_TURN_RATE = "fga:homing_turn_rate";
+    public static final String KEY_DISABLE = "fag:homing_disable";
 
     public static final Codec<HomingAffix> CODEC = RecordCodecBuilder.create(inst ->
             inst.group(
@@ -65,5 +69,15 @@ public class HomingAffix extends Affix {
     public float getTurnRate(LootRarity rarity, float level) {
         StepFunction f = this.values.get(rarity);
         return f != null ? f.get(level) : 0f;
+    }
+
+    @Override
+    public void onArrowFired(ItemStack stack, LootRarity rarity, float level, LivingEntity user, AbstractArrow arrow) {
+        arrow.getPersistentData().putBoolean(KEY_DISABLE, false);
+    }
+
+    @Override
+    public void onArrowImpact(AbstractArrow arrow, LootRarity rarity, float level, HitResult res, HitResult.Type type) {
+        arrow.getPersistentData().putBoolean(KEY_DISABLE, true);
     }
 }

@@ -2,6 +2,7 @@ package net.kayn.fallen_gems_affixes.event;
 
 import dev.shadowsoffire.apotheosis.adventure.affix.AffixHelper;
 import net.kayn.fallen_gems_affixes.adventure.affix.*;
+import net.kayn.fallen_gems_affixes.util.DelayedTaskScheduler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -122,6 +123,19 @@ public class BowEventHandler {
                 if (turnRate > 0f) {
                     arrow.getPersistentData().putFloat(HomingAffix.KEY_TURN_RATE, turnRate);
                 }
+                ServerLevel level = (ServerLevel) event.getLevel();
+                repeatTickUntilDisable(level, arrow, 1);
+            }
+        });
+    }
+
+    private static void repeatTickUntilDisable(ServerLevel level, AbstractArrow arrow, int tickCount) {
+        DelayedTaskScheduler.schedule(level, 1, () -> {
+            if (arrow.isAlive() && !arrow.getPersistentData().getBoolean(HomingAffix.KEY_DISABLE)) {
+                if (tickCount < 200) {
+                    tickHoming(arrow, level);
+                    repeatTickUntilDisable(level, arrow, tickCount + 1);
+                }
             }
         });
     }
@@ -228,20 +242,7 @@ public class BowEventHandler {
                 SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 0.6f, 1.4f);
     }
 
-    @SubscribeEvent(priority = EventPriority.NORMAL)
-    public static void onLevelTick(net.minecraftforge.event.TickEvent.LevelTickEvent event) {
-        if (event.phase != net.minecraftforge.event.TickEvent.Phase.END) return;
-        if (event.level.isClientSide()) return;
-        if (!(event.level instanceof ServerLevel serverLevel)) return;
-
-        serverLevel.getEntities(
-                net.minecraft.world.entity.EntityType.ARROW,
-                arrow -> arrow.getPersistentData().contains(HomingAffix.KEY_TURN_RATE)
-                        && arrow.getDeltaMovement().lengthSqr() > 0.01
-        ).forEach(arrow -> tickHoming(arrow, serverLevel));
-    }
-
-    private static void tickHoming(net.minecraft.world.entity.projectile.Arrow arrow, ServerLevel level) {
+    private static void tickHoming(AbstractArrow arrow, ServerLevel level) {
         float turnRate = arrow.getPersistentData().getFloat(HomingAffix.KEY_TURN_RATE);
         if (turnRate <= 0f) return;
 
