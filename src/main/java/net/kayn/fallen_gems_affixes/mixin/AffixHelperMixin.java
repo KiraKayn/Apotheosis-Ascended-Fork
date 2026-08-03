@@ -170,10 +170,9 @@ public class AffixHelperMixin {
         CompoundTag entityAffixData = entity.getPersistentData().getCompound(AffixHelper.AFFIX_DATA);
         if (entityAffixData.isEmpty()) return;
 
-        CompoundTag affixesTag = new CompoundTag();
+        CompoundTag affixesTag = entityAffixData.getCompound(AffixHelper.AFFIXES);
         for(AffixInstance inst : affixes.values()) {
             affixesTag.putFloat(inst.affix().getId().toString(), inst.level());
         }
-        entityAffixData.put(AffixHelper.AFFIXES, affixesTag);
     }
 }
