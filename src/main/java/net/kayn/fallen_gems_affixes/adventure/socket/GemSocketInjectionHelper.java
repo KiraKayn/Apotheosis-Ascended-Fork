@@ -53,6 +53,7 @@ public final class GemSocketInjectionHelper {
         return switch (mode) {
             case HARDCORE -> gemOrdinal == socketTier;
             case ON       -> gemOrdinal <= socketTier;
+            default -> true;
         };
     }
 }

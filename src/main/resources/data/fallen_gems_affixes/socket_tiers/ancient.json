@@ -1,6 +1,7 @@
 {
+  "type": "fallen_gems_affixes:tiered_socket",
   "rarity": "apotheosis:ancient",
-  "color": "rainbow",
+  "rainbow": true,
   "chance": 0.05,
   "enabled": true
 }

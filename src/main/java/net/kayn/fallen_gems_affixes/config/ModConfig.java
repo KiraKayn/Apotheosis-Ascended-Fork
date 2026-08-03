@@ -100,8 +100,9 @@ public class ModConfig {
                         "           (e.g. a Common gem can go into an Epic socket).",
                         "HARDCORE - Only a gem of the EXACT same tier fits the socket",
                         "           (e.g. only an Epic gem can go into an Epic socket).",
+                        "OFF      - Totally disable tiered socket",
                         "",
-                        "To disable tiered sockets entirely, remove or empty the socket tier datapack folder",
+                        "To disable partial or add other socket tiers, you need to access datapack folder",
                         "When no tier definitions are loaded all sockets behave as plain Apotheosis sockets."
                 )
                 .defineEnum("tiered_socket_mode", TieredSocketMode.ON);
@@ -135,7 +136,7 @@ public class ModConfig {
         STRICT_UNIVERSAL_BOSS_ENCHANT_DROP = BUILDER
                 .comment("Use vanilla check for enchanting book drops, unobtainable books / treasure books will be excluded",
                          "If you want more fine-grained control, see data file located at data/fallen_gems_affixes/loot_modifiers/universal_boss_loot.json")
-                .define("strictUniversalBoosEnchantDrop", false);
+                .define("strictUniversalBossEnchantDrop", false);
 
         IRONS_ITEMS_MAP = BUILDER
                 .comment("Map of item Resource Locations to School Type IDs for Adaptive Spell Power Affixes")

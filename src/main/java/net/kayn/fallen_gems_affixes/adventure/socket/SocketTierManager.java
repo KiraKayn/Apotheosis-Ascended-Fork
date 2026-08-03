@@ -1,58 +1,61 @@
 package net.kayn.fallen_gems_affixes.adventure.socket;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
+import com.google.common.base.Predicates;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
 import dev.shadowsoffire.apotheosis.adventure.loot.RarityRegistry;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
+import net.kayn.fallen_gems_affixes.FallenGemsAffixes;
+import net.kayn.fallen_gems_affixes.config.ModConfig;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.profiling.ProfilerFiller;
+import net.rtxyd.fallen.lib.runtime.forgemod.network.DefaultPacketBoundRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.InputStreamReader;
 import java.util.*;
 
-public final class SocketTierManager extends SimplePreparableReloadListener<Map<ResourceLocation, JsonObject>> {
+public final class SocketTierManager extends DefaultPacketBoundRegistry<ISocketDefinition> {
 
-    public static final SocketTierManager INSTANCE = new SocketTierManager();
-    private static final Logger LOGGER = LogManager.getLogger();
-    private static final Gson GSON = new GsonBuilder().create();
-    private static final String FOLDER = "socket_tiers";
+    public static final ResourceLocation ID;
+    private static final Logger LOGGER;
+    private static final String FOLDER;
+    public static final SocketTierManager INSTANCE;
 
     private List<SocketTierDefinition> definitions = new ArrayList<>();
     private boolean needsResolution = true;
 
-    private SocketTierManager() {}
+    static {
+        // init them first.
+         ID = ResourceLocation.fromNamespaceAndPath(FallenGemsAffixes.MOD_ID, "tiered_socket");
+         LOGGER = LogManager.getLogger();
+         FOLDER = "socket_tiers";
+         INSTANCE = new SocketTierManager();
+    }
 
-    @Override
-    protected Map<ResourceLocation, JsonObject> prepare(ResourceManager manager, ProfilerFiller profiler) {
-        Map<ResourceLocation, JsonObject> raw = new LinkedHashMap<>();
-        manager.listResources(FOLDER, id -> id.getPath().endsWith(".json")).forEach((fileId, resource) -> {
-            try (InputStreamReader reader = new InputStreamReader(resource.open())) {
-                raw.put(fileId, GSON.fromJson(reader, JsonObject.class));
-            } catch (Exception e) {
-                LOGGER.error("[FGA] Failed to read socket tier file '{}'", fileId);
-            }
-        });
-        return raw;
+    private SocketTierManager() {
+        super(LOGGER, FOLDER, "type", Predicates.alwaysTrue(), true, false);
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonObject> data, ResourceManager manager, ProfilerFiller profiler) {
-        List<SocketTierDefinition> newDefs = new ArrayList<>();
-        data.forEach((id, json) -> {
-            SocketTierDefinition def = SocketTierDefinition.parse(json);
-            if (def != null) newDefs.add(def);
-        });
+    public void beginReload() {
+        super.beginReload();
+        definitions = new ArrayList<>();
+    }
 
-        this.definitions = newDefs;
-        this.needsResolution = true;
-        LOGGER.info("[FGA] Prepared {} socket tier definitions.", definitions.size());
+    @Override
+    public void onReload() {
+        super.onReload();
+        CatalystSocketConfig config = null;
+        for (ISocketDefinition value : this.registry.values()) {
+            if (value instanceof CatalystSocketConfig c) {
+                config = c;
+            } else if (value instanceof SocketTierDefinition tierDefinition){
+                definitions.add(tierDefinition);
+            }
+        }
+        if (config != null) {
+            CatalystSocketConfig.INSTANCE.apply(config);
+        }
     }
 
     private void ensureResolved() {
@@ -108,6 +111,12 @@ public final class SocketTierManager extends SimplePreparableReloadListener<Map<
     }
 
     public boolean isEnabled() {
-        return !definitions.isEmpty();
+        return !definitions.isEmpty() && ModConfig.TIERED_SOCKET_MODE.get() != TieredSocketMode.OFF;
+    }
+
+    @Override
+    protected void registerBuiltinCodecs() {
+        this.registerCodec(ID, SocketTierDefinition.CODEC);
+        this.registerCodec(CatalystSocketConfig.ID, CatalystSocketConfig.CODEC);
     }
 }

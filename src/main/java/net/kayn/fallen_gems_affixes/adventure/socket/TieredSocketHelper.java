@@ -20,7 +20,7 @@ public final class TieredSocketHelper {
 
     public static int[] getSocketTiers(ItemStack stack) {
         CompoundTag afxData = stack.getTagElement("affix_data");
-        if (afxData == null || !afxData.contains(SOCKET_TIERS_KEY)) return new int[0];
+        if (afxData == null || !afxData.contains(SOCKET_TIERS_KEY) || !SocketTierManager.INSTANCE.isEnabled()) return new int[0];
         return afxData.getIntArray(SOCKET_TIERS_KEY);
     }
 
@@ -52,6 +52,7 @@ public final class TieredSocketHelper {
         return switch (mode) {
             case HARDCORE -> gemOrdinal == socketTier;
             case ON       -> gemOrdinal <= socketTier;
+            default -> true;
         };
     }
 

@@ -1,12 +1,20 @@
 package net.kayn.fallen_gems_affixes.adventure.socket;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.kayn.fallen_gems_affixes.util.MiscUtil;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 
-import javax.annotation.Nullable;
+public final class SocketTierDefinition implements ISocketDefinition {
 
-public final class SocketTierDefinition {
+    public static final Codec<SocketTierDefinition> CODEC = RecordCodecBuilder.create(inst ->
+        inst.group(
+                ResourceLocation.CODEC.fieldOf("rarity").forGetter(s -> s.rarityId),
+                MiscUtil.COLOR_CODEC.optionalFieldOf("color", 0xFFFFFF).forGetter(s -> s.colorPacked),
+                Codec.BOOL.optionalFieldOf("rainbow", false).forGetter(s -> s.rainbow),
+                Codec.FLOAT.optionalFieldOf("chance", 0f).forGetter(s -> s.chance),
+                Codec.BOOL.optionalFieldOf("enabled", false).forGetter(s -> s.enabled)
+        ).apply(inst, SocketTierDefinition::new));
 
     private final ResourceLocation rarityId;
     private final int colorPacked;
@@ -41,24 +49,8 @@ public final class SocketTierDefinition {
         return "socket_tier." + rarityId.getNamespace() + "." + rarityId.getPath() + ".empty";
     }
 
-
-    @Nullable
-    public static SocketTierDefinition parse(JsonObject obj) {
-        try {
-            ResourceLocation rarityId = ResourceLocation.parse(GsonHelper.getAsString(obj, "rarity"));
-
-            String colorStr  = GsonHelper.getAsString(obj, "color", "#FFFFFF");
-            boolean rainbow  = colorStr.equalsIgnoreCase("rainbow");
-            int colorPacked  = rainbow
-                    ? 0xFFFFFF
-                    : Integer.parseInt(colorStr.startsWith("#") ? colorStr.substring(1) : colorStr, 16);
-
-            float chance     = GsonHelper.getAsFloat(obj, "chance", 0f);
-            boolean enabled  = GsonHelper.getAsBoolean(obj, "enabled", true);
-
-            return new SocketTierDefinition(rarityId, colorPacked, rainbow, chance, enabled);
-        } catch (Exception e) {
-            return null;
-        }
+    @Override
+    public Codec<? extends ISocketDefinition> getCodec() {
+        return CODEC;
     }
 }

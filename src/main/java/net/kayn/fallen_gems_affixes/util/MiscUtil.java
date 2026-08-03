@@ -1,6 +1,7 @@
 package net.kayn.fallen_gems_affixes.util;
 
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
 import dev.shadowsoffire.apotheosis.adventure.affix.Affix;
 import net.kayn.fallen_gems_affixes.recipe.ErasureRecipe;
 import net.minecraft.network.FriendlyByteBuf;
@@ -11,9 +12,12 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HexFormat;
 import java.util.function.Supplier;
 
 public class MiscUtil {
+    public static final Codec<Integer> COLOR_CODEC = Codec.STRING.xmap(s -> Integer.parseInt(s.startsWith("#") ? s.substring(1) : s, 16), i -> HexFormat.of().withUpperCase().toHexDigits(i & 0xFFFFFF, 6));
+
     public static boolean isOnCooldown(ResourceLocation id, float cooldown, LivingEntity entity) {
         long lastApplied = entity.getPersistentData().getLong("fga._cooldown." + id.toString());
         return lastApplied != 0 && lastApplied + cooldown >= entity.level().getGameTime();
