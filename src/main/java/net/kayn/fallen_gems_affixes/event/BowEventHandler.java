@@ -161,8 +161,7 @@ public class BowEventHandler {
     private static void repeatTickUntilDisable(ServerLevel level, AbstractArrow arrow, int tickCount) {
         DelayedTaskScheduler.schedule(level, 1, () -> {
             if (arrow.isAlive() && !arrow.getPersistentData().getBoolean(HomingAffix.KEY_DISABLE)) {
-                if (tickCount < 200) {
-                    tickHoming(arrow, level);
+                if (tickCount < 200 && tickHoming(arrow, level)) {
                     repeatTickUntilDisable(level, arrow, tickCount + 1);
                 }
             }
@@ -271,11 +270,11 @@ public class BowEventHandler {
                 SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 0.6f, 1.4f);
     }
 
-    private static void tickHoming(AbstractArrow arrow, ServerLevel level) {
+    private static boolean tickHoming(AbstractArrow arrow, ServerLevel level) {
         float turnRate = arrow.getPersistentData().getFloat(HomingAffix.KEY_TURN_RATE);
-        if (turnRate <= 0f) return;
+        if (turnRate <= 0f) return false;
 
-        net.minecraft.world.phys.AABB box = arrow.getBoundingBox().inflate(HomingAffix.SEARCH_RANGE);
+        AABB box = arrow.getBoundingBox().inflate(HomingAffix.SEARCH_RANGE);
         LivingEntity target = level.getEntitiesOfClass(LivingEntity.class, box,
                         e -> e.isAlive()
                                 && !(e instanceof Player)
@@ -284,26 +283,34 @@ public class BowEventHandler {
                 .min(Comparator.comparingDouble(e -> e.distanceToSqr(arrow)))
                 .orElse(null);
 
-        if (target == null) return;
+        if (target == null) return false;
 
-        net.minecraft.world.phys.Vec3 vel = arrow.getDeltaMovement();
-        double speed = vel.length();
-        if (speed < 1e-6) return;
+        Vec3 vel = arrow.getDeltaMovement();
+        Vec3 horizontalVel = new Vec3(vel.x, 0, vel.z);
+        double horizontalSpeed = horizontalVel.length();
+        if (horizontalSpeed < 1e-6) return false;
 
-        net.minecraft.world.phys.Vec3 toTarget = new net.minecraft.world.phys.Vec3(
+        Vec3 toTarget = new Vec3(
                 target.getX() - arrow.getX(),
-                target.getY() + target.getBbHeight() * 0.5 - arrow.getY(),
+                0,
                 target.getZ() - arrow.getZ()
         ).normalize();
 
-        net.minecraft.world.phys.Vec3 newVel = vel.normalize()
+        Vec3 newHorizontal = horizontalVel.normalize()
                 .lerp(toTarget, turnRate)
                 .normalize()
-                .scale(speed);
+                .scale(horizontalSpeed);
+
+        Vec3 newVel = new Vec3(
+                newHorizontal.x,
+                vel.y,
+                newHorizontal.z
+        );
 
         arrow.setDeltaMovement(newVel);
         arrow.setYRot((float) (Math.toDegrees(Math.atan2(-newVel.x, newVel.z))));
         arrow.setXRot((float) (Math.toDegrees(Math.atan2(-newVel.y,
                 Math.sqrt(newVel.x * newVel.x + newVel.z * newVel.z)))));
+        return true;
     }
 }
