@@ -30,6 +30,7 @@
   "client": [
     "SocketTooltipRendererMixin",
     "UniversalBossGlowMixin",
+    "client.AdventureModuleClientMixin",
     "client.AugmentingScreenMixin",
     "permanent_effect.client.AbstractContainerMenuMixin",
     "permanent_effect.client.LivingEntityMixin",

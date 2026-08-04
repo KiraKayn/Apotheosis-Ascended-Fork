@@ -3,7 +3,8 @@ package net.kayn.fallen_gems_affixes.mixin.client;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import dev.shadowsoffire.apotheosis.adventure.client.AdventureModuleClient;
-import net.kayn.fallen_gems_affixes.config.ModConfig;
+import dev.shadowsoffire.apotheosis.adventure.socket.SocketHelper;
+import dev.shadowsoffire.apotheosis.adventure.socket.SocketedGems;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -15,8 +16,9 @@ import org.spongepowered.asm.mixin.injection.At;
 public class AdventureModuleClientMixin {
     @WrapOperation(method = "tooltips", at = @At(value = "INVOKE", target = "Ldev/shadowsoffire/apotheosis/adventure/socket/SocketHelper;getSockets(Lnet/minecraft/world/item/ItemStack;)I"))
     private static int hideApothRemoveMarker(ItemStack stack, Operation<Integer> original) {
-        if (original.call(stack) - ModConfig.EXTRA_SOCKETS.get() <= 0) {
+        if (SocketHelper.getGems(stack) == SocketedGems.EMPTY) {
             return 0;
-        } else return original.call(stack);
+        }
+        return original.call(stack);
     }
 }
