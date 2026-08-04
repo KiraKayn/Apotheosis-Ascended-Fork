@@ -3,11 +3,11 @@ package net.kayn.fallen_gems_affixes.mixin.client;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import dev.shadowsoffire.apotheosis.adventure.client.AdventureModuleClient;
-import dev.shadowsoffire.apotheosis.adventure.socket.SocketHelper;
-import dev.shadowsoffire.apotheosis.adventure.socket.SocketedGems;
+import net.kayn.fallen_gems_affixes.Fallen;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.rtxyd.fallen.lib.runtime.forgemod.util.GameLifecycleHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -16,9 +16,12 @@ import org.spongepowered.asm.mixin.injection.At;
 public class AdventureModuleClientMixin {
     @WrapOperation(method = "tooltips", at = @At(value = "INVOKE", target = "Ldev/shadowsoffire/apotheosis/adventure/socket/SocketHelper;getSockets(Lnet/minecraft/world/item/ItemStack;)I"))
     private static int hideApothRemoveMarker(ItemStack stack, Operation<Integer> original) {
-        if (SocketHelper.getGems(stack) == SocketedGems.EMPTY) {
+        ItemStack renderedStack = GameLifecycleHelper.callAndRemoveIfPresent(Fallen.ContextKeys.RENDER_APOTH_TOOLTIP_ITEM, GameLifecycleHelper.EMPTY_EX_CONSUMER);
+        if (stack == renderedStack || stack.getOrCreateTag().getBoolean(Fallen.ContextKeys.RENDER_APOTH_TOOLTIP_ITEM.getId())) {
+            stack.getOrCreateTag().remove(Fallen.ContextKeys.RENDER_APOTH_TOOLTIP_ITEM.getId());
+            return original.call(stack);
+        } else {
             return 0;
         }
-        return original.call(stack);
     }
 }

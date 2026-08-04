@@ -18,6 +18,7 @@ import net.kayn.fallen_gems_affixes.util.ArrowFireCache;
 import net.kayn.fallen_gems_affixes.util.MiscUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -48,6 +49,7 @@ public class Fallen {
         public static final ContextKey<AffixInstance> REROLLED_AFFIX = GameLifecycleHelper.registerContextKey("fga.affix.rerolled_affix");
         public static final ContextKey<AffixInstance> REROLLED_REMOVE = GameLifecycleHelper.registerContextKey("fga.affix.rerolled_remove");
         public static final ContextKey<ArrowFireCache> ARROW_FIRE_CACHE = GameLifecycleHelper.registerContextKey("fga.cache.arrow_fire");
+        public static final ContextKey<ItemStack> RENDER_APOTH_TOOLTIP_ITEM = GameLifecycleHelper.registerContextKey("fga.render.apoth_tooltip_item");
 
         public static void register() {}
     }
