@@ -10,7 +10,9 @@ import dev.shadowsoffire.apotheosis.adventure.loot.RarityRegistry;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
 import net.kayn.fallen_gems_affixes.Fallen;
 import net.kayn.fallen_gems_affixes.adventure.set.SetAffixHelper;
+import net.kayn.fallen_gems_affixes.attachment.augment.LiveAugments;
 import net.kayn.fallen_gems_affixes.attachment.augment.SpecialAffixEventHandler;
+import net.kayn.fallen_gems_affixes.attachment.augment.ToModifyAffixes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -164,14 +166,14 @@ public class AffixHelperMixin {
     // apply affix power on arrow
     @Inject(method = "copyFrom", at = @At(value = "RETURN"))
     private static void copyTweak(ItemStack stack, Entity entity, CallbackInfo ci) {
-        Map<DynamicHolder<? extends Affix>, AffixInstance> affixes = AffixHelper.getAffixes(stack);
-        if (affixes.isEmpty()) return;
+        ToModifyAffixes toModifyAffixes = SpecialAffixEventHandler.getToModifyAffixes(stack);
+        if (toModifyAffixes.getInput().isEmpty() || toModifyAffixes.getFactor().isEmpty()) return;
 
         CompoundTag entityAffixData = entity.getPersistentData().getCompound(AffixHelper.AFFIX_DATA);
         if (entityAffixData.isEmpty()) return;
 
         CompoundTag affixesTag = entityAffixData.getCompound(AffixHelper.AFFIXES);
-        for(AffixInstance inst : affixes.values()) {
+        for(AffixInstance inst : toModifyAffixes.getOutput().values()) {
             affixesTag.putFloat(inst.affix().getId().toString(), inst.level());
         }
     }
