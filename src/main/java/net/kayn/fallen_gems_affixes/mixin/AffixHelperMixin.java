@@ -166,11 +166,10 @@ public class AffixHelperMixin {
     // apply affix power on arrow
     @Inject(method = "copyFrom", at = @At(value = "RETURN"))
     private static void copyTweak(ItemStack stack, Entity entity, CallbackInfo ci) {
-        ToModifyAffixes toModifyAffixes = SpecialAffixEventHandler.getToModifyAffixes(stack);
-        if (toModifyAffixes.getInput().isEmpty() || toModifyAffixes.getFactor().isEmpty()) return;
-
         CompoundTag entityAffixData = entity.getPersistentData().getCompound(AffixHelper.AFFIX_DATA);
         if (entityAffixData.isEmpty()) return;
+        ToModifyAffixes toModifyAffixes = SpecialAffixEventHandler.getToModifyAffixes(stack);
+        if (toModifyAffixes.getInput().isEmpty() || toModifyAffixes.getFactor().isEmpty()) return;
 
         CompoundTag affixesTag = entityAffixData.getCompound(AffixHelper.AFFIXES);
         for(AffixInstance inst : toModifyAffixes.getOutput().values()) {
