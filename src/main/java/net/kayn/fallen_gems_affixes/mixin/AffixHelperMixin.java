@@ -163,7 +163,7 @@ public class AffixHelperMixin {
         GameLifecycleHelper.callAndRemoveIfPresent(Fallen.ContextKeys.REROLLED_REMOVE, GameLifecycleHelper.EMPTY_EX_CONSUMER);
     }
 
-    // apply affix power on arrow
+    // apply affix power when copy affixes to entity
     @Inject(method = "copyFrom", at = @At(value = "RETURN"))
     private static void copyTweak(ItemStack stack, Entity entity, CallbackInfo ci) {
         CompoundTag entityAffixData = entity.getPersistentData().getCompound(AffixHelper.AFFIX_DATA);

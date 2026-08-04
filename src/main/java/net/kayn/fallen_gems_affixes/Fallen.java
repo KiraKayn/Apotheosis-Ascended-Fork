@@ -11,10 +11,10 @@ import net.kayn.fallen_gems_affixes.attachment.rarity.ClientLikeSyncFallenRarity
 import net.kayn.fallen_gems_affixes.attachment.rarity.FallenRarity;
 import net.kayn.fallen_gems_affixes.attachment.rarity.FallenRarityRegistry;
 import net.kayn.fallen_gems_affixes.augment.*;
-import net.kayn.fallen_gems_affixes.config.ModConfig;
 import net.kayn.fallen_gems_affixes.network.ClientLikeSyncAugmentPacket;
 import net.kayn.fallen_gems_affixes.recipe.*;
 import net.kayn.fallen_gems_affixes.types.augment.IAugment;
+import net.kayn.fallen_gems_affixes.util.ArrowFireCache;
 import net.kayn.fallen_gems_affixes.util.MiscUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
@@ -47,6 +47,7 @@ public class Fallen {
         public static final ContextKey<AffixInstance> APPLIED_AFFIX = GameLifecycleHelper.registerContextKey("fga.affix.applied_affix");
         public static final ContextKey<AffixInstance> REROLLED_AFFIX = GameLifecycleHelper.registerContextKey("fga.affix.rerolled_affix");
         public static final ContextKey<AffixInstance> REROLLED_REMOVE = GameLifecycleHelper.registerContextKey("fga.affix.rerolled_remove");
+        public static final ContextKey<ArrowFireCache> ARROW_FIRE_CACHE = GameLifecycleHelper.registerContextKey("fga.cache.arrow_fire");
 
         public static void register() {}
     }
@@ -61,6 +62,7 @@ public class Fallen {
 
     public static class Common {
         public static final ResourceLocation FABLED_ID = ResourceLocation.fromNamespaceAndPath(FallenGemsAffixes.MOD_ID, "fabled");
+        public static final String KEY_ARROW_FIRE_CACHE = "fga.cache.arrow_fire";
         public static final Set<ResourceLocation> FALLEN_RARITIES = Set.of(FABLED_ID);
         public static final float STANDARD_MAX_LEVEL = 1.0f;
         public static final float MAX_AFFIX_LEVEL = 2.0f;

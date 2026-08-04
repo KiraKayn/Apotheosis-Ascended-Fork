@@ -1,28 +1,41 @@
 package net.kayn.fallen_gems_affixes.event;
 
+import dev.shadowsoffire.apotheosis.adventure.affix.Affix;
 import dev.shadowsoffire.apotheosis.adventure.affix.AffixHelper;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixInstance;
+import dev.shadowsoffire.placebo.reload.DynamicHolder;
+import net.kayn.fallen_gems_affixes.Fallen;
 import net.kayn.fallen_gems_affixes.adventure.affix.*;
+import net.kayn.fallen_gems_affixes.attachment.augment.SpecialAffixEventHandler;
+import net.kayn.fallen_gems_affixes.util.ArrowFireCache;
 import net.kayn.fallen_gems_affixes.util.DelayedTaskScheduler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.rtxyd.fallen.lib.runtime.forgemod.util.GameLifecycleHelper;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class BowEventHandler {
 
@@ -99,34 +112,50 @@ public class BowEventHandler {
         arrow.getPersistentData().putDouble(MomentumAffix.KEY_ORIGIN_X, arrow.getX());
         arrow.getPersistentData().putDouble(MomentumAffix.KEY_ORIGIN_Y, arrow.getY());
         arrow.getPersistentData().putDouble(MomentumAffix.KEY_ORIGIN_Z, arrow.getZ());
-
-        AffixHelper.streamAffixes(arrow).forEach(inst -> {
-            if (!inst.isValid()) return;
-
-            if (inst.affix().get() instanceof PiercingArrowAffix affix) {
-                int pierceLevel = affix.getPierceLevel(inst.rarity().get(), inst.level());
-                if (pierceLevel > 0) {
-                    arrow.setPierceLevel((byte) Math.max(arrow.getPierceLevel(), pierceLevel));
-                }
+        // clear and get the data record by AdventureEvents mixin
+        ArrowFireCache cache = GameLifecycleHelper.callAndRemoveIfPresent(Fallen.ContextKeys.ARROW_FIRE_CACHE, GameLifecycleHelper.EMPTY_EX_CONSUMER);
+        ItemStack bow = null;
+        if (cache != null) {
+            // directly trigger the bow affixes, so overwrite won't influence it.
+            if (arrow == cache.getArrow() || arrow.getPersistentData().getBoolean(Fallen.Common.KEY_ARROW_FIRE_CACHE)) {
+                arrow.getPersistentData().remove(Fallen.Common.KEY_ARROW_FIRE_CACHE);
+                bow = cache.getBow();
             }
+        }
+        Map<DynamicHolder<? extends Affix>, AffixInstance> affixes = AffixHelper.getAffixes(arrow);
+        if (bow != null) {
+            affixes.putAll(SpecialAffixEventHandler.getToModifyAffixes(bow).getOutput());
+        }
+        for (AffixInstance inst : affixes.values()) {
+            triggerBowAffixes(inst, arrow, event);
+        }
+    }
 
-            if (inst.affix().get() instanceof ChainShotAffix affix) {
-                arrow.getPersistentData().putFloat(ChainShotAffix.KEY_CACHED_RANGE, affix.getMaxRange());
+    private static void triggerBowAffixes(AffixInstance inst, AbstractArrow arrow, EntityJoinLevelEvent event) {
+        if (!inst.isValid()) return;
+        if (inst.affix().get() instanceof PiercingArrowAffix affix) {
+            int pierceLevel = affix.getPierceLevel(inst.rarity().get(), inst.level());
+            if (pierceLevel > 0) {
+                arrow.setPierceLevel((byte) Math.max(arrow.getPierceLevel(), pierceLevel));
             }
+        }
 
-            if (inst.affix().get() instanceof TrueShotAffix) {
-                arrow.getPersistentData().putBoolean(TrueShotAffix.KEY_TRUE_SHOT, true);
-            }
+        if (inst.affix().get() instanceof ChainShotAffix affix) {
+            arrow.getPersistentData().putFloat(ChainShotAffix.KEY_CACHED_RANGE, affix.getMaxRange());
+        }
 
-            if (inst.affix().get() instanceof HomingAffix affix) {
-                float turnRate = affix.getTurnRate(inst.rarity().get(), inst.level());
-                if (turnRate > 0f) {
-                    arrow.getPersistentData().putFloat(HomingAffix.KEY_TURN_RATE, turnRate);
-                }
-                ServerLevel level = (ServerLevel) event.getLevel();
-                repeatTickUntilDisable(level, arrow, 1);
+        if (inst.affix().get() instanceof TrueShotAffix) {
+            arrow.getPersistentData().putBoolean(TrueShotAffix.KEY_TRUE_SHOT, true);
+        }
+
+        if (inst.affix().get() instanceof HomingAffix affix) {
+            float turnRate = affix.getTurnRate(inst.rarity().get(), inst.level());
+            if (turnRate > 0f) {
+                arrow.getPersistentData().putFloat(HomingAffix.KEY_TURN_RATE, turnRate);
             }
-        });
+            ServerLevel level = (ServerLevel) event.getLevel();
+            repeatTickUntilDisable(level, arrow, 1);
+        }
     }
 
     private static void repeatTickUntilDisable(ServerLevel level, AbstractArrow arrow, int tickCount) {
