@@ -7,6 +7,7 @@ import dev.shadowsoffire.apotheosis.adventure.affix.AffixRegistry;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootCategory;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
 import dev.shadowsoffire.apotheosis.adventure.loot.RarityRegistry;
+import dev.shadowsoffire.apotheosis.adventure.socket.SocketHelper;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
 import net.kayn.fallen_gems_affixes.Fallen;
 import net.kayn.fallen_gems_affixes.adventure.set.SetAffixHelper;
@@ -164,6 +165,7 @@ public class AffixHelperMixin {
     }
 
     // apply affix power when copy affixes to entity
+    // arrows directly getAffixes and getGems from NBT
     @Inject(method = "copyFrom", at = @At(value = "RETURN"))
     private static void copyTweak(ItemStack stack, Entity entity, CallbackInfo ci) {
         CompoundTag entityAffixData = entity.getPersistentData().getCompound(AffixHelper.AFFIX_DATA);
@@ -175,5 +177,7 @@ public class AffixHelperMixin {
         for(AffixInstance inst : toModifyAffixes.getOutput().values()) {
             affixesTag.putFloat(inst.affix().getId().toString(), inst.level());
         }
+        // apply maybe modified sockets
+        entityAffixData.putInt(SocketHelper.SOCKETS, SocketHelper.getSockets(stack));
     }
 }
