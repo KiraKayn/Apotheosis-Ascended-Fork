@@ -111,8 +111,28 @@ public class BowEventHandler {
         }
         // ensure bow affixes and gems effect on impact
         if (bow != null) {
-            arrow.getPersistentData().getCompound(AffixHelper.AFFIX_DATA).getCompound(SocketHelper.GEMS).merge(bow.getOrCreateTagElement(SocketHelper.GEMS));
-            arrow.getPersistentData().getCompound(AffixHelper.AFFIX_DATA).getCompound(AffixHelper.AFFIXES).merge(bow.getOrCreateTagElement(AffixHelper.AFFIXES));
+            CompoundTag bowAfxData = bow.getOrCreateTag().getCompound(AffixHelper.AFFIX_DATA);
+            if (bowAfxData.isEmpty()) return;
+            CompoundTag afxData = arrow.getPersistentData().getCompound(AffixHelper.AFFIX_DATA);
+            CompoundTag gems = afxData.getCompound(SocketHelper.GEMS);
+            CompoundTag bowGems = bowAfxData.getCompound(SocketHelper.GEMS).copy();
+            if (gems.isEmpty()) {
+                afxData.put(SocketHelper.GEMS, bowGems);
+            } else {
+                gems.merge(bowGems);
+            }
+            CompoundTag affixes = afxData.getCompound(AffixHelper.AFFIXES);
+            CompoundTag bowAffixes = bowAfxData.getCompound(AffixHelper.AFFIXES).copy();
+            if (affixes.isEmpty()) {
+                afxData.put(AffixHelper.AFFIXES, bowAffixes);
+            } else {
+                afxData.merge(bowAffixes);
+            }
+            int sockets = afxData.getInt(SocketHelper.SOCKETS);
+            int bowSockets = SocketHelper.getSockets(bow);
+            if (bowSockets > sockets) {
+                afxData.putInt(SocketHelper.SOCKETS, bowSockets);
+            }
         }
     }
 
