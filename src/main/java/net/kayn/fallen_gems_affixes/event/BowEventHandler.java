@@ -283,7 +283,7 @@ public class BowEventHandler {
                 .min(Comparator.comparingDouble(e -> e.distanceToSqr(arrow)))
                 .orElse(null);
 
-        if (target == null) return false;
+        if (target == null) return true;
 
         Vec3 vel = arrow.getDeltaMovement();
         Vec3 horizontalVel = new Vec3(vel.x, 0, vel.z);
