@@ -69,7 +69,7 @@ public class AugmentRecipe extends SmithingTransformRecipe implements IAugmentRe
         AugmentMeta meta = AugmentItem.getAugmentData(augmentItem);
         if (meta == null) return result;
         IAugment aug = meta.getAugment();
-        Level level = GameLifecycleHelper.callIfPresent(Fallen.ContextKeys.AUG_RECIPE_LEVEL, e -> {});
+        Level level = GameLifecycleHelper.callAndRemoveSameTickAndFirstOnly(Fallen.ContextKeys.AUG_RECIPE_LEVEL, GameLifecycleHelper.EMPTY_EX_CONSUMER);
         if (level == null) return result;
         if (!MinecraftForge.EVENT_BUS.post(new AssembleAugmentRecipeEvent(cont, level))) {
             if (aug.onAssemble(result, augmentItem, aug, cont, level)) {

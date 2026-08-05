@@ -103,8 +103,8 @@ public class AffixHelperMixin {
 
     @Inject(method = "setAffixes", at = @At("HEAD"))
     private static void setAffixesA(ItemStack stack, Map<DynamicHolder<? extends Affix>, AffixInstance> affixes, CallbackInfo ci) {
-        AffixInstance ins = GameLifecycleHelper.callAndRemoveIfPresent(Fallen.ContextKeys.APPLIED_AFFIX, GameLifecycleHelper.EMPTY_EX_CONSUMER);
-        AffixInstance ins2 = GameLifecycleHelper.callAndRemoveIfPresent(Fallen.ContextKeys.REROLLED_AFFIX, GameLifecycleHelper.EMPTY_EX_CONSUMER);
+        AffixInstance ins = GameLifecycleHelper.callAndRemoveSameTickAndFirstOnly(Fallen.ContextKeys.APPLIED_AFFIX, GameLifecycleHelper.EMPTY_EX_CONSUMER);
+        AffixInstance ins2 = GameLifecycleHelper.callAndRemoveSameTickAndFirstOnly(Fallen.ContextKeys.REROLLED_AFFIX, GameLifecycleHelper.EMPTY_EX_CONSUMER);
         if (ins != null) {
             if (affixes.containsValue(ins)) {
                 if (ins.stack() != stack) {
@@ -127,7 +127,7 @@ public class AffixHelperMixin {
             }
         }
         if (ins2 != null) {
-            AffixInstance ins3 = GameLifecycleHelper.callAndRemoveIfPresent(Fallen.ContextKeys.REROLLED_REMOVE, GameLifecycleHelper.EMPTY_EX_CONSUMER);
+            AffixInstance ins3 = GameLifecycleHelper.callAndRemoveSameTickAndFirstOnly(Fallen.ContextKeys.REROLLED_REMOVE, GameLifecycleHelper.EMPTY_EX_CONSUMER);
             if (ins3 == null) return;
             if (affixes.containsValue(ins2)) {
                 if (ins2.stack() != stack) {
@@ -159,9 +159,9 @@ public class AffixHelperMixin {
 
     @Inject(method = "setAffixes", at = @At("RETURN"))
     private static void setAffixesB(ItemStack stack, Map<DynamicHolder<? extends Affix>, AffixInstance> affixes, CallbackInfo ci) {
-        GameLifecycleHelper.callAndRemoveIfPresent(Fallen.ContextKeys.APPLIED_AFFIX, GameLifecycleHelper.EMPTY_EX_CONSUMER);
-        GameLifecycleHelper.callAndRemoveIfPresent(Fallen.ContextKeys.REROLLED_AFFIX, GameLifecycleHelper.EMPTY_EX_CONSUMER);
-        GameLifecycleHelper.callAndRemoveIfPresent(Fallen.ContextKeys.REROLLED_REMOVE, GameLifecycleHelper.EMPTY_EX_CONSUMER);
+        GameLifecycleHelper.removeWithoutCall(Fallen.ContextKeys.APPLIED_AFFIX);
+        GameLifecycleHelper.removeWithoutCall(Fallen.ContextKeys.REROLLED_AFFIX);
+        GameLifecycleHelper.removeWithoutCall(Fallen.ContextKeys.REROLLED_REMOVE);
     }
 
     // apply affix power when copy affixes to entity

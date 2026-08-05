@@ -101,7 +101,7 @@ public class BowEventHandler {
         if (event.getLevel().isClientSide()) return;
         if (!(event.getEntity() instanceof AbstractArrow arrow)) return;
         // clear and get the data record by AdventureEvents mixin
-        ArrowFireCache cache = GameLifecycleHelper.callAndRemoveIfPresent(Fallen.ContextKeys.ARROW_FIRE_CACHE, GameLifecycleHelper.EMPTY_EX_CONSUMER);
+        ArrowFireCache cache = GameLifecycleHelper.callAndRemoveSameTickAndFirstOnly(Fallen.ContextKeys.ARROW_FIRE_CACHE, GameLifecycleHelper.EMPTY_EX_CONSUMER);
         ItemStack bow = null;
         if (cache != null) {
             if (arrow == cache.getArrow() || arrow.getPersistentData().getBoolean(Fallen.Common.KEY_ARROW_FIRE_CACHE)) {
