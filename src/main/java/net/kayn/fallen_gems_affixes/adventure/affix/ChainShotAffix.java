@@ -9,6 +9,8 @@ import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
 import dev.shadowsoffire.placebo.codec.PlaceboCodecs;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Map;
@@ -63,5 +65,10 @@ public class ChainShotAffix extends Affix {
 
     public float getMaxRange() {
         return maxRange;
+    }
+
+    @Override
+    public void onArrowFired(ItemStack stack, LootRarity rarity, float level, LivingEntity user, AbstractArrow arrow) {
+        arrow.getPersistentData().putFloat(ChainShotAffix.KEY_CACHED_RANGE, maxRange);
     }
 }

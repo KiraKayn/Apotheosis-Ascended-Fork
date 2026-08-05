@@ -7,13 +7,20 @@ import dev.shadowsoffire.apotheosis.adventure.affix.AffixType;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootCategory;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
 import dev.shadowsoffire.placebo.util.StepFunction;
+import net.kayn.fallen_gems_affixes.util.DelayedTaskScheduler;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
 
@@ -74,10 +81,71 @@ public class HomingAffix extends Affix {
     @Override
     public void onArrowFired(ItemStack stack, LootRarity rarity, float level, LivingEntity user, AbstractArrow arrow) {
         arrow.getPersistentData().putBoolean(KEY_DISABLE, false);
+        float turnRate = getTurnRate(rarity, level);
+        if (turnRate > 0f) {
+            arrow.getPersistentData().putFloat(HomingAffix.KEY_TURN_RATE, turnRate);
+        }
+        if (user.level() instanceof ServerLevel serverLevel) {
+            repeatTickUntilDisable(serverLevel, arrow, 1);
+        }
+    }
+
+    private static void repeatTickUntilDisable(ServerLevel level, AbstractArrow arrow, int tickCount) {
+        DelayedTaskScheduler.schedule(level, 1, () -> {
+            if (arrow.isAlive() && !arrow.getPersistentData().getBoolean(HomingAffix.KEY_DISABLE)) {
+                if (tickCount < 200 && tickHoming(arrow, level)) {
+                    repeatTickUntilDisable(level, arrow, tickCount + 1);
+                }
+            }
+        });
     }
 
     @Override
     public void onArrowImpact(AbstractArrow arrow, LootRarity rarity, float level, HitResult res, HitResult.Type type) {
         arrow.getPersistentData().putBoolean(KEY_DISABLE, true);
+    }
+
+    private static boolean tickHoming(AbstractArrow arrow, ServerLevel level) {
+        float turnRate = arrow.getPersistentData().getFloat(HomingAffix.KEY_TURN_RATE);
+        if (turnRate <= 0f) return false;
+
+        AABB box = arrow.getBoundingBox().inflate(HomingAffix.SEARCH_RANGE);
+        LivingEntity target = level.getEntitiesOfClass(LivingEntity.class, box,
+                        e -> e.isAlive()
+                                && !(e instanceof Player)
+                                && e != arrow.getOwner())
+                .stream()
+                .min(Comparator.comparingDouble(e -> e.distanceToSqr(arrow)))
+                .orElse(null);
+
+        if (target == null) return true;
+
+        Vec3 vel = arrow.getDeltaMovement();
+        Vec3 horizontalVel = new Vec3(vel.x, 0, vel.z);
+        double horizontalSpeed = horizontalVel.length();
+        if (horizontalSpeed < 1e-6) return false;
+
+        Vec3 toTarget = new Vec3(
+                target.getX() - arrow.getX(),
+                0,
+                target.getZ() - arrow.getZ()
+        ).normalize();
+
+        Vec3 newHorizontal = horizontalVel.normalize()
+                .lerp(toTarget, turnRate)
+                .normalize()
+                .scale(horizontalSpeed);
+
+        Vec3 newVel = new Vec3(
+                newHorizontal.x,
+                vel.y,
+                newHorizontal.z
+        );
+
+        arrow.setDeltaMovement(newVel);
+        arrow.setYRot((float) (Math.toDegrees(Math.atan2(-newVel.x, newVel.z))));
+        arrow.setXRot((float) (Math.toDegrees(Math.atan2(-newVel.y,
+                Math.sqrt(newVel.x * newVel.x + newVel.z * newVel.z)))));
+        return true;
     }
 }

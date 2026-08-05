@@ -8,6 +8,8 @@ import dev.shadowsoffire.apotheosis.adventure.loot.LootCategory;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Map;
@@ -49,5 +51,10 @@ public class TrueShotAffix extends Affix {
     @Override
     public Component getAugmentingText(ItemStack stack, LootRarity rarity, float level) {
         return getDescription(stack, rarity, level);
+    }
+
+    @Override
+    public void onArrowFired(ItemStack stack, LootRarity rarity, float level, LivingEntity user, AbstractArrow arrow) {
+        arrow.getPersistentData().putBoolean(TrueShotAffix.KEY_TRUE_SHOT, true);
     }
 }

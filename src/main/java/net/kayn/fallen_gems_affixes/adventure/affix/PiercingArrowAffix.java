@@ -9,6 +9,8 @@ import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
 import dev.shadowsoffire.placebo.util.StepFunction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Map;
@@ -64,5 +66,13 @@ public class PiercingArrowAffix extends Affix {
     public int getPierceLevel(LootRarity rarity, float level) {
         StepFunction f = this.values.get(rarity);
         return f != null ? (int) f.get(level) : 0;
+    }
+
+    @Override
+    public void onArrowFired(ItemStack stack, LootRarity rarity, float level, LivingEntity user, AbstractArrow arrow) {
+        int pierceLevel = getPierceLevel(rarity, level);
+        if (pierceLevel > 0) {
+            arrow.setPierceLevel((byte) Math.max(arrow.getPierceLevel(), pierceLevel));
+        }
     }
 }

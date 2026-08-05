@@ -11,8 +11,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.HitResult;
 
 import java.util.Map;
 import java.util.Set;
@@ -91,5 +93,18 @@ public class MomentumAffix extends Affix {
         float maxBonus = this.getMaxBonus(rarity, level);
 
         return 1f + maxBonus * ratio;
+    }
+
+    @Override
+    public void onArrowFired(ItemStack stack, LootRarity rarity, float level, LivingEntity user, AbstractArrow arrow) {
+        arrow.getPersistentData().putDouble(MomentumAffix.KEY_ORIGIN_X, arrow.getX());
+        arrow.getPersistentData().putDouble(MomentumAffix.KEY_ORIGIN_Y, arrow.getY());
+        arrow.getPersistentData().putDouble(MomentumAffix.KEY_ORIGIN_Z, arrow.getZ());
+    }
+
+    @Override
+    public void onArrowImpact(AbstractArrow arrow, LootRarity rarity, float level, HitResult res, HitResult.Type type) {
+        float mult = getDamageMultiplier(arrow, rarity, level);
+        if (mult > 1f) arrow.setBaseDamage(arrow.getBaseDamage() * mult);
     }
 }
