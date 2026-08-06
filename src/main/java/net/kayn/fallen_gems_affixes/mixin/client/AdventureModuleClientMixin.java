@@ -16,9 +16,8 @@ import org.spongepowered.asm.mixin.injection.At;
 public class AdventureModuleClientMixin {
     @WrapOperation(method = "tooltips", at = @At(value = "INVOKE", target = "Ldev/shadowsoffire/apotheosis/adventure/socket/SocketHelper;getSockets(Lnet/minecraft/world/item/ItemStack;)I"))
     private static int hideApothRemoveMarker(ItemStack stack, Operation<Integer> original) {
-        ItemStack renderedStack = GameLifecycleHelper.callAndRemoveFirstOnly(Fallen.ContextKeys.RENDER_APOTH_TOOLTIP_ITEM, GameLifecycleHelper.EMPTY_EX_CONSUMER);
-        if (stack == renderedStack || stack.getOrCreateTag().getBoolean(Fallen.ContextKeys.RENDER_APOTH_TOOLTIP_ITEM.getId())) {
-            stack.getOrCreateTag().remove(Fallen.ContextKeys.RENDER_APOTH_TOOLTIP_ITEM.getId());
+        ItemStack renderedStack = GameLifecycleHelper.callAndRemoveIfFirst(Fallen.ContextKeys.RENDER_APOTH_TOOLTIP_ITEM, GameLifecycleHelper.EMPTY_EX_CONSUMER);
+        if (stack == renderedStack) {
             return original.call(stack);
         } else {
             return 0;

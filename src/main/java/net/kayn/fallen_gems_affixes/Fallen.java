@@ -39,17 +39,17 @@ public class Fallen {
             DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, FallenGemsAffixes.MOD_ID);
 
     public static class ContextKeys {
-        public static final CallKey<Level> AUG_RECIPE_LEVEL = GameLifecycleHelper.registerContextKey("fga.augment_recipe.level");
-        public static final CallKey<Container> AUG_RECIPE_CONTAINER = GameLifecycleHelper.registerContextKey("fga.augment_recipe.container");
-        public static final CallKey<Map<DynamicHolder<? extends Affix>, AffixInstance>> AFFIXES_HOLER = GameLifecycleHelper.registerContextKey("fga.special_event.affixes_holder");
+        public static final CallKey<Level> AUG_RECIPE_LEVEL = GameLifecycleHelper.registerCallKey("fga.augment_recipe.level");
+        public static final CallKey<Container> AUG_RECIPE_CONTAINER = GameLifecycleHelper.registerCallKey("fga.augment_recipe.container");
+        public static final CallKey<Map<DynamicHolder<? extends Affix>, AffixInstance>> AFFIXES_HOLER = GameLifecycleHelper.registerCallKey("fga.special_event.affixes_holder");
 
-        public static final CallKey<Set<FallenRarity>> FALLEN_RARITIES = GameLifecycleHelper.registerContextKey("fga.reload.fallen_rarities");
-        public static final CallKey<Void> DELAYED_RARITY_REGISTER = GameLifecycleHelper.registerContextKey("fga.reload.delayed_rarity");
-        public static final CallKey<AffixInstance> APPLIED_AFFIX = GameLifecycleHelper.registerContextKey("fga.affix.applied_affix");
-        public static final CallKey<AffixInstance> REROLLED_AFFIX = GameLifecycleHelper.registerContextKey("fga.affix.rerolled_affix");
-        public static final CallKey<AffixInstance> REROLLED_REMOVE = GameLifecycleHelper.registerContextKey("fga.affix.rerolled_remove");
-        public static final CallKey<ArrowFireCache> ARROW_FIRE_CACHE = GameLifecycleHelper.registerContextKey("fga.cache.arrow_fire");
-        public static final CallKey<ItemStack> RENDER_APOTH_TOOLTIP_ITEM = GameLifecycleHelper.registerContextKey("fga.render.apoth_tooltip_item");
+        public static final CallKey<Set<FallenRarity>> FALLEN_RARITIES = GameLifecycleHelper.registerCallKey("fga.reload.fallen_rarities");
+        public static final CallKey<Void> DELAYED_RARITY_REGISTER = GameLifecycleHelper.registerCallKey("fga.reload.delayed_rarity");
+        public static final CallKey<AffixInstance> APPLIED_AFFIX = GameLifecycleHelper.registerCallKey("fga.affix.applied_affix");
+        public static final CallKey<AffixInstance> REROLLED_AFFIX = GameLifecycleHelper.registerCallKey("fga.affix.rerolled_affix");
+        public static final CallKey<AffixInstance> REROLLED_REMOVE = GameLifecycleHelper.registerCallKey("fga.affix.rerolled_remove");
+        public static final CallKey<ArrowFireCache> ARROW_FIRE_CACHE = GameLifecycleHelper.registerCallKey("fga.cache.arrow_fire");
+        public static final CallKey<ItemStack> RENDER_APOTH_TOOLTIP_ITEM = GameLifecycleHelper.registerCallKey("fga.render.apoth_tooltip_item");
 
         public static void register() {}
     }

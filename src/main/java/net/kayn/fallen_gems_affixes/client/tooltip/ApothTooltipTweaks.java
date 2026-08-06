@@ -24,7 +24,6 @@ public class ApothTooltipTweaks {
     // JEI go RenderTooltipEvent.Pre but no GatherComponents
     public static void onGatherTooltip(RenderTooltipEvent.GatherComponents event) {
         ItemStack stack = event.getItemStack();
-        stack.getOrCreateTag().putBoolean(Fallen.ContextKeys.RENDER_APOTH_TOOLTIP_ITEM.getId(), true);
         GameLifecycleHelper.submitContextCall(Fallen.ContextKeys.RENDER_APOTH_TOOLTIP_ITEM, () -> stack);
     }
 }
