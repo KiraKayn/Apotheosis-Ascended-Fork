@@ -97,7 +97,7 @@ public class SocketTooltipRendererMixin {
     private void renderTieredImage(Font font, int x, int y, GuiGraphics gfx, CallbackInfo ci) {
 
         ItemStack socketed = this.comp.socketed();
-
+        if (socketed.isEmpty()) return;
         if (CatalystSocketHelper.hasCatalystSocket(socketed)) {
             ci.cancel();
             float[] rgb = catalystRGB();
