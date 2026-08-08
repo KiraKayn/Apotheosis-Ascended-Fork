@@ -1,3 +1,10 @@
+# 2.1.4
+- Fixed in-compatability with Too Many Bows - rtxyd
+- Fixed Tiered Socket desync - rtxyd
+- Fixed bug with Homing Affix - rtxyd
+- Fixed Catalyst socket rendering where it shouldn't - rtxyd
+- Fixed Bow Affix issues with Apothic Curios - rtxyd
+
 # 2.1.3
 - Fixed Fabled Reforging Table crashes
 - Fixed Sigil of Transmutation not working in some modpacks
