@@ -8,12 +8,12 @@
     "item": "fallen_gems_affixes:gem_case"
   },
   "requirements": {
-    "eterna": 100,
+    "eterna": 50,
     "quanta": 100,
     "arcana": 45
   },
   "max_requirements": {
-    "eterna": 100,
+    "eterna": 50,
     "quanta": 100,
     "arcana": 50
   },
