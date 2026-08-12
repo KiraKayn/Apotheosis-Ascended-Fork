@@ -1,5 +1,6 @@
-# 2.1.4.1
-- Fix incompatibility with Obscure Tooltips - rtxyd
+# 2.1.5
+- Fixed incompatibility with Obscure Tooltips - rtxyd
+- Corrected the required Eterna for Ender Gem Case
 
 # 2.1.4
 - Fixed in-compatability with Too Many Bows - rtxyd
