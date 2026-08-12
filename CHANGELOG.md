@@ -1,3 +1,6 @@
+# 2.1.4.1
+- Fix incompatibility with Obscure Tooltips - rtxyd
+
 # 2.1.4
 - Fixed in-compatability with Too Many Bows - rtxyd
 - Fixed Tiered Socket desync - rtxyd
