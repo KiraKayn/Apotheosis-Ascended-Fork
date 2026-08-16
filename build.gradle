@@ -88,6 +88,7 @@ repositories {
     maven { url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/" } // Geckolib
     maven { url = "https://maven.kosmx.dev/" } // Player Animator
     maven { url = "https://jitpack.io" }
+    maven { url "https://rtxyd.github.io/maven-repo" }
 
     // Iron's Spellbooks
     maven {
