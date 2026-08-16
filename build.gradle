@@ -254,6 +254,10 @@ dependencies {
     runtimeOnly "com.illusivesoulworks.caelus:caelus-neoforge:${caelus_version}"
 //    runtimeOnly "curse.maven:framework-549225:5692398"
     runtimeOnly "curse.maven:selene-499980:6699385"
+
+    // fallen_lib-dev_version (not normal version)
+    implementation "io.github.rtxyd:fallen-lib:${fallen_lib_version}:core"
+    implementation "io.github.rtxyd:fallen-lib:${fallen_lib_version}:runtime"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
