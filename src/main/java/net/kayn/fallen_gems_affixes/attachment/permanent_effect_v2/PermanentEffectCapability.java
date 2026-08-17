@@ -1,11 +1,11 @@
 package net.kayn.fallen_gems_affixes.attachment.permanent_effect_v2;
 
 import net.kayn.fallen_gems_affixes.Fallen;
-import net.kayn.fallen_gems_affixes.types.IEffectHandler;
 import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.rtxyd.fallen.lib.runtime.forgemod.addon.minecraft.mob_effect.IEffectHandler;
 
 import java.security.DrbgParameters;
 import java.util.Set;
@@ -21,7 +21,7 @@ public class PermanentEffectCapability {
     public PermanentEffectCapability(LivingEntity entity) {
         this.entity = entity;
         this.pEContainer = entity.getData(Fallen.PE_CONTAINER);
-        this.effectHandler = new VanillaLikeEffectHandler(entity);
+        this.effectHandler = new PermanentEffectHandler(entity);
     }
 
     public IEffectHandler getEffectHandler() {

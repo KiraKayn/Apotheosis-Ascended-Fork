@@ -7,7 +7,6 @@ import dev.shadowsoffire.apotheosis.socket.gem.GemInstance;
 import dev.shadowsoffire.apotheosis.socket.gem.Purity;
 import net.kayn.fallen_gems_affixes.Fallen;
 import net.kayn.fallen_gems_affixes.adventure.socket.gem.bonus.PermanentEffectBonus;
-import net.kayn.fallen_gems_affixes.attachment.permanent_effect_v2.EffectsTickEvent;
 import net.kayn.fallen_gems_affixes.attachment.permanent_effect_v2.PermanentEffectCapability;
 import net.kayn.fallen_gems_affixes.network.ClientlikeClearPermanentEffectPacket;
 import net.kayn.fallen_gems_affixes.util.EquipmentSlotUtil;
@@ -23,6 +22,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.rtxyd.fallen.lib.runtime.forgemod.addon.minecraft.mob_effect.EffectsTickEvent;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
 import java.util.Iterator;

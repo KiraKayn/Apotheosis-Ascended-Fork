@@ -99,6 +99,9 @@ repositories {
         name = "Iron's Maven - Snapshots"
         url = "https://code.redspace.io/snapshots"
     }
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 base {

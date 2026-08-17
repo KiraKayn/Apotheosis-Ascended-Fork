@@ -6,10 +6,7 @@
   "plugin": "net.kayn.fallen_gems_affixes.MixinConfigPlugin",
   "mixins": [
     "accessor.DynamicRegistryAccessor",
-    "accessor.GemClassAccessor",
-    "accessor.LivingEntityAccessor",
-    "accessor.ServerPlayerAccessor",
-    "event_hook.LivingEntityMixin"
+    "accessor.GemClassAccessor"
   ],
   "client": [
   ],
