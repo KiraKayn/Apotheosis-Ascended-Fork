@@ -32,8 +32,9 @@ public interface IAugment {
     static final Codec<Supplier<IAugment>> CODEC = new Codec<Supplier<IAugment>>() {
         @Override
         public <T> DataResult<Pair<Supplier<IAugment>, T>> decode(DynamicOps<T> ops, T input) {
-            ResourceLocation id = ResourceLocation.CODEC.decode(ops, input).getOrThrow(false, t -> {}).getFirst();
-            Supplier<IAugment> augment = () -> Fallen.Registries.AUGMENT_REGISTRY.getAug(id);
+            DataResult<Pair<ResourceLocation, T>> idResult = ResourceLocation.CODEC.decode(ops, input);
+            if (idResult.error().isPresent()) return DataResult.error(() -> "Failed paring augment id.");
+            Supplier<IAugment> augment = () -> Fallen.Registries.AUGMENT_REGISTRY.getAug(idResult.result().get().getFirst());
             return DataResult.success(new Pair<>(augment, input));
         }
 
