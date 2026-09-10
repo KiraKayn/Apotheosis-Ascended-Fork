@@ -45,6 +45,8 @@ repositories {
         }
     }
 
+    scorched_guns_version=1.5
+
     // Curios
     maven {
         url = "https://maven.theillusivec4.top"
@@ -225,9 +227,9 @@ dependencies {
     runtimeOnly "curse.maven:runiclib-880879:6604840"
     runtimeOnly "curse.maven:lendercataclysm-551586:6769151"
 
-//    implementation "maven.modrinth:scorched-guns-2:${scorched_guns_version}"
-//    runtimeOnly "curse.maven:apotheotic-additions-924640:6393313"
-//    runtimeOnly "curse.maven:esoteric-reforging-forge-1150370:5989440"
+    implementation "maven.modrinth:scorched-guns-neoforged:${scorched_guns_version}"
+    runtimeOnly "curse.maven:apotheotic-additions-924640:6393313"
+    runtimeOnly "curse.maven:esoteric-reforging-forge-1150370:5989440"
     runtimeOnly "curse.maven:to-tweaks-irons-spells-1046916:6342780"
     runtimeOnly "curse.maven:cataclysm-spellbooks-1099461:6427259"
     runtimeOnly "curse.maven:alshanexs-familiars-1171602:6539981"

@@ -53,20 +53,9 @@ public class MiscEventsHandler {
         onCurioEquip(player, to, slot, false);
     }
 
-    @SubscribeEvent
-    public static void onEffectsTick(EffectsTickEvent.Pre event) {
-        LivingEntity entity = event.getEntity();
-        if (entity instanceof ServerPlayer player) {
-            PermanentEffectCapability cap = player.getCapability(Fallen.Capabilities.PE_CAP);
-            if (cap != null) {
-                cap.getContainer().forEachEffect((effect, levels) -> {
-                    if (!player.hasEffect(effect)) {
-                        cap.addEffectSilent(effect, levels.getLast());
-                    }
-                });
-            }
-        }
-    }
+    // EffectsTickEvent.Pre handler is registered reflectively in FallenGemsAffixes to avoid a hard runtime
+    // dependency on net.rtxyd.fallen.lib. If that library is present at runtime, FallenGemsAffixes will
+    // register a listener that mirrors the behavior previously implemented here.
 
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {

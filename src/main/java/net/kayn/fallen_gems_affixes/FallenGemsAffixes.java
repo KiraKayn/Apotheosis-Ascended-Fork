@@ -24,6 +24,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
@@ -64,8 +65,43 @@ public class FallenGemsAffixes {
         LootCategories.bootstrap(modEventBus);
         Fallen.bootstrap(modEventBus);
 
-//        AALootCategories.init();
+        AALootCategories.init();
         new MaxHealthDamageHandler();
+
+        // Register EffectsTickEvent.Pre reflectively if fallen.lib is available at runtime.
+        try {
+            Class<?> preClass = Class.forName("net.rtxyd.fallen.lib.runtime.forgemod.addon.minecraft.mob_effect.EffectsTickEvent$Pre");
+            try {
+                var getEntity = preClass.getMethod("getEntity");
+                java.util.function.Consumer<Object> consumer = (ev) -> {
+                    try {
+                        Object entityObj = getEntity.invoke(ev);
+                        if (entityObj instanceof ServerPlayer player) {
+                            PermanentEffectCapability cap = player.getCapability(Fallen.Capabilities.PE_CAP);
+                            if (cap != null) {
+                                cap.getContainer().forEachEffect((effect, levels) -> {
+                                    if (!player.hasEffect(effect)) {
+                                        cap.addEffectSilent(effect, levels.getLast());
+                                    }
+                                });
+                            }
+                        }
+                    } catch (Throwable t) {
+                        LOGGER.warn("Failed to handle EffectsTickEvent.Pre reflectively", t);
+                    }
+                };
+                try {
+                    var addListenerMethod = NeoForge.EVENT_BUS.getClass().getMethod("addListener", Class.class, java.util.function.Consumer.class);
+                    addListenerMethod.invoke(NeoForge.EVENT_BUS, preClass, consumer);
+                } catch (Throwable t) {
+                    LOGGER.warn("Failed to register reflective EffectsTickEvent.Pre listener", t);
+                }
+            } catch (NoSuchMethodException nsme) {
+                LOGGER.warn("EffectsTickEvent.Pre found but lacks getEntity() method", nsme);
+            }
+        } catch (ClassNotFoundException ignored) {
+            // fallen.lib not present; nothing to register
+        }
 
         if (ModList.get().isLoaded("irons_spellbooks")) {
             if (!ModList.get().isLoaded("irons_apothic")) {
